@@ -1,0 +1,64 @@
+
+%!TEX ROOT=../_main.tex
+
+\chapter{Tvarova optimalizace kompresorove mrize}
+
+chceme optimalizovat stlaceni
+
+\section{Sdruzene rce pro cilovou fci stlaceni}
+konkretni postup odvozeni rovnic z "nove" cilove funkce, zjednoduseni cilove fce pro nestlacitelne proudeni (pouze rozdil bez podilu)
+
+Stlaceni
+\begin{equation}\label{key}
+	\Pi = \dfrac{p_{IN}^{t}}{p_{OUT}^{t}}
+\end{equation}
+Minimalizovanou cílovou funkci lze tedy zapsat jako
+\begin{equation}\label{key}
+	J = p_{OUT}^{t}- p_{IN}^{t},
+\end{equation}
+kde průměrný celkový tlak na libovolné hranici $ \Gamma $ získáme pomocí integrálu
+\begin{equation}\label{key}
+	p^t_\Gamma = \int_\Gamma p+\dfrac{1}{2}(\mathbf{u}\cdot \mathbf{u}) \, \mathrm{d}S.
+\end{equation}
+Ve smyslu vztahu \ref{eq:cenova_fce} má takto definovaná cílová funkce stlačení pouze hraniční složku $ J_\Gamma $ a pro sdružené rovnice tak bude figurovat pouze v hraničních členech, tedy v rovnicích \ref{eq:sdruzenaOP1} a \ref{eq:sdruzenaOP2}. Potřebujeme tedy vydefinovat parciální derivace podle primárních proměnných $ \mathbf{u} $ a $ p $.
+
+Parciální derivaci podle skalární veličiny $p$ lze psát přímo jako
+\begin{equation}\label{key}
+\dfrac{\partial J_\Gamma}{\partial p}
+=
+\dfrac
+{\partial 
+	\left( 
+		p + \frac{1}{2} \mathbf{u}\cdot\mathbf{u} 
+	\right)}
+{\partial p}
+= 1.
+\end{equation}
+
+Derivaci podle rychlosti můžeme psát jako
+\begin{equation}\label{key}
+\dfrac{\partial J_\Gamma}{\partial \mathbf{u}}
+=
+\dfrac{\partial \left( p + \frac{1}{2} \mathbf{u}\cdot\mathbf{u} \right)}{\partial \mathbf{u}}
+=
+\frac{1}{2}\dfrac{\partial \left( u_j u_j \right)}{\partial u_i} = \dfrac{\partial  u_j  }{\partial u_i}u_j = \delta_{ij}u_j=u_i=\mathbf{u}.
+\end{equation}
+Pro pozdější implementaci v softwarovém balíku OpenFOAM je navíc potřeba vydefinovat ještě následující derivace.
+\begin{equation}\label{key}
+\frac{\partial J_\Gamma}{\partial u_n} = 
+\dfrac{\partial \left( p + \frac{1}{2} \mathbf{u}\cdot\mathbf{u} \right)}{\partial u}
+\end{equation}
+
+vydefinovani clenu potrebnych pro OF
+
+implementace v OF 
+
+
+\section{Optimalizace mrize GHH 1-S1}
+
+popis geometrie, vypocetni oblasti, okrajove podminky, nastaveni optimalizacniho algoritmu
+
+Pro aplikaci optimalizačního algoritmu s novou cenovou funkcí pro stlačení byla zvolena axiální kompresorová mříž MAN GHH 1-S1 publikovaná v \cite{steinert1990design}. Výpočetní oblast 
+
+\subsection{vysledky}
+klaibrace S-A modelu, prubeh cilove fce, overeni vysledku pomoci vhodnejsiho modelu turbulence

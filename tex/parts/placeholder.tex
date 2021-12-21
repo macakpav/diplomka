@@ -1,0 +1,989 @@
+
+%!TEX ROOT=../_main.tex
+
+\chapter{Dynamická analýza soustavy těles}\label{sec:Dyn_analyza}
+
+
+
+
+
+\section{Úvod}\label{sec:Uvod_metody}
+
+\lipsum[1]
+
+
+
+\section{Lagrangeovy rovnice II. druhu}\label{sec:LR II}
+
+O Lagrangeových rovnicích druhého druhu (dále jen LRII)\index{Lagrangeovy rovnice!2. druhu} pojednává \cite{cite:Mech3}.
+\nomenclature[L]{LRII.}{Lagrangeovy rovnice druhého druhu}
+
+Pro hmotný bod platí
+\begin{equation}
+	m_i \cdot a_i = F_i.
+\end{equation}
+\nomenclature[M]{$ m_i $}{hmotnost bodu $ i $}
+\nomenclature[A]{$ a_i $}{zrychlení bodu $ i $}
+\nomenclature[F]{$ F_i $}{síla působící na bod $ i $}
+
+Lze tedy vyvodit následující
+\begin{gather}
+	m_i\cdot a_i \cdot \delta r_i = F_i \cdot \delta r_i \notag\\
+	r_i = r_i(q_j) \notag \\
+	\delta r_i = \sum_{j=1}^{r} \frac{\partial r_i}{\partial q_j} \delta q_j + \frac{\partial r_i}{\partial t} \delta t,
+\end{gather}
+kde $ r $ je počet nezávislých souřadnic.
+\nomenclature[R]{$ r_i $}{polohový vektor bodu $ i $}
+\nomenclature[Q]{$ q_j $}{nezávislá souřadnice $ j $}
+\nomenclature[T]{$ t $}{čas}
+Pro variaci $ \delta $ platí $ t \rightarrow 0 $, a tedy pro soustavu hmotných bodů lze psát
+\begin{gather}
+	\sum_{i=1}^{N}\left( m_i\cdot \ddot{r_i} \cdot \sum_{j=1}^{r}  \frac{\partial r_i}{\partial q_j} \delta q_j \right) = \sum_{i=1}^{N} \left( F_i \cdot \sum_{j=1}^{r} \frac{\partial r_i}{\partial q_j} \delta q_j\right) \notag\\
+	\sum_{j=1}^{r}\left( \sum_{i=1}^{N} m_i\cdot \ddot{r_i} \cdot   \frac{\partial r_i}{\partial q_j} \right) \delta q_j  = \sum_{j=1}^{r} \left( \sum_{i=1}^{N}F_i \cdot  \frac{\partial r_i}{\partial q_j}\right) \delta q_j .
+\end{gather}
+O nezávislých souřadnicích $ q_j $ lze udělat libovolný předpoklad, např., že jsou nenulové a můžeme nimi rovnici vydělit.
+Dostáváme tak $ r $ rovnic, kde $ r $ je při použití nezávislých souřadnic právě rovno počtu stupňů volnosti soustavy $ n\degree $.
+\nomenclature[N]{$ n\degree $}{počet stupňů volnosti soustavy}
+\begin{equation}
+	\sum_{i=1}^{N} m_i\cdot \ddot{r_i} \cdot   \frac{\partial r_i}{\partial q_j}  =  \sum_{i=1}^{N}F_i \cdot  \frac{\partial r_i}{\partial q_j}; \,\, j=1,2...n\degree,
+\end{equation}
+kde výraz v sumě napravo je zobecněná síla $ Q_j $ a tedy
+\begin{equation}
+	\sum_{i=1}^{N} m_i\cdot \ddot{r_i} \cdot   \frac{\partial r_i}{\partial q_j}  =  Q_j; \,\, j=1,2...n\degree \label{eq:e21}.
+\end{equation}
+Pro rychlost hmotného bodu popsaného polohovým vektorem $ r_i = r_i(q_j(t)) $tedy plyne
+\begin{equation}
+	\dot{r_i}=\sum_{j}^{n\degree}\frac{\partial r_i}{\partial q_j}\dot{q_j}+\frac{\partial r_i}{\partial t}.
+\end{equation}
+Můžeme provést následující operaci
+\begin{equation*}
+	\frac{d}{dt}\left( \dot{r_i} \frac{\partial r_i}{\partial q_j} \right) = \ddot{r_i}\frac{\partial r_i}{\partial q_j}+\dot{r_i}\frac{d}{dt}\left( \frac{\partial r_i}{\partial q_j}\right),
+\end{equation*}
+odkud vyplývá, že
+\begin{equation}
+	\ddot{r_i}\frac{\partial r_i}{\partial q_j} =
+	\frac{d}{dt}\left( \dot{r_i} \frac{\partial r_i}{\partial q_j} \right) - \dot{r_i}\frac{d}{dt}\left( \frac{\partial r_i}{\partial q_j}\right) \label{eq:1}
+\end{equation}
+dále platí
+\begin{gather}
+	\frac{\partial \dot{r_i}}{\partial \dot{q_j}}=\frac{\partial r_i}{\partial q_j} \label{eq:e11}\\
+	\frac{\partial \dot{r_i}}{\partial {q_j}} = \sum_{k}\frac{\partial^2 \dot{r_i}}{\partial {q_k} \partial {q_j}}  \dot{q_k}+\frac{\partial^2 \dot{r_i}}{ \partial {q_j}\partial t} \notag \\
+	\implies \frac{\partial \dot{r_i}}{\partial {q_j}} = \frac{d}{dt}\left( \frac{\partial {r_i}}{\partial {q_j}}  \right) \label{eq:e12}
+\end{gather}
+a po dosazení rovnic \ref{eq:e11} a \ref{eq:e12} do rovnice \ref{eq:1} dostáváme
+\begin{equation}
+	\ddot{r_i}\frac{\partial r_i}{\partial q_j} =
+	\frac{d}{dt}\left( \dot{r_i} \frac{\partial \dot{r_i}}{\partial \dot{q_j}} \right) - \dot{r_i}\left( \frac{\partial \dot{r_i}}{\partial q_j}\right) \label{eq:2}.
+\end{equation}
+Po sloučení s rovnicí \ref{eq:e21} je výsledkem
+\begin{gather}
+	\sum_{i}^{N} \left[ m_i \frac{d}{dt}\left( \dot{r_i} \frac{\partial \dot{r_i}}{\partial \dot{q_j}} \right)  - m_i \dot{r_i}\frac{\partial \dot{r_i}}{\partial q_j}\right] = Q_j \\
+	\frac{d}{dt}\left( \frac{\partial E_k}{\partial \dot{q_j}}\right) -\frac{\partial E_k}{\partial {q_j}} = Q_j; \,\, j=1.2...n\degree. \label{eq:LR2}
+\end{gather}
+Vztah \ref{eq:LR2} definuje Lagrangeovy rovnice II. druhu.
+\nomenclature[E]{$ E_k $}{kinetická energie soustavy}
+
+\section{Lagrangeovy rovnice smíšeného typu}\label{sec:LRST}
+
+Aplikace LRII je pro systémy s mnoha tělesy obtížná, neboť se musí kinetická energie všech členů soustavy převést na funkci jediné nezávislé souřadnice. LRII lze rozšířit na Lagrangeovy rovnice smíšeného typu (dále LRST), které tento krok nahrazují vazbovými rovnicemi. Dále je nastíněno odvození LRST, jak uvádí \cite{cite:bible}.
+\index{Lagrangeovy rovnice!smíšeného typu} 
+\nomenclature[L]{LRST}{Lagrangeovy rovnice smíšeného typu}
+
+Mějme soustavu hmotných bodů o $ n $ stupních volnosti. Konfiguraci této soustavy popíšeme pomocí $ i $ fyzikálních souřadnic
+\begin{equation}
+	s_j, \,\,j=1,2...i, \,\, i \geq n\degree,
+\end{equation}
+jejichž počet může být vyšší než počet stupňů volnosti soustavy. Fyzikální souřadnice nejsou obecně nezávislé, ale jsou svázány použitím holonomních rheonomních vazebních rovnic
+\begin{equation}\label{eq:LRST constrains}
+	f_k(a_j,t) =0, \,\, k = 1,2,..., \,\, r= i- n\degree.
+\end{equation}
+Z $ i $ zvolených fyzikálních souřadnic je pouze $ n\degree $ nezávislých. Pro sestavení pohybových rovnic soustavy je stejně jako v případě LRII potřeba vyjádřit kinetickou energii $ E_k = E_k(s_j,\dot{s_j},t) $. 
+Lagrangeovy rovnice smíšeného typu pro holonomní vazby jsou vyjádřeny následovně
+\begin{equation} \label{eq:LRST}
+	\frac{d}{dt} \left( \frac{\partial E_k}{\partial \dot{s_j}}\right)  -\frac{\partial E_k}{\partial {s_j}} = Q_j + \sum_{k=1}^{r}\lambda_k \frac{\partial f_k}{\partial s_j}; \,\, j=1,2...,i.
+\end{equation}
+Soustava rovnic popsaná pomocí vztahů \ref{eq:LRST} a \ref{eq:LRST constrains} obsahuje dohromady $ i + r $ neznámých, $ i $ neznámých funkcí $ s_j(t) $ a $ r $ Lagrangeových multiplikátorů $ \lambda_k(t) $, které zastupují reakční síly ve vazbách.
+Rozepsáním rovnic \ref{eq:LRST} dostáváme
+\begin{equation} \label{eq:LRST rozepsane}
+	\sum_{a=1}^{i} \frac{\partial^2E_k}{\partial \dot{s_a} \partial \dot{s_j}} \ddot{s_a} + \sum_{a=1}^{i} \frac{\partial^2E_k}{\partial {s_a} \partial \dot{s_j}} \dot{s_a} + \frac{\partial^2E_k}{\partial t \partial \dot{s_j}}-\frac{\partial E_k}{\partial s_j} = Q_j + \sum_{k=1}^{r}\lambda_k \frac{\partial f_k}{\partial s_j}.
+\end{equation}
+Rovnice vazeb \ref{eq:LRST constrains} nahradíme jejich druhou časovou derivací, takže
+\begin{equation}\label{eq:LRST_rozepsane cond}
+	\frac{\partial^2 f_k}{\partial t^2}=\sum_{a=1}^{i} \frac{\partial f_k}{\partial \dot{s_a}} \ddot{s_a}+\sum_{j=1}^{i}\sum_{a=1}^{i} \frac{\partial^2 f_k}{\partial \dot{s_a} \partial \dot{s_j}} \dot{s_a}\dot{s_j} + 2\sum_{a=1}^{i} \frac{\partial^2 f_k}{\partial t \partial \dot{s_a}} \dot{s_a} + \frac{\partial^2 f_k}{\partial t^2} \stackrel{!}{=} 0.
+\end{equation}
+Systém takto upravených rovnic je nyní přímo závislý na $ \ddot{s_j} $ a $ \lambda_k $. Lze použít následující maticový zápis \cite{cite:bible}
+\begin{equation} \label{eq:LRST maticove}
+	\begin{bmatrix}
+		\mathbf{M} & \mathbf{\Phi_s^T} \\
+		\mathbf{\Phi_s} & \mathbf{0}
+	\end{bmatrix}
+	\begin{bmatrix}
+		\mathbf{\ddot{s_j}}\\
+		\mathbf{-\lambda_k}
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		\mathbf{p_1}\\
+		\mathbf{p_2}
+	\end{bmatrix},
+\end{equation}
+\nomenclature[F]{$ f_k $}{rovnice vazby}
+\nomenclature[S]{$ s_{a,j} $}{fyzikální souřadnice $ a,j $}
+\nomenclature[L]{$ \lambda_k $}{Lagrangeův multiplikátor}
+\nomenclature[M]{$ \mathbf{M} $}{matice soustavy $ \mathbf{M} $}
+\nomenclature[F]{$ \mathbf{\Phi_s} $}{Jakobián soustavy}
+kde $ \ddot{\mathbf{s_j}} = [\ddot{s_1}, \, \ddot{s_2},...,\ddot{s_i}]$, $ \mathbf{\lambda} = [\lambda_1, \lambda_2,...,\lambda_r] $, $ \mathbf{M} $ je čtvercová regulární symetrická $ (i,i) $ matice, $ \mathbf{0} $ je nulová $ (r,r) $ matice, $ \mathbf{p_1} $ je $ i $-rozměrný vektor a $ \mathbf{p_2} $ je $ r $-rozměrný vektor. Poté platí následující
+\begin{align}
+	(\mathbf{M})_{ij}&=\frac{\partial^{2}E_k}{\partial \dot{s_i} \partial \dot{s_j}}, \,\,\,\,\,\,\, (\mathbf{\Phi_s}) = \frac{\partial f_i}{\partial s_j}, \notag\\
+	(\mathbf{p_1})_j &= \frac{\partial E_k}{\partial s_j} - \frac{\partial^2 E_k }{\partial t \partial \dot{s_j}}-\sum_{a=1}^{i}\frac{\partial^2 E_k}{\partial s_a \partial \dot{s_j}}+Q_j \notag,\\
+	(\mathbf{p_2})_k &= - \sum_{j=1}^{i}\sum_{a=1}^{i}\frac{\partial^2 f_k}{\partial s_j \partial s_a} \dot{s_j} \dot{s_a} - 2 \sum_{a=1}^{i} \frac{\partial^2 f_k}{\partial t \partial s_a}  \dot{s_a} - \frac{\partial^2 f_k}{\partial t^2}.
+\end{align}
+
+
+\section{Numerické řešení LRST} \label{sec:Numer_LRST}
+\index{Lagrangeovy rovnice!smíšeného typu}
+Jak je uvedeno v \cite{cite:bible}, lze k numerickému řešení výsledné soustavy pohybových rovnic \ref{eq:LRST maticove} přistoupit následujícími způsoby
+\begin{itemize}
+	\item použití stabilizační metody,
+	\item přeformulováním rovnic \ref{eq:LRST constrains}  a  \ref{eq:LRST rozepsane},
+	\item exaktním řešením rovnic \ref{eq:LRST constrains}  a  \ref{eq:LRST rozepsane}  jako rovnic diferenciálně-algebraických
+\end{itemize}
+Pro potřeby této bakalářské práce je pro jednoduchost aplikace zvolena Baumgartova stabilizační metoda \cite{cite:stabilzace_articl}.
+
+\subsection{Baumgartova stabilizace}\label{sec:Baumgart}
+\index{Baumgartova stabilizace}
+Pro vyřešení diferenciálně-algebraické soustavy rovnic dle Baumgarta, je tato soustava převedena na soustavu obyčejných diferenciálních rovnic (dále ODR) a původní podmínka z \ref{eq:LRST_rozepsane cond} $ \ddot{f} \stackrel{!}{=} 0$ je nahrazena analyticky ekvivalentní rovnicí \cite{cite:bible}
+\nomenclature[O]{ODR}{obyčejná diferenciální rovnice}
+\begin{equation}\label{eq:Baum podminka}
+	\ddot{f} + 2\alpha \dot{f}+\beta^2f \stackrel{!}{=} 0, \,\, \alpha>0.
+\end{equation}
+Pokud se na novou podmínku budeme dívat jako na problém stability systému, jak uváděno v \cite{cite:aretko}, tak hledané kořeny charakteristické rovnice musí padnout nalevo od imaginární osy, jinak řečeno, mít zápornou reálnou složku. Kupříkladu pro $ \alpha = \beta = 1 $ dostáváme charakteristickou rovnici ve tvaru
+\begin{equation}\label{eq:char rce}
+	\lambda^2 + 2\lambda +1 = 0
+\end{equation}
+a řešení vyplyne po algebraických úpravách z tvaru $ (\lambda+1) = 0 $ jako kořeny sdružené $  \lambda_{1,2}=-1$ a dle očekávání záporné.
+Pro případ vícero vazbových podmínek lze rovnic přepsat do vektorového tvaru \cite{cite:bible}
+\begin{equation}\label{eq:Baum podminka vekt}
+	\mathbf{\ddot{f}}+2\alpha \mathbf{\dot{f}}+\beta^2\mathbf{f}=\mathbf{0}
+\end{equation}
+a po dosazení vztahů $ \mathbf{\Phi_s} = \frac{\partial \mathbf{f}}{\partial \mathbf{s}} $, $ \mathbf{\dot{f}} = \frac{\partial \mathbf{f}}{\partial \mathbf{s}}\mathbf{\dot{s}} $ a $ \mathbf{\ddot{f}} = \mathbf{\Phi_s}\mathbf{\ddot{s}} + \mathbf{\dot{\Phi_s}}\mathbf{\dot{s}} $ můžeme psát rovnici
+\begin{equation}\label{eq:Baum podminka vekt s Jac}
+	\mathbf{\Phi_s}\mathbf{\ddot{s}} + \mathbf{\dot{\Phi_s}}\mathbf{\dot{s}} + 2\alpha \mathbf{\Phi_s} \mathbf{s} + \beta^2\mathbf{f} =\mathbf{0}.
+\end{equation}
+Výsledný tvar LRST \index{Lagrangeovy rovnice!smíšeného typu} je formálně stejný jako \ref{eq:LRST maticove}, tedy
+\begin{equation*}
+	\begin{bmatrix}
+		\mathbf{M} & \mathbf{\Phi_s^T} \\
+		\mathbf{\Phi_s} & \mathbf{0}
+	\end{bmatrix}
+	\begin{bmatrix}
+		\mathbf{\ddot{s_j}}\\
+		\mathbf{-\lambda_k}
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		\mathbf{p_1}\\
+		\mathbf{p_2}
+	\end{bmatrix},
+\end{equation*}
+pouze se změnou významu vektoru $ \mathbf{p_2} $ \cite{cite:stabilzace_articl,cite:bible}
+\begin{equation}\label{eq:Baumgartovo p_2}
+	\mathbf{p_2} = - \mathbf{\dot{\Phi_s}}\mathbf{\dot{s}} - 2\alpha \mathbf{\Phi_s} \mathbf{s} - \beta^2\mathbf{f}.
+\end{equation}
+Před zahájením integračního procesu je potřeba stanovit počáteční podmínky soustavy, kde lze zvolit pouze omezený počet počátečních podmínek, jednu polohu a jednu rychlost za každý stupeň volnosti soustavy, a dopočítání zbytku potřebných lze považovat za přímou kinematickou úlohu, která je však potřeba vyřešit pouze jedenkrát, před začátkem integrace. LRST tvoří systém diferenciálních rovnic a je tedy vhodné jej z hlediska numerického řešení převést nejdříve na soustavu ODR prvního řádu zavedením následující substituce
+$ y_1 = s, \,\, y_2 = \dot{y_1} = \dot{s}, \,\, \dot{y_2} = \ddot{s_2} $
+Výslednou soustavu lze psát pomocí vztahu \ref{eq:Baumgartova ODR} \cite{cite:bible}
+\begin{equation} \label{eq:Baumgartova ODR}
+	\begin{bmatrix}
+		\mathbf{E} & \mathbf{0} & \mathbf{0}\\
+		\mathbf{0} & \mathbf{M} & \mathbf{\Phi_s^T} \\
+		\mathbf{0} & \mathbf{\Phi_s} & \mathbf{0}
+	\end{bmatrix}
+	\begin{bmatrix}
+		\mathbf{\dot{y_1}}\\
+		\mathbf{\dot{y_2}}\\
+		-\mathbf{\lambda}
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		\mathbf{y_2}\\
+		\mathbf{p_1}\\
+		\mathbf{p_2}
+	\end{bmatrix}.
+\end{equation}
+
+\chapter{Metody zahrnutí poddajnosti těles}
+
+V následující kapitole jsou odvozeny dvě schémata řešení dynamických úloh s poddajnými tělesy. Metody jsou v práci označovány jako metoda RFE a metoda MBS flexible.
+
+\section{Metoda poddajných tělísek, RFE metoda} \label{sec:RFE}
+
+Metoda spočívá v diskretizaci soustavou tuhých těles propojených pružně tlumícím elemtem - přímá fyzikální diskretizace. Soustava je následně popsána fyzikálními souřadnicemi, což vede na řešení soustavy LRST. Tuhé tělíska jsou dále označovány jako \textbf{RFE}, z angličtiny rigid finite element - tuhé konečné tělísko, a poddajné elementy \textbf{SDE}, z angličtiny spring-dampning element - pružně tlumící element. Metoda RFE je odvozena dle \cite{cite:RFE_Vamp, cite:RFE}
+\index{Metoda!poddajných tělísek, RFE} 
+\index{Lagrangeovy rovnice!smíšeného typu} 
+\nomenclature[R]{RFE}{tuhé tělísko (\textbf{R}igid \textbf{F}inite \textbf{E}lement)}
+\nomenclature[S]{SDE}{poddajný element (\textbf{S}pring-\textbf{d}ampning \textbf{e}lement)}
+
+\subsection{Metoda RFE}
+
+K popisu soustavy jsou použity přirozené souřadnice. Představu spojení tělísek poskytuje obrázek \ref{fig:RFE_SDE}.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{img/placeholder.pdf}
+	\caption{Tuhé tělísko a poddajný element}
+	\label{fig:RFE_SDE}
+\end{figure}
+
+
+Pro popis polohy každého z tělísek jsou použity dva polohové vektory $ \mathbf{^{i}r_{j,2}} $, kde $ i $ je těleso, $ j $ je číslo tělíska v rámci tělesa a $ 2 $ nebo $ 1 $ je definiční bod tělíska - jeho konec nebo začátek. Na obrázku \ref{fig:RFE_metoda} jsou zakótovány a naznačeny dále používané veličiny.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\linewidth]{img/placeholder.pdf}
+	\caption{Schéma popisu polohy dvou tělísek}
+	\label{fig:RFE_metoda}
+\end{figure}
+
+\begin{tabular}{@{}ll}
+	$^gx, \, ^gy$ &\dots osy globálního souřadného systému\\
+	$ ^{i}\mathbf{r}_{j,1}, \, ^{i}\mathbf{r}_{j,2} $ &\dots polohové vektory počátku a konce tělíska $ j $ na tělese $ i $\\
+	$ ^{i}\mathbf{n}_{j} $ &\dots směrový vektor tělíska $ j $\\
+	$ ^{i}\varphi_{j} $ &\dots úhel směrového vektoru $ ^{i}\mathbf{n}_{j} $ od globální osy $ g_x $ \\
+	$ ^{i}\xi_{j,j+1} $ &\dots deformace poddajného elementu mezi tělísky $ j $ a $ j+1 $ \\& měřené ve směru vektoru  $^{i}\mathbf{n}_{j} $\\
+	$ ^{i}\eta_{j,j+1} $ &\dots deformace poddajného elementu mezi tělísky $ j $ a $ j+1 $ \\& měřené kolmo na směr vektoru  $^{i}\mathbf{n}_{j} $\\
+	$ ^{i}\mathbf{r}_{j+1,1}, \, ^{i}\mathbf{r}_{j+1,2} $ &\dots polohové vektory tělíska $ j+1 $ na tělese $ i $\\
+	$ ^{i}\mathbf{n}_{j+1} $ &\dots směrový vektor tělíska $ j+1 $\\
+	$ ^{i}\varphi_{j+1} $ &\dots úhel směrového vektoru $ ^{i}\mathbf{n}_{j+1} $ \\
+	
+\end{tabular}
+\nomenclature[X]{$^gx, \, ^gy$}{osy globálního souřadného systému}
+\nomenclature[R]{$ ^{i}\mathbf{r}_{j,1}, \, ^{i}\mathbf{r}_{j,2} $}{olohové vektory počátku a konce tělíska $ j $ na tělese $ i $}
+\nomenclature[N]{$ ^{i}\mathbf{n}_{j} $}{směrový vektor tělíska $ j $}
+\nomenclature[F]{$ ^{i}\varphi_{j} $}{úhel směrového vektoru $ ^{i}\mathbf{n}_{j} $}
+\nomenclature[X]{$ ^{i}\xi_{j,j+1} $}{deformace poddajného elementu mezi tělísky $ j $ a $ j+1 $ měřené ve směru vektoru  $^{i}\mathbf{n}_{j} $}
+\nomenclature[E]{$ ^{i}\eta_{j,j+1} $}{deformace poddajného elementu mezi tělísky $ j $ a $ j+1 $ měřené kolmo na směr vektoru  $^{i}\mathbf{n}_{j} $}
+\nomenclature[R]{$ ^{i}\mathbf{r}_{j+1,1}, \, ^{i}\mathbf{r}_{j+1,2} $}{polohové vektory tělíska $ j+1 $ na tělese $ i $}
+\nomenclature[N]{$ ^{i}\mathbf{n}_{j+1} $}{směrový vektor tělíska $ j+1 $}
+\nomenclature[F]{$ ^{i}\varphi_{j+1} $}{úhel směrového vektoru $ ^{i}\mathbf{n}_{j+1} $}
+
+Na obrázku \ref{fig:RFE_telisko} jsou vyobrazeny silové účinky působící na jedno tělísko.
+\begin{figure} [H]
+	\centering
+	\includegraphics[width=0.85\linewidth]{img/placeholder.pdf}
+	\caption{Silové účinky působící na tělísko}
+	\label{fig:RFE_telisko}
+\end{figure}
+\begin{tabular}{@{}ll}
+	$^lx, \, ^ly$ &\dots osy lokálního souřadného systému\\
+	$ ^{i}S_{j} $ &\dots těžiště tělíska $ j $ na tělese $ i $\\
+	$ ^{i}l_{j} $ &\dots délka tělíska $ j $ na tělese $ i $\\
+	$ \mathbf{F}_a, \, \mathbf{F}_a' $ 	  &\dots tahová/tlaková síla působící na tělísko $ j $ \\
+	$ \mathbf{F}_t, \, \mathbf{F}_t' $ 	  &\dots smyková síla působící na tělísko $ j $ \\
+	$ \mathbf{M}_o, \, \mathbf{M}_o' $ 	  &\dots ohybový moment působící na tělísko $ j $ \\
+\end{tabular}
+
+\nomenclature[X]{$^lx, \, ^ly$}{osy lokálního souřadného systému}
+\nomenclature[S]{$ ^{i}S_{j} $}{těžiště tělíska $ j $ na tělese $ i $}
+\nomenclature[L]{$ ^{i}l_{j} $}{délka tělíska $ j $ na tělese $ i $}
+\nomenclature[F]{$ \mathbf{F}_a $}{tahová/tlaková síla}
+\nomenclature[F]{$ \mathbf{F}_t $}{smyková síla}
+\nomenclature[M]{$ \mathbf{M}_o $ }{ohybový moment}
+
+\subsection{Formulace kinetické energie}
+
+Kinetická energie $ j $-tého tělíska na $ i $-tém tělese je vyjádřena pomocí Königovy věty ve tvaru \cite{cite:bible}
+\begin{equation}\label{eq:Konig}
+	^{i}E_{k_{j}} = \frac{1}{2}\left( \prescript{i}{}{m_j} \cdot \prescript{i}{}{v_{Sj}^2} + \prescript{i}{}{I_{Sj}}\cdot \prescript{i}{}{\dot{\varphi}_{j}^{2}} \right) .
+\end{equation}
+
+Pro popis polohy jednotlivých tělísek jsou použity přirozené souřadnice (viz. obrázek \ref{fig:RFE_metoda}) a polohový vektor $ \prescript{i}{}{r_{Sj}} $ příslušný těžišti $ ^{i}S_{j} $ lze psát ve tvaru
+\begin{equation}\label{eq:RFE_rSj}
+	\prescript{i}{}{\mathbf{r}_{Sj}}=\frac{1}{2}\left( \prescript{i}{}{\mathbf{r}_{j,1}} +\prescript{i}{}{\mathbf{r}_{j,2}} \right) .
+\end{equation}
+Vztah pro kvadrát rychlosti těžiště je dán derivací a následným umocněním vektorové rovnice \ref{eq:RFE_rSj}
+\begin{equation}\label{eq:RFE_v2}
+	\prescript{i}{}{v_{Sj}^{2}}=\frac{1}{4}\left( \prescript{i}{}{\mathbf{\dot{r}}_{j,1}^T}	\prescript{i}{}{\mathbf{\dot{r}}_{j,1}} + \prescript{i}{}{\mathbf{\dot{r}}_{j,2}^T}	\prescript{i}{}{\mathbf{\dot{r}}_{j,2}} + 2 \prescript{i}{}{\mathbf{\dot{r}}_{j,1}^T} \prescript{i}{}{\mathbf{\dot{r}}_{j,2}} \right) .
+\end{equation}
+Obecně lze pro průmět délky tuhého tělíska do jednotlivých os psát, že
+\begin{align}
+	^{i}l_{j}\cdot \cos (^{i}\varphi_{j})&= \prescript{i}{}{x_{j,2}}-\prescript{i}{}{x_{j,1}} \notag \\
+	^{i}l_{j}\cdot \sin (^{i}\varphi_{j})&= \prescript{i}{}{y_{j,2}}-\prescript{i}{}{y_{j,1}} 
+\end{align}
+a po derivaci $ \frac{d}{dt} $ dostat rovnice 
+\begin{align}
+	- ^{i}l_{j}\cdot \sin (\prescript{i}{}{\varphi_{j}}) \cdot \prescript{i}{}{\dot{\varphi}_{j}}&= \prescript{i}{}{\dot{x}_{j,2}}-\prescript{i}{}{\dot{x}_{j,1}} \notag \\
+	^{i}l_{j}\cdot \cos (\prescript{i}{}{\varphi_{j}}) \cdot \prescript{i}{}{\dot{\varphi}_{j}}&= \prescript{i}{}{\dot{y}_{j,2}}-\prescript{i}{}{\dot{y}_{j,1}}.
+\end{align}
+Umocněním obou rovnic, jejich sečtením a vydělením obou stran délkou tělíska $  ^{i}l_{j}$, vznikne vztah pro kvadrát úhlové rychlosti ve tvaru
+\begin{equation}\label{eq:REF_fit}
+	\prescript{i}{}{\dot{\varphi}_{j}^2}=\frac{1}{^{i}l_{j}^2} \left( \left( \prescript{i}{}{\dot{x}_{j,2}}-\prescript{i}{}{\dot{x}_{j,1}} \right)^2 + \left( \prescript{i}{}{\dot{y}_{j,2}}-\prescript{i}{}{\dot{y}_{j,1}} \right)^2 		 \right),
+\end{equation}
+které lze přepsat do vektorového tvaru 
+\begin{equation}\label{eq:REF_fit_vekt}
+	\prescript{i}{}{\dot{\varphi}_{j}^2}=\frac{1}{^{i}l_{j}^2} \left( \prescript{i}{}{\mathbf{\dot{r}}_{j,1}^T}	\prescript{i}{}{\mathbf{\dot{r}}_{j,1}} + \prescript{i}{}{\mathbf{\dot{r}}_{j,2}^T}	\prescript{i}{}{\mathbf{\dot{r}}_{j,2}} - 2 \prescript{i}{}{\mathbf{\dot{r}}_{j,1}^T} \prescript{i}{}{\mathbf{\dot{r}}_{j,2}} \right) .
+\end{equation}
+Výsledná kinetická energie celého tělesa $ i $ je dána součtem dílčích kinetických energií jednotlivých tělísek, takže
+\begin{multline}\label{eq:RFE_iEk}
+	\prescript{i}{}{E_k} = \frac{1}{2} \sum_{j=1}^{N} \Bigg[ \frac{\prescript{i}{}{m_j}}{4}\left( \prescript{i}{}{\mathbf{\dot{r}}_{j,1}^T}	\prescript{i}{}{\mathbf{\dot{r}}_{j,1}} + \prescript{i}{}{\mathbf{\dot{r}}_{j,2}^T}	\prescript{i}{}{\mathbf{\dot{r}}_{j,2}} + 2 \prescript{i}{}{\mathbf{\dot{r}}_{j,1}^T} \prescript{i}{}{\mathbf{\dot{r}}_{j,2}} \right) \\+ \frac{\prescript{i}{}{I_{Sj}}}{^{i}l_{j}^2} \left( \prescript{i}{}{\mathbf{\dot{r}}_{j,1}^T}	\prescript{i}{}{\mathbf{\dot{r}}_{j,1}} + \prescript{i}{}{\mathbf{\dot{r}}_{j,2}^T}	\prescript{i}{}{\mathbf{\dot{r}}_{j,2}} - 2 \prescript{i}{}{\mathbf{\dot{r}}_{j,1}^T} \prescript{i}{}{\mathbf{\dot{r}}_{j,2}} \right)  \Bigg].
+\end{multline}
+
+\subsection{Tvorba rovnic dle LRST}
+
+Pro dynamické řešení soustavy RFE a SDE jsou využity LRST z kapitoly \ref{sec:LRST} v následujícím tvaru
+\index{Lagrangeovy rovnice!smíšeného typu}
+\begin{equation}\label{eq:RFE_LRST}
+	\frac{d}{dt} \left( \frac{\partial E_k}{\partial \mathbf{\dot{r}}_n}\right)  -\frac{\partial E_k}{\partial {\mathbf{r}_j}} = \mathbf{Q}_n + \sum_{k=1}^{P}\lambda_R \frac{\partial f_k}{\partial {\mathbf{r}_j}}; \,\, n=1,2...,s,
+\end{equation}
+kde $ s $ je počet rádius vektorů použitých k popisu soustavy.
+
+\subsection{Matice soustavy}
+
+Aplikací rovnice \ref{eq:RFE_LRST} na $ j $-té tělísko na $ i $-tém tělese, popsaném pomocí vektorů $ \prescript{i}{}{\mathbf{{r}}_{j,1}} $ a $ \prescript{i}{}{\mathbf{r}_{j,2}} $ vyplývají vztahy 
+\begin{align}
+	\frac{\partial E_k}{\partial \prescript{i}{}{\mathbf{\dot{r}}_{j,1}}} &= \frac{1}{2}  \left[ \frac{\prescript{i}{}{m_j}}{4}\left(	2\cdot\prescript{i}{}{\mathbf{\dot{r}}_{j,1}} + 2\cdot\prescript{i}{}{\mathbf{\dot{r}}_{j,2}}  \right) + \frac{\prescript{i}{}{I_{Sj}}}{^{i}l_{j}^2} \left(2\cdot	\prescript{i}{}{\mathbf{\dot{r}}_{j,1}} - 2\cdot \prescript{i}{}{\mathbf{\dot{r}}_{j,2}} \right)  \right] \label{eq:RFE_dEkd1}\\
+	\frac{\partial E_k}{\partial \prescript{i}{}{\mathbf{\dot{r}}_{j,2}}} &= \frac{1}{2}  \left[ \frac{\prescript{i}{}{m_j}}{4}\left(	2\cdot\prescript{i}{}{\mathbf{\dot{r}}_{j,2}} + 2\cdot\prescript{i}{}{\mathbf{\dot{r}}_{j,1}}  \right) + \frac{\prescript{i}{}{I_{Sj}}}{^{i}l_{j}^2} \left(2\cdot	\prescript{i}{}{\mathbf{\dot{r}}_{j,2}} - 2\cdot \prescript{i}{}{\mathbf{\dot{r}}_{j,1}} \right)  \right] \label{eq:RFE_dEkd2}\\
+	\frac{\partial E_k}{\partial \prescript{i}{}{\mathbf{r}_{j,2}}} &= \frac{\partial E_k}{\partial \prescript{i}{}{\mathbf{r}_{j,1}}} = 0 \notag .
+\end{align}
+Jak vyplývá z rovnice \ref{eq:RFE_iEk}, kinetická energie nezávisí na polohovém vektoru, ale pouze na jeho derivaci (rychlosti bodu). Časovou derivací vztahů \ref{eq:RFE_dEkd1} a \ref{eq:RFE_dEkd2} vznikne
+\begin{align}
+	\frac{d}{dt}\left(\frac{\partial E_k}{\partial \prescript{i}{}{\mathbf{\dot{r}}_{j,1}}}\right)  &=  \frac{\prescript{i}{}{m_j}}{4}\left(\prescript{i}{}{\mathbf{\ddot{r}}_{j,1}} + \prescript{i}{}{\mathbf{\ddot{r}}_{j,2}}  \right) + \frac{\prescript{i}{}{I_{Sj}}}{^{i}l_{j}^2} \left(\prescript{i}{}{\mathbf{\ddot{r}}_{j,1}} -  \prescript{i}{}{\mathbf{\ddot{r}}_{j,2}} \right) \label{eq:RFE_dtdEkd1},\\
+	\frac{d}{dt}\left(\frac{\partial E_k}{\partial \prescript{i}{}{\mathbf{\dot{r}}_{j,2}}}\right)  &=  \frac{\prescript{i}{}{m_j}}{4}\left(\prescript{i}{}{\mathbf{\ddot{r}}_{j,2}} + \prescript{i}{}{\mathbf{\ddot{r}}_{j,1}}  \right) + \frac{\prescript{i}{}{I_{Sj}}}{^{i}l_{j}^2} \left(\prescript{i}{}{\mathbf{\ddot{r}}_{j,2}} -  \prescript{i}{}{\mathbf{\ddot{r}}_{j,1}} \right) \label{eq:RFE_dtdEkd2}.
+\end{align}
+
+Tvar matice $ \prescript{i}{}{\mathbf{M}_j} $ příslušné tělísku $ j $ na tělese $ i $ plynoucí z \ref{eq:RFE_dtdEkd1} a \ref{eq:RFE_dtdEkd2}, lze zjednodušit na
+\begin{equation}\label{eq:RFE_iMj}
+	\prescript{i}{}{\mathbf{M}_j} =
+	\begin{bmatrix}
+		a & 0 & b & 0 \\
+		0 & a & 0 & b \\
+		b & 0 & a & 0 \\
+		0 & b & 0 & a \\
+	\end{bmatrix},
+\end{equation}
+kde 
+\begin{gather*}
+	a = \frac{\prescript{i}{}{m_j}}{4} + \frac{\prescript{i}{}{I_{Sj}}}{^{i}l_{j}^2} ,\\
+	b = \frac{\prescript{i}{}{m_j}}{4} - \frac{\prescript{i}{}{I_{Sj}}}{^{i}l_{j}^2}.
+\end{gather*}
+
+Výsledná matice $ M $ celé soustavy je pak diagonálně bloková
+\begin{equation}\label{eq:RFE_M}
+	\mathbf{M} = 
+	\begin{bmatrix}
+		\left[ \prescript{i}{}{\mathbf{M}_j} \right] & & & &\\	
+		& \left[ \prescript{i}{}{\mathbf{M}_{j+1}} \right] & & &\\
+		& & \left[ \prescript{i+1}{}{\mathbf{M}_j} \right] & &\\
+		& & & \left[ \prescript{i+1}{}{\mathbf{M}_{j+1}} \right] &\\
+		& & & & \ddots\\
+	\end{bmatrix}.
+\end{equation}
+
+Soustavu LRST pro RFE metodu lze tak namísto rovnice \ref{eq:RFE_LRST} zapsat maticově
+\begin{equation}\label{eq:RFE_LRSTmaticove}
+	\mathbf{M}\cdot \mathbf{\ddot{r}}=\mathbf{Q}\left(\mathbf{r},\,\mathbf{\dot{r}}\right) + \mathbf{\lambda}\cdot \mathbf{\Phi}^{T}_{(r)} .
+\end{equation}
+
+\subsection{Vektor pravé strany - deformační síly}
+
+Část vektoru zobecněných sil $ \mathbf{Q} $ pravé strany rovnice \ref{eq:RFE_LRSTmaticove}, lze nahradit záporně vzatou parciální derivací potenciální energie, elastickou deformací poddajného elementu. Odpor poddajného elementu vůči elastické deformaci je reprezentován kompozitní pružinou s podélnou, příčnou a torzní tuhostí. Potenciální energii kompozitní pružiny mezi tělísky $ j $ a $ j+1 $ na tělese $ i $ lze vyjádřit vztahem
+\begin{equation}\label{eq:RFE_Eppruzin}
+	\prescript{i}{}{E_{p _{j,j+1}}}= \frac{1}{2} \prescript{i}{}{k_{j,j+1}}\cdot \prescript{i}{}{\xi^{2}_{j,j+1}} +\frac{1}{2} \prescript{i}{}{\bar{k}_{j,j+1}}\cdot \prescript{i}{}{\eta^{2}_{j,j+1}} +\frac{1}{2} \prescript{i}{}{\hat{k}_{j,j+1}}\cdot \prescript{i}{}{\varphi^{2}_{j,j+1}},
+\end{equation}
+kde význam kvadrátů deformací je patrný z obrázku \ref{fig:RFE_metoda}, $ k,\,\bar{k} $ a $ \hat{k} $ jsou podélná, příčná a torzní tuhost poddajného elementu.
+
+Tuhostní parametry poddajného elementu lze na základě rovnic lineární pružnosti vyjádřit takto \cite{cite:PPI}
+\begin{gather}
+	k = \frac{EA}{\Delta L},\\
+	\bar{k} = \frac{GA}{\Delta L},\\
+	\hat{k} = \frac{EJ_z}{\Delta L}.
+\end{gather}
+\begin{tabular}{@{}ll}
+	$E$   &\dots modul pružnosti v tahu\\
+	$G$   &\dots modul pružnosti ve smyku\\
+	$A$   &\dots plocha průřezu\\
+	$J_z$ &\dots moment setrvačnosti k ose ohybu, v případě 2D, k ose $ z $\\
+	$\Delta L$   &\dots vztažná délka elementu, odpovídající délce $ {^{i}l_{j}} $\\
+\end{tabular}
+
+\nomenclature[E]{$E$}{modul pružnosti v tahu}
+\nomenclature[G]{$G$}{modul pružnosti ve smyku}
+\nomenclature[A]{$A$}{plocha průřezu}
+\nomenclature[J]{$J_z$}{moment setrvačnosti k ose $ z $}
+
+Dále je potřeba vyjádřit jednotkový směrový vektor $ ^i\mathbf{n}_j$ a na něj kolmý vektor $ ^i\mathbf{\hat{n}}_j $
+\begin{gather}
+	^i\mathbf{n}_j = \frac{\prescript{i}{}{\mathbf{r}_{j,2}} - \prescript{i}{}{\mathbf{r}_{j,1}}}{^il_j }  	\label{eq:RFE_nj}	,\\
+	^i\mathbf{n}_{j+1} = \frac{\prescript{i}{}{\mathbf{r}_{j+1,2}} - \prescript{i}{}{\mathbf{r}_{j+1,1}}}{^il_j }  	\label{eq:RFE_nj1}.
+\end{gather}
+Pro případ 2D platí transformační vtah pro kolmý vektor
+\begin{equation}\label{eq:RFE_njkolme}
+	^i\mathbf{\hat{n}}_j =
+	\begin{bmatrix}
+		0 & -1 \\
+		1 & 0 \\
+	\end{bmatrix}
+	\prescript{i}{}{\mathbf{n}_j}.
+\end{equation}
+
+Jednotlivé deformace lze pak vyjádřit následovně
+\begin{gather}
+	\prescript{i}{}{\xi_{j,j+1}} = \left( \prescript{i}{}{\mathbf{r}_{j+1,1}} - \prescript{i}{}{\mathbf{r}_{j,2}} \right)^T \cdot \prescript{i}{}{\mathbf{n}_j} \label{eq:RFE_xi},\\
+	\prescript{i}{}{\eta_{j,j+1}} = \left( \prescript{i}{}{\mathbf{r}_{j+1,1}} - \prescript{i}{}{\mathbf{r}_{j,2}} \right)^T \cdot \prescript{i}{}{\mathbf{\hat{n}}_j} \label{eq:RFE_eta}.
+\end{gather}
+
+Úhel natočení sousedních tělísek lze vyjádřit ze vztahu pro skalární součin dvou vektorů $ \mathbf{a} \cdot \mathbf{b} = |a|\cdot|b|\cdot \cos \varphi_{ab}$ jako
+\begin{equation}\label{eq:RFE_phi}
+	\prescript{i}{}{\varphi_{j,j+1}} = \arccos \left( \frac{^i\mathbf{n}_j \cdot \prescript{i}{}{\mathbf{n}_{j+1}}}{|^i\mathbf{n}_j| \cdot |\prescript{i}{}{\mathbf{n}_{j+1}}|}		\right) .
+\end{equation}
+
+Rozepsáním rovnice \ref{eq:RFE_Eppruzin} pomocí odvozených vztahů \ref{eq:RFE_nj}, \ref{eq:RFE_nj1}, \ref{eq:RFE_njkolme}, \ref{eq:RFE_xi}, \ref{eq:RFE_eta} a \ref{eq:RFE_phi} vyplývá
+
+\begin{align}
+	\prescript{i}{}{E_{p _{j,j+1}}}&= \frac{1}{2} \prescript{i}{}{k_{j,j+1}}\cdot \left[	\frac{x_{j,2}-x_{j,1}}{^il_j} \left( x_{j+1,1} - x_{j,2} \right) + \dfrac{y_{j,2} - y_{j,1}}{^il_j} \left( y_{j+1,1} -y_{j,2} \right)  \right]^2  \notag\\&+\frac{1}{2} \prescript{i}{}{\bar{k}_{j,j+1}}\cdot \left[ 	\frac{y_{j,1}-y_{j,2}}{^il_j} \left( x_{j+1,1} - x_{j,2} \right)  + \frac{x_{j,2}-x_{j,1}}{^il_j} \left( y_{j+1,1} - y_{j,2} \right) 			\right]^2  \notag\\&+\frac{1}{2} \prescript{i}{}{\hat{k}_{j,j+1}}\cdot \left[  \arccos \left( \frac{x_{j,2} - x_{j,1}}{^il_j} \frac{x_{j+1,2} - x_{j+1,1}}{^il_{j+1}} + \frac{y_{j,2}-y_{j,1}}{^il_{j+1}} \frac{y_{j+1,2} - y_{j+1,1}}{^il_{j+1}}	\right)	\right]^2 .
+\end{align}
+Ve vektoru zobecněných sil se dále uplatňují parciální derivace dle $ x_{j,1} $, $ x_{j,2} $ $ x_{j+1,1} $, $ x_{j+1,2} $, $ y_{j,1}, $ $ y_{j,2} $, $ y_{j+1,1} $ a $ y_{j+1,2}$. V derivacích jsou pro zjednodušení použity substituční vztahy
+\begin{align}
+	dk &= \prescript{i}{}{k_{j,j+1}}\cdot \left[	\frac{x_{j,2}-x_{j,1}}{^il_j} \left( x_{j+1,1} - x_{j,2} \right) + \dfrac{y_{j,2} - y_{j,1}}{^il_j} \left( y_{j+1,1} -y_{j,2} \right)  \right] \\
+	\overline{dk} &= \prescript{i}{}{\bar{k}_{j,j+1}} \cdot \left[ 	\frac{y_{j,1}-y_{j,2}}{^il_j} \left( x_{j+1,1} - x_{j,2} \right)  + \frac{x_{j,2}-x_{j,1}}{^il_j} \left( y_{j+1,1} - y_{j,2} \right) 			\right]\\
+	\hat{dk}&=\prescript{i}{}{\hat{k}_{j,j+1}}\cdot \left[  \arccos \left( \frac{x_{j,2} - x_{j,1}}{^il_j} \frac{x_{j+1,2} - x_{j+1,1}}{^il_{j+1}} + \frac{y_{j,2}-y_{j,1}}{^il_{j+1}} \frac{y_{j+1,2} - y_{j+1,1}}{^il_{j+1}}	\right)	\right] \cdot \notag\\
+	&\cdot \frac{-1}{\sqrt{1-(\frac{x_{j,2} - x_{j,1}}{^il_j} \frac{x_{j+1,2} - x_{j+1,1}}{^il_{j+1}} + \frac{y_{j,2}-y_{j,1}}{^il_{j+1}} \frac{y_{j+1,2} - y_{j+1,1}}{^il_{j+1}})^2}}
+\end{align}
+
+Pro jednotlivé parciální derivace lze psát
+\begin{align}
+	\frac{\partial \prescript{i}{}{E_{p _{j,j+1}}}}{\partial x_{j,1}} &= dk \cdot \frac{x_{j,2}-x_{j+1,1}}{^il_j} + \overline{dk} \cdot \frac{y_{j,2} - y_{j+1,1} }{^il_j} + \hat{dk} \cdot \frac{x_{j+1,1} - x_{j+1,2}}{^il_j \cdot ^il_{j+1}} ,\\
+	\frac{\partial \prescript{i}{}{E_{p _{j,j+1}}}}{\partial y_{j,1}} &= dk \cdot \frac{y_{j,2}-y_{j+1,1}}{^il_j} + \overline{dk} \cdot \frac{x_{j+1,1} - x_{j,2} }{^il_j} + \hat{dk} \cdot \frac{y_{j+1,1} - y_{j+1,2}}{^il_j \cdot ^il_{j+1}} ,\\
+	\frac{\partial \prescript{i}{}{E_{p _{j,j+1}}}}{\partial x_{j,2}} &= dk \cdot \left( \frac{x_{j+1,1}-x_{j,2}}{^il_j} + \frac{x_{j,1}-x_{j,2}}{^il_j}\right) + \overline{dk} \cdot \left( \frac{y_{j,2} - y_{j,1} }{^il_j} + \frac{y_{j+1,1} - y_{j,2} }{^il_j} \right) \notag \\ &+ \hat{dk} \cdot \left( \frac{x_{j+1,2} - x_{j+1,1}}{^il_j \cdot ^il_{j+1}} \right) ,\\
+	\frac{\partial \prescript{i}{}{E_{p _{j,j+1}}}}{\partial y_{j,2}} &= dk \cdot \left( \frac{y_{j+1,1}-y_{j,2}}{^il_j} + \frac{y_{j,1}-y_{j,2}}{^il_j}\right) + \overline{dk} \cdot \left( \frac{x_{j,2} - x_{j+1,1} }{^il_j} + \frac{x_{j,1} - x_{j,2} }{^il_j} \right) \notag \\ &+ \hat{dk} \cdot \left( \frac{y_{j+1,2} - y_{j+1,1}}{^il_j \cdot ^il_{j+1}} \right) ,\\
+	\frac{\partial \prescript{i}{}{E_{p _{j,j+1}}}}{\partial x_{j+1,1}} &= dk \cdot \frac{x_{j,2}-x_{j,1}}{^il_j} + \overline{dk} \cdot \frac{y_{j,1} - y_{j,2} }{^il_j} + \hat{dk} \cdot \frac{x_{j,1} - x_{j,2}}{^il_j \cdot ^il_{j+1}} ,\\
+	\frac{\partial \prescript{i}{}{E_{p _{j,j+1}}}}{\partial y_{j+1,1}} &= dk \cdot \frac{y_{j,2}-y_{j,1}}{^il_j} + \overline{dk} \cdot \frac{x_{j,2} - x_{j,1} }{^il_j} + \hat{dk} \cdot \frac{y_{j,1} - y_{j,2}}{^il_j \cdot ^il_{j+1}} ,\\
+	\frac{\partial \prescript{i}{}{E_{p _{j,j+1}}}}{\partial x_{j+1,2}} &= 0+ 0+ \hat{dk} \cdot \frac{x_{j,2} - x_{j,1}}{^il_j \cdot ^il_{j+1}} ,\\
+	\frac{\partial \prescript{i}{}{E_{p _{j,j+1}}}}{\partial y_{j+1,2}} &= 0+ 0+ \hat{dk} \cdot \frac{y_{j,2} - y_{j,1}}{^il_j \cdot ^il_{j+1}}.
+\end{align}
+
+\subsection{Vliv sil tíže}
+
+Vliv tíhových sil je zahrnut pomocí principu virtuálních prací (dále jen PVP) \cite{cite:Klaus,cite:bible}.
+\nomenclature[P]{PVP}{princip virtuálních prací}
+\index{Princip virtuálních prací}
+\begin{equation}\label{eq:RFE_pvp}
+	\prescript{i}{}{\mathbf{Q}_{x_{j,1}}} \cdot \delta \prescript{i}{}{x_{j,1}} + \prescript{i}{}{\mathbf{Q}_{y_{j,1}}} \cdot \delta \prescript{i}{}{y_{j,1}} + \prescript{i}{}{\mathbf{Q}_{x_{j,2}}} \cdot \delta \prescript{i}{}{x_{j,2}} +
+	\prescript{i}{}{\mathbf{Q}_{y_{j,2}}} \cdot \delta \prescript{i}{}{y_{j,2}} = -\prescript{i}{}{m_j} \cdot \mathbf{g} \cdot \delta \prescript{i}{}{y_{s_1}},   
+\end{equation}
+kde $ \prescript{i}{}{y_{s_1}} = \frac{1}{2}(\prescript{i}{}{y_{j,1}} + \prescript{i}{}{y_{j,2}}) $ a výsledný vektor tíhového zatížení tělíska $ j $ je tedy
+\begin{equation}\label{eq:RFE_tiha}
+	\prescript{i}{}{\mathbf{Q}_{j}} = \left[\, 0; \, -\frac{1}{2}\prescript{i}{}{m_j} \cdot \mathbf{g};\, 0;\, -\frac{1}{2}\prescript{i}{}{m_j} \cdot \mathbf{g} \,\right]^T.
+\end{equation}
+
+
+\subsection{Rovnice vazeb}
+Vazebné rovnice jsou formulovány ve smyslu LRST, daném předpisem \ref{eq:LRST constrains}.
+Následují příklady některých běžných vazeb.
+
+Rotační vazba tělesa 2 k počátku globálního souřadného systému (dále jen GSS) \nomenclature[G]{GSS}{\textbf{G}lobální \textbf{s}ouřadný \textbf{s}ystém}
+\begin{align}
+	f_1:& \,^2x_{1,1}=0 \notag ,\\
+	f_2:& \,^2y_{1,1}=0.
+\end{align}\label{eq:RFE_vazba_ram}
+
+Rotační vazba tělesa 2 s tělesem 3
+\begin{align}
+	f_3:& \,^2x_{n,2}-^3x_{1,1}=0 \notag ,\\
+	f_4:& \,^2y_{n,2}-^3y_{1,1}=0 .
+\end{align}\label{eq:RFE_vazba_rotacni}
+
+Navíc je třeba přidat podmínku tuhosti pro každý RFE, kterou lze formulovat ve tvaru
+\begin{equation}\label{eq:RFE_tuhost_elem}
+	f_5: \, (\prescript{i}{}{x_{j,2}} - \prescript{i}{}{x_{j,1}} )^2 + (\prescript{i}{}{y_{j,2}} - \prescript{i}{}{y_{j,1}})^2 - \prescript{i}{}{l_j^2} = 0.
+\end{equation}
+Vazeb ve smyslu \ref{eq:RFE_tuhost_elem} je potřeba sestavit pro každé těleso právě $ ^{i}n_j $, kde $ ^{i}n_j $ značí celkový počet tuhých tělísek na tělese $ i $.
+
+\subsection{Výsledná soustav rovnic}
+Výsledná soustava rovnic je složena z diferenciálně algebraických rovnic, ta je následně převedena na soustavu ODR s použitím Baumgartovy stabilizace, jak naznačeno v kapitole \ref{sec:Baumgart}.
+\begin{equation*}
+	\begin{bmatrix}
+		\mathbf{M} & \mathbf{\Phi_{(r)}^T} \\
+		\mathbf{\Phi_{(r)}} & \mathbf{0}
+	\end{bmatrix}
+	\begin{bmatrix}
+		\mathbf{\ddot{r}}\\
+		\mathbf{-\lambda_k}
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		\mathbf{p_1}\\
+		\mathbf{- \mathbf{\dot{\Phi}_{(r)}}\mathbf{\dot{r}} - 2\alpha \mathbf{\Phi_{(r)}} \mathbf{r} - \beta^2\mathbf{f}}
+	\end{bmatrix},
+\end{equation*}
+kde vektor $ \mathbf{p_1}$ se skládá z příspěvků potenciální energie deformovaných pružných elementů, sil tíže a dalších silových účinků, přepočítaných dle PVP.
+
+\section{Metoda tvarových funkcí, MBS flex} \label{sec:MBS}
+
+Metoda Multi-body system flexible (dále jen MBS flex) využívá jiného deformačního modelu než metoda RFE. Deformace polohového vektoru bodu je obecně závislá na poloze v rámci tělesa i na čase. Deformační model vychází z předpokladu, že lze deformaci rádius vektoru popsat jako součin dvou oddělených funkcí, kde jedna je závislá pouze na poloze a druhá pouze na čase. Popis metody je proveden pro 2D na základě \cite{cite:bible,cite:MBS_Vamp,cite:MBS}, pokud není uvedeno jinak.
+\nomenclature[M]{MBS flex}{\textbf{M}ulti-\textbf{b}ody \textbf{s}ystmes \textbf{f}lexible}
+\index{Metoda!MBS flex} 
+\subsection{Metoda MBS flex}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.85\linewidth]{img/placeholder.pdf}
+	\caption{Schéma dvou tělísek}
+	\label{fig:MBS_metoda}
+\end{figure}
+
+\begin{tabular}{@{}ll}
+	$^gx, \, ^gy$ &\dots osy GSS\\
+	$^lx, \, ^ly$ &\dots osy LSS\\
+	$ ^g\mathbf{R}^i $ &\dots rádius vektor počátku lokálního souřadného systému tělesa $ i $ \\ &v globálních souřadnicích\\
+	$ ^l\xi_{0P}^i $ &\dots poloha nezdeformovaného bodu $ P $ tělesa $ i $\\
+	$ ^l\xi_{fP}^i $ &\dots deformace polohy bodu $ P $\\
+	$ ^l\xi_{P}^i $ &\dots poloha bodu $ P $ po deformaci\\
+	$ ^g\mathbf{r}_P^i $ &\dots poloha libovolného bodu $ P $ vyjádřena v GSS\\
+\end{tabular}
+
+\nomenclature[L]{LSS}{\textbf{L}okální \textbf{s}ouřadný \textbf{s}ystém}
+
+\subsection{Deformační model}
+
+Deformace rádius vektoru bodu $ P $ je vyjádřena jako součin tvarové funkce tělesa a modálních, poddajných souřadnic
+\begin{equation}\label{eq:MBS_deform}
+	^l\xi_{fP} = \mathrm{A}(x,y) \cdot \mathbf{q}_f(t).
+\end{equation}
+\nomenclature[A]{$ \mathrm{A}(x,y) $}{matice tvarových funkcí}
+kde $ \mathrm{A}(x,y) $ je matice tvarových funkcí, matice tělesa a $ q_f(t) $ jsou modální, poddajné souřadnice. Souřadnice $ q_f $ nemají žádný přímý fyzikální význam, ale dají se chápat jako koeficienty, které říkají jak moc je daná tvarová funkce (sloupec matice $ \mathrm{A} $) v dané chvíli zastoupena. Jedná se tedy o problém, kdy je známa báze řešení - matice $ \mathrm{A} $, a neznámé jsou koeficienty lineární kombinace. Rovnice \ref{eq:MBS_deform}, rozepsaná do vektorového složkového zápisu pro jeden bod na tělese vypadá následovně
+\begin{equation}\label{eq:MBS_deform_vekt}
+	\begin{bmatrix}
+		u_1 \\
+		v_1
+	\end{bmatrix}
+	=
+	\begin{bmatrix}
+		\begin{bmatrix}
+			f_1 \\ 0 
+		\end{bmatrix}
+		\begin{bmatrix}
+			0 \\ g_1 
+		\end{bmatrix}
+		\dots
+		\begin{bmatrix}
+			f_n \\ 0 
+		\end{bmatrix}
+		\begin{bmatrix}
+			0 \\ g_n 
+		\end{bmatrix}
+	\end{bmatrix}
+	\cdot
+	\begin{bmatrix}
+		a_1 \\ b_1 \\ \vdots \\ a_n \\ b_n
+	\end{bmatrix},
+\end{equation}
+přičemž $ n $ je počet funkcí použitých k popisu deformace.
+
+\subsubsection{Tvarové funkce}
+Vyjádření tvarových funkcí tělesa nemusí být vždy jednoduché. Závisí jak na typu tělesa, tak na jeho vazbách či uložení. Protože se v praktické části této bakalářské práce využívá výhradně těles typu nosník na dvou kloubových podpěrách, tvarové funkce dostávají jednodušší, analyticky vyjádřitelnou podobu. Vlnovými rovnicemi těles se podrobněji zabývá \cite{cite:Vlny}.
+\index{Tvarové funkce}
+
+Dále odvozené vztahy platí pro štíhlý nosník, jehož ohyb probíhá v jedné ze dvou na sebe kolmých hlavních os setrvačnosti. Dále je nutná platnost malých deformací, plochá ohybová křivka (kvůli zjednodušení Bernoulliho rovnice obecné křivky \cite{cite:PPI}) a posuv elementů ve směru jiném než je směr průhybu se zanedbává. Řešení problému kmitů takto definovaného nosníku lze pak vyjádřit pomocí Rayleighových funkcí \cite{cite:Vlny}. Při aplikaci okrajové podmínky typu kloub na obou koncích nosníku, lze $ n $-tý tvar kmitu vyjádřit jako
+\begin{equation}\label{eq:MBS_kmity}
+	w_{0n}(x) = D_n \sin \left( \frac{n \pi x}{l} \right) .
+\end{equation}
+Matici tvarových funkcí $ \mathrm{A}(x) $ lze pro nosník oboustranně prostě podepřený vyjádřit jako
+\begin{equation}\label{eq:MBS_matA}
+	\mathrm{A}^{i} =
+	\begin{bmatrix}
+		\mathbf{0} & \mathbf{0} & \mathbf{0}  & \mathbf{0} \\ 
+		\begin{bmatrix}
+			0 & 0 \\ 
+			0 & \sin\frac{\pi (i-1)}{n_i -1}
+		\end{bmatrix}  & \begin{bmatrix}
+			0 & 0 \\ 
+			0 & \sin\frac{2 \pi (i-1)}{n_i -1}
+		\end{bmatrix} & \dots & \begin{bmatrix}
+			0 & 0 \\ 
+			0 & \sin\frac{n_t \pi (i-1)}{n_i -1}
+		\end{bmatrix} \\ 
+		\vdots& \vdots & \ddots & \vdots \\ 
+		\begin{bmatrix}
+			0 & 0 \\ 
+			0 & \sin\frac{\pi (n_i-2)}{n_i -1}
+		\end{bmatrix}& \begin{bmatrix}
+			0 & 0 \\ 
+			0 & \sin\frac{2\pi (n_i-2)}{n_i -1}
+		\end{bmatrix} & \dots & \begin{bmatrix}
+			0 & 0 \\ 
+			0 & \sin\frac{n_t\pi (n_i-2)}{n_i -1}
+		\end{bmatrix} \\
+		\mathbf{0} & \mathbf{0} & \mathbf{0}  & \mathbf{0} 
+	\end{bmatrix} ,
+\end{equation}
+kde $ n_i $ je celkový počet diskrétních bodů rovnoměrně rozložených na tělese a $ n_t $ je počet uvažovaných tvarů kmitu, což odpovídá $ n $ funkcím použitých k popisu deformace v rovnici \ref{eq:MBS_deform_vekt}.
+
+
+\subsection{Polohový vektor deformovaného tělesa}
+
+Poloha libovolného bodu na zdeformovaném tělese $ i $ je dána vztahem
+\begin{equation}\label{eq:MBS_xiP}
+	^l\mathbf{\xi}^i_P = \prescript{l}{}{\mathbf{\xi}^i_{0P}} + \prescript{l}{}{\mathbf{\xi}^i_{fP}}  = \prescript{l}{}{\mathbf{\xi}^i_{0P}}  + \mathrm{A}^i \cdot \mathbf{q}_f^i(t).
+\end{equation}
+Převedením do GSS pomocí transformační matice $ \mathrm{S}^i(\varphi^i) $ a přičtením rádius vektoru počátku LSS vyjádřeném v GSS vznikne vztah
+\nomenclature[S]{$\mathrm{S}^i$}{rotační transformační matice z GSS do LSS tělesa $ i $}
+\begin{equation}\label{eq:MBS_rp}
+	^g\mathbf{r}_p^i = \prescript{g}{}{\mathbf{R}^i} + \mathrm{S}^{i}\left(\, \prescript{l}{}{\mathbf{\xi}^i_{0P}}  + \mathrm{A}^i \mathbf{q}_f^i(t) \,	\right).
+\end{equation}
+Pro popis polohy jakéhokoliv bodu na tělese $ i $ jsou použity souřadnice $ \mathbf{q} $, skládající se z polohy počátku LSS tělesa(2 polohy a 1 natočení pro 2D kartézský souřadnicový systém) a $ n $ deformačních souřadnic $ \mathbf{q}_f $.
+
+\subsection{Rychlost deformovaného tělesa}
+Rychlost tělesa vyplývá z časové derivace rovnice \ref{eq:MBS_rp}
+\begin{equation}\label{eq:MBS_rpdt}
+	\frac{d}{dt} \left( \prescript{g}{}{\mathbf{r}_p^i} \right)  = \frac{d}{dt} \left( \prescript{g}{}{\mathbf{R}^i} + \mathrm{S}^{i}\cdot \prescript{l}{}{\mathbf{\xi}^i_P} \right) = \frac{d}{dt} \left( \prescript{g}{}{\mathbf{R}^i} + \mathrm{S}^{i}\left(\, \prescript{l}{}{\mathbf{\xi}^i_{0P}}  + \mathrm{A}^i \mathbf{q}_f^i(t) \,	\right) \right),
+\end{equation}
+kde však $ \mathrm{S}^i $ i $ \prescript{l}{}{\mathbf{\xi}^i_P} $ jsou funkcí času a jde tedy o derivaci součinu, tudíž
+\begin{equation}\label{eq:MBS_Sdt}
+	\frac{d}{dt}\left(  \mathrm{S}^i \right)  \prescript{l}{}{\mathbf{\xi}^i_P} = \mathrm{S}^{i} \cdot \mathbf{\hat{E}}_2  \cdot \prescript{l}{}{\mathbf{\xi}^i_P} \cdot \dot{\varphi}^i= \mathrm{B}^i \cdot \dot{\varphi}^i,
+\end{equation}
+kde $ \mathbf{\hat{E}}_2 $ je tzv. antisymetrický operátor, pro který platí, že 
+\nomenclature[E]{$ \mathbf{\hat{E}}_2 $}{antisymetrický operátor}
+\nomenclature[B]{$ \mathrm{B}^i $}{matice daná jako $ \mathrm{S}^{i} \cdot \mathbf{\hat{E}}_2  \cdot \prescript{l}{}{\mathbf{\xi}^i_P} $}
+\begin{align}\label{eq:MBS_E2}
+	\frac{\partial}{\partial \varphi}\mathrm{S}^{i} &= \mathrm{S}^{i} \cdot \mathbf{\hat{E}}_2 \notag,\\
+	\begin{bmatrix}
+		-\sin \varphi & -\cos \varphi \\
+		\cos \varphi & -\sin \varphi
+	\end{bmatrix}
+	&=
+	\begin{bmatrix}
+		\cos \varphi & -\sin \varphi \\ 
+		\sin \varphi & \cos \varphi
+	\end{bmatrix}
+	\cdot
+	\begin{bmatrix}
+		0 & -1 \\ 
+		1 & 0
+	\end{bmatrix} ,\\
+	\mathbf{\hat{E}}_2 &= \begin{bmatrix}
+		0 & -1 \\ 
+		1 & 0
+	\end{bmatrix}.
+\end{align}
+Rychlost bodu tak lze psát jako
+\begin{equation}\label{eq:MBS_vp}
+	\prescript{g}{}{\mathbf{\dot{r}}_p^i}  =  \prescript{g}{}{\mathbf{\dot{R}}^i} + \mathrm{B}^i \cdot \dot{\varphi}^i + \mathrm{S}^{i} \mathrm{A}^i \mathbf{\dot{q}}_f^i = 
+	\begin{bmatrix}
+		E^2 & \mathrm{B}^i & \mathrm{S}^{i} \mathrm{A}^i
+	\end{bmatrix} 
+	\cdot
+	\begin{bmatrix}
+		\prescript{g}{}{\mathbf{\dot{R}}^i} \\ 
+		\dot{\varphi}^i \\ 
+		\mathbf{\dot{q}}_f^i
+	\end{bmatrix}, 
+\end{equation}
+tedy
+\begin{equation}\label{eq:MBS_derivace polohy}
+	\prescript{g}{}{\mathbf{\dot{r}}_p^i}  = \mathrm{L}^i \cdot \mathbf{\dot{q}}^i.
+\end{equation}
+\nomenclature[L]{$ \mathrm{L}^i $}{matice daná předpisem$ \begin{bmatrix}
+		E^2 & \mathrm{B}^i & \mathrm{S}^{i} \mathrm{A}^i
+	\end{bmatrix}  $}
+
+\subsection{Kinetická energie zdeformovaného tělesa}
+
+Pro aplikaci LRST je zcela zásadní znalost kinetické energie soustavy. Pro metodu MBS se vychází z vektorového tvaru pro $ E_k $. Kinetická energie tělesa je definována jako
+\begin{align}\label{eq:MBS_Ek}
+	E_k &= \frac{1}{2} \int \left( \prescript{g}{}{\mathbf{\dot{r}}_p^i} \right)^T \left( \prescript{g}{}{\mathbf{\dot{r}}_p^i} \right) \cdot \rho \cdot dV^i \notag\\
+	&= \frac{1}{2}\int 
+	\begin{bmatrix}
+		\prescript{g}{}{\mathbf{\dot{R}}^i}^T &
+		\dot{\varphi}^i & 
+		\mathbf{\dot{q}}_f^{iT}
+	\end{bmatrix} 
+	\begin{bmatrix}
+		E^2 \\ \left( \mathrm{S}^{i}  \mathbf{\hat{E}}_2   \prescript{l}{}{\mathbf{\xi}^i_P}\right)^T  \\ \left( \mathrm{S}^{i} \mathrm{A}^i\right) ^T
+	\end{bmatrix} 
+	\begin{bmatrix}
+		E^2 & \mathrm{S}^{i}  \mathbf{\hat{E}}_2   \prescript{l}{}{\mathbf{\xi}^i_P} & \mathrm{S}^{i} \mathrm{A}^i
+	\end{bmatrix} 
+	\begin{bmatrix}
+		\prescript{g}{}{\mathbf{\dot{R}}^i} \\ 
+		\dot{\varphi}^i \\ 
+		\mathbf{\dot{q}}_f^i
+	\end{bmatrix} 
+	\cdot \rho \cdot dV^i \notag \\
+	&= \frac{1}{2} \, \mathbf{\dot{q}}^{iT} \cdot \mathbf{M}^{i} \cdot \mathbf{\dot{q}}^i.
+\end{align}
+\newpage
+
+\subsection{Matice M}
+Z rovnice \ref{eq:MBS_Ek} vyplývá vztah pro matici $ \mathbf{M}^i(\mathbf{q}) $. Při uvažování jednorozměrného tělesa stálého průřezu (např. jíž zmíněný štíhlý nosník), lze dojít k následujícímu zjednodušení
+\begin{align}
+	\mathbf{M}^i(\mathbf{q}) 
+	&= \rho \cdot A_{pl} 
+	\begin{bmatrix}
+		E^2 \int_0^L dx & \mathrm{S}^{i}  \mathbf{\hat{E}}_2 \int_0^L (\prescript{l}{}{\mathbf{\xi}^i_{0P}}  + \mathrm{A}^i \mathbf{q}_f^i) \cdot dx & \mathrm{S}^{i} \int_0^L \mathrm{A}^i \cdot dx \\ 
+		& \int_0^L\xi_P^T \cdot \xi_P \cdot dx & \int_0^L \xi_P^T \cdot \mathbf{\hat{E}}_2^T \cdot \mathrm{A}^i\cdot dx \\ 
+		symetr &  & \int_0^L \mathrm{A}^{iT} \cdot \mathrm{A}^i \cdot dx
+	\end{bmatrix} \notag\\
+	&= 
+	\begin{bmatrix}
+		m_{RR} & m_{R\varphi} & m_{Rf} \\ 
+		\vdots& m_{\varphi\varphi} & m_{\varphi f} \\ 
+		& \dots & m_{ff}
+	\end{bmatrix} .
+\end{align}
+\nomenclature[A]{$A_{pl}$}{plocha průřezu}
+Hledání primitivních funkcí v jednotlivých integrálech vyjadřujícíh jednotlivé členy matice M se ukazuje jako komplikované a obecně analyticky nevyjádřitelné. Integrace je tedy provedena numerickou obdélníkovou metodou, tedy nahrazením integrálu sumou přes známé diskrétní body, kde jsou hodnoty funkcí vyjádřitelné. Zároveň se pro jednoduchost předpokládá rovnoměrné rozložení bodů po délce $ L^i $. Diskrétní bod je reprezentován indexem $ j $ a jejich celkové množství je $ n_j $. 
+
+Pro zjednodušení je ve vztazích zavedena substituce
+\begin{align*}
+	\Delta x& = \frac{L^i}{n_j -1} \\
+	\xi_{0j}& = \begin{bmatrix}
+		\frac{j-1}{n_j -1 }L^i  \\ 0
+	\end{bmatrix}
+\end{align*}
+Jednotlivé členy matice lze pak psát následovně
+\begin{align}\label{eq:MBS_m}
+	m_{RR} &= E^2 \int_0^L dx = E^2 \cdot L ,\\
+	m_{R\varphi} &= \mathrm{S}^{i}  \mathbf{\hat{E}}_2 \int_0^L (\prescript{l}{}{\mathbf{\xi}^i_{0P}}  + \mathrm{A}^i \mathbf{q}_f^i) \cdot dx \approx {\mathrm{S}^{i}  \mathbf{\hat{E}}_2 \left(  
+		\begin{bmatrix}
+			\frac{L^2}{2}\\ 0
+		\end{bmatrix}
+		+ \sum_{j=1}^{n_j} \mathrm{A}^i_j \mathbf{q}_{fj}^i	\right)} ,\\
+	m_{\varphi \varphi} &= \int_0^L (\prescript{l}{}{\mathbf{\xi}^i_{0P}}  + \mathrm{A}^i \mathbf{q}_f^i)^T (\prescript{l}{}{\mathbf{\xi}^i_{0P}}  + \mathrm{A}^i \mathbf{q}_f^i) \cdot dx \approx {\frac{L^3}{3} + \sum_{j=1}^{n_j} \xi_{0j}^T \cdot \mathrm{A}^i_j  \mathbf{q}_{fj}^i \cdot \Delta x} + \notag \\ &+ {\sum_{j=1}^{n_j} \mathbf{q}_{fj}^{iT}  \mathrm{A}^{iT}_j \cdot \xi_{0j} \cdot \Delta x + \sum_{j=1}^{n_j} \mathbf{q}_{fj}^{iT}  \mathrm{A}^{iT}_j \cdot \mathrm{A}^i_j  \mathbf{q}_{fj}^i \cdot \Delta x} ,
+\end{align}
+\begin{align}
+	m_{Rf} &= \mathrm{S}^{i} \int_0^L \mathrm{A}^i \cdot dx \approx {\mathrm{S}^{i} \sum_{j=1}^{n_j} \mathrm{A}^i_j \cdot \Delta x} ,\\
+	m_{\varphi f} &= \int_0^L (\prescript{l}{}{\mathbf{\xi}^i_{0P}}  + \mathrm{A}^i \mathbf{q}_f^i)^T \cdot \mathbf{\hat{E}}_2^T \cdot \mathrm{A}^i \cdot dx \approx \notag \\ &\approx {\sum_{j=1}^{n_j} \xi_{0j}^T \cdot \mathbf{\hat{E}}_2^T \cdot \mathrm{A}^i_j \cdot \Delta x + \sum_{j=1}^{n_j} \mathbf{q}_{fj}^{iT}  \mathrm{A}^{iT}_j \cdot \mathbf{\hat{E}}_2^T \cdot \mathrm{A}^i_j \cdot \Delta x} ,\\
+	m_{ff} &=  \int_0^L \mathrm{A}^{iT} \cdot \mathrm{A}^i \cdot dx \approx {\sum_{j=1}^{n_j}   \mathrm{A}^{iT}_j \cdot \mathrm{A}^i_j \cdot \Delta x},
+\end{align}
+kde matice $ \mathrm{A}^i_j $ rozměru $ (2\mathrm{x}2n_t) $ a vektor $ \mathbf{q}_{fj}^{i} $ rozměru $ (2n_t\mathrm{x} 1) $ jsou odpovídající vždy danému bodu a jsou tedy pouze částí úplné matice/vektoru.
+
+\subsection{Zobecněné síly deformace}
+Deformační funkce je třeba svázat se silami od elastické deformace, pomocí variace vyjádření deformační energie. Pokud je uvažován pouze ohyb, lze vyjádřit deformační energii následujícím postupem. 
+
+Sloučením vztahů \ref{eq:MBS_deform} a \ref{eq:MBS_kmity} lze psát
+\begin{equation}\label{eq:MBS_yxt}
+	y(x,t) = \sum_{n=1}^{\infty} \sin \left( \frac{\pi n \cdot x}{L}\right)  \cdot q_n(t).
+\end{equation}
+
+Použitím základních vztahů Pružnosti a pevnosti, jak uvádí například \cite{cite:PPI}, lze použít Bernoulliova diferenciální rovnici průhybové čáry pro rovinný ohyb jako
+\index{Bernoulliova diferenciální rovnice průhybové čáry}
+\begin{equation}\label{eq:MBS_Bernoulli}
+	y''(x) = - \frac{M_o}{EJ}
+\end{equation}
+a vztah pro ohybové napětí 
+\begin{equation}\label{eq:MBS_sigmaO}
+	\sigma_o=\frac{M_o}{W_o}.
+\end{equation}
+Spojením vztahů \ref{eq:MBS_yxt} a \ref{eq:MBS_sigmaO} je získáno
+\begin{gather}
+	y'' = - \frac{\sigma_o \cdot W_o}{E J_{o}} = \frac{E \, \varepsilon_x \cdot  J_{o}}{E J_{o} \cdot \eta} \implies \varepsilon_x = - \eta \cdot y'' \notag ,\\
+	\varepsilon_x = - \eta \frac{\partial^2 y }{\partial x^2}. \label{eq:MBS_y''}
+\end{gather}
+\nomenclature[S]{$ \sigma_o $}{ohybové napětí}
+\nomenclature[S]{$ \varepsilon $}{poměrné prodloužení}
+
+Dle matematické teorie pružnosti \cite{cite:PPII} lze  psát
+\begin{equation}\label{eq:MBS_Umat}
+	U = \frac{1}{2} \int \varepsilon^T \cdot \sigma \cdot dV,
+\end{equation}
+odkud pak po dosazení vztahu \ref{eq:MBS_y''} , Hookeova zákona \cite{cite:PPI} $ \sigma = \varepsilon \cdot E $ a při uvažování prutu konstantního průřezu vyplývá
+\begin{equation}\label{eq:MBS_U}
+	\frac{1}{2} \int\left( \eta \frac{\partial^2 }{\partial x^2} y(x) \right)^T \cdot E \left( \eta \frac{\partial^2 }{\partial x^2} y(x) \right) A_{pl} \cdot dx = A_{pl} \cdot \eta^2 \cdot E \cdot \frac{1}{2} \int \left( \frac{\partial^2 y }{\partial x^2}\right) ^T \left( \frac{\partial^2 y }{\partial x^2}\right) dx,
+\end{equation}
+kde $ A_{pl} \cdot \eta^2 = 2\cdot J_{o} $ a při zahrnutí vztahu \ref{eq:MBS_yxt} vzniká vztah pro deformační energii
+\begin{equation}\label{eq:MBS_Un}
+	U = EJ_{o}\sum_{n=1}^{\infty} \int_{0}^{L} \left( \frac{\partial^2 y_n }{\partial x^2}\right) ^T \left( \frac{\partial^2 y_n }{\partial x^2}\right) dx.
+\end{equation}
+Pro konečný počet tvarů kmitu lze $ y_n $ vyjádřit pomocí vztahu \ref{eq:MBS_deform} a pro diskrétní body psát
+\begin{equation}
+	U =   \mathbf{q}_{f}^{iT} \cdot  EJ \cdot \sum_{j=1}^{n_j} \left[ A_j^{i''T} \cdot A_j^{i''} \right]  \cdot \mathbf{q}_{f}^{i}.
+\end{equation}
+Vztah $  EJ_{o} \cdot \sum_{j=1}^{n_j} \left[ A_j^{i''T} \cdot A_j^{i''} \right] $ se označí jako matice $ \mathrm{K}_{ff}^i $ a celá rovnice se variuje, takže,
+\begin{equation}\label{eq:MBS_UKf}
+	\delta U =   \delta\mathbf{q}_{f}^{iT} \cdot \mathrm{K}_{ff}^i \cdot \mathbf{q}_{f}^{i}
+\end{equation}
+Formálně pak lze psát formuli pro zobecněnou sílu od deformace jako
+\begin{equation}\label{eq:MBS_zobec K}
+	Q_k^i = - 
+	\begin{bmatrix}
+		0 & 0 & 0 \\ 
+		0 & 0 & 0 \\ 
+		0 & 0 & \mathrm{K}_{ff}^i
+	\end{bmatrix} \cdot
+	\begin{bmatrix}
+		\mathbf{R}^i \\ 
+		\varphi^i \\ 
+		\mathbf{q}_{f}^{i}
+	\end{bmatrix} = \mathrm{K}^i \cdot \mathbf{q}^i.
+\end{equation}
+
+\subsection{Zobecněné vnější síly}
+Práci vnějších sil $ Q^i $ působících na těleso $ i $ na souřadnici $ q^i $ lze vyjádřit po variaci jako
+\begin{equation}\label{eq:MBS_deltaW}
+	\delta W^i = Q^{iT}_e \cdot \delta \mathbf{q}^i.
+\end{equation}
+\nomenclature[W]{$ W $}{mechanická práce}
+\nomenclature[Q]{$ Q $}{zobecněná síla}
+Při rozepsání jednotlivých složek pak
+\begin{equation}\label{eq:MBS_dW mat}
+	\delta W^i = 
+	\begin{bmatrix}
+		Q^{iT}_R & Q^{iT}_\varphi & Q^{iT}_f
+	\end{bmatrix}
+	\cdot
+	\begin{bmatrix}
+		\delta\mathbf{R}^i \\ 
+		\delta\varphi^i \\ 
+		\delta\mathbf{q}_{f}^{i}
+	\end{bmatrix}.
+\end{equation}
+Pro působení posuvné síly $ ^gF_i $ na těleso $ i $ v bodě $ P $ popsaném polohovým vektorem $ \prescript{g}{}{r_{P}^{i}} $ lze tak psát
+\begin{equation}\label{eq:MBS_Fp}
+	\delta W^i = \prescript{g}{}{F_i} \cdot \delta \prescript{g}{}{r_{P}^{i}},
+\end{equation}
+kde variaci rádius vektoru lze popsat podobným vztahem jako \ref{eq:MBS_vp} či \ref{eq:MBS_derivace polohy}, pouze se časová derivace nahradí symbolem variace $ \delta $, takže pro variaci mechanické práce vyplývá
+\begin{equation}\label{eq:MBS_dWi}
+	\delta W^i = \prescript{g}{}{F_i} \cdot 
+	\begin{bmatrix}
+		E^2 & \mathrm{B}^i & \mathrm{S}^{i} \mathrm{A}^i
+	\end{bmatrix} 
+	\cdot
+	\begin{bmatrix}
+		\delta\mathbf{R}^i \\ 
+		\delta\varphi^i \\ 
+		\delta\mathbf{q}_{f}^{i}
+	\end{bmatrix} 
+	= \mathrm{L}^i \cdot \mathbf{\delta{q}}^i.
+\end{equation}
+Složkově lze tak rozepsat vektor zobecněné síly následovně
+\begin{align}\label{eq:MBS_Q}
+	Q_{R}^{iT}&= \prescript{g}{}{F_i} ,\\
+	Q_{\varphi}^{iT}&= \prescript{g}{}{F_i} \cdot \mathrm{B}^i ,\\
+	Q_{f}^{iT}&= \prescript{g}{}{F_i} \cdot \mathrm{S}^{i} \mathrm{A}^i .
+\end{align}
+
+\subsubsection{Vliv sil tíže}
+
+Jak patrno z obrázku \ref{fig:MBS_tiha}, síly tíže působí ve středu elementu (v jeho težišti), tudíž mimo diskretizované body tělesa. Tuto sílu lze rozdělit na dva sousední body. Tím pádem jsou všechny body zatíženy tíhou celého jednoho elemntu, kromě bodů krajních, které nesou pouze polovinu tíhy jednoho elementu.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.85\linewidth]{img/placeholder.pdf}
+	\caption{Rozložení sil tíže}
+	\label{fig:MBS_tiha}
+\end{figure}
+
+Tíhu jednoho elementu lze snadno vyjádřit vztahem
+\begin{equation}\label{eq:MBS_tiha}
+	F_{gj}=\Delta x \cdot A_{pl} \cdot \rho g.
+\end{equation}
+\nomenclature[G]{$ g $}{gravitační konstanta, $ 9,81\,\, [m\cdot s^{-1}] $}
+
+\subsection{Kinematické vazby}
+Stejně jako u metody RFE budou vazbové rovnice formulovány ve smyslu LRST, tedy předpisem \ref{eq:LRST constrains}.
+\subsubsection{Rotační vazba}
+Rotační vazbu lze formulovat jako polohový vektor mezi dvěma body na dvou tělesech $ i $ a $ j $, který má v případě ideální vazby nulové obě složky, takže
+\begin{equation}\label{eq:MBS_rot vazba}
+	f_{rot}: \,\prescript{g}{}{r^{ij}} = \prescript{g}{}{\mathbf{R}^i} + \mathrm{S}^{i}\cdot \prescript{l}{}{\mathbf{\xi}^i_P} - \prescript{g}{}{\mathbf{R}^j} - \mathrm{S}^{j}\cdot \prescript{l}{}{\mathbf{\xi}^j_P} = \mathbf{0}.
+\end{equation}
+Pro virtuální změnu musí platit
+\begin{equation}
+	\frac{\partial \mathbf{F}}{\partial \mathbf{q}} \cdot \delta \mathbf{q} \stackrel{!}{=} 0 \implies \mathbf{\Phi} \cdot \delta q \stackrel{!}{=} 0,
+\end{equation}
+takže 
+\begin{equation}
+	\mathrm{L}^i \cdot \mathbf{\delta{q}}^i - \mathrm{L}^j \cdot \mathbf{\delta{q}}^j = \mathbf{0}
+\end{equation}
+a po maticovém přepisu do tvaru
+\begin{equation}
+	\begin{bmatrix}
+		\mathrm{L}^i & - \mathrm{L}^j
+	\end{bmatrix} 
+	\cdot
+	\begin{bmatrix}
+		\mathbf{\delta{q}}^i \\ 
+		\mathbf{\delta{q}}^j
+	\end{bmatrix} 
+	= \mathbf{0}
+\end{equation}
+vyplyne Jakobián pro rotační vazbu dvou těles ve tvaru 
+\begin{equation}\label{eq:MBS_Jac}
+	\mathbf{\Phi}_{rot}^{ij} \equiv \begin{bmatrix}
+		\mathrm{L}^i & - \mathrm{L}^j
+	\end{bmatrix} .
+\end{equation}
+
+Pro aplikaci Baumgartovy stabilizace je třeba ještě odvodit časovou derivaci Jakobiánu, respektive matici $ \mathrm{\dot{L}}^i $, neboť $ \mathbf{\dot{\Phi}}_{rot}^{ij} = \begin{bmatrix}
+	\mathrm{\dot{L}}^i & - \mathrm{\dot{L}}^j
+\end{bmatrix} $
+\begin{equation}\label{eq:}
+	\frac{d}{dt}\left( \mathrm{L}^i\right)  = 
+	\begin{bmatrix}
+		0; & \mathrm{S}^{i} \cdot \dot{\varphi}^i \cdot  \mathbf{\hat{E}}_2 \cdot  \mathbf{\hat{E}}_2 \cdot \left( \prescript{l}{}{\mathbf{\xi}^i_P}+\mathrm{A}^i  \mathbf{q}_{f}^{i}\right) +\mathrm{S}^{i} \cdot  \mathbf{\hat{E}}_2 \cdot \left( \mathrm{A}^i \mathbf{\dot{q}}_{f}^{i}\right) ; & \mathrm{S}^{i} \cdot \dot{\varphi}^i \cdot  \mathbf{\hat{E}}_2 \cdot \mathrm{A}^i
+	\end{bmatrix} .
+\end{equation}
+
+\subsubsection{Rotační vazba k rámu}
+
+Obecně nemusí být těleso vazbeno k rámu v počátku globálního systému, ale v obecném bodě daném dvojicí souřadnic $ x_0 $ a $ y_0 $. Vazbová rovnice pro rotační vazbu k rámu má tvar
+\begin{equation}\label{eq:MBS_vazba frame}
+	f_{ram}: \, \prescript{g}{}{\mathbf{R}^i} + \mathrm{S}^{i}\cdot \prescript{l}{}{\mathbf{\xi}^i_P} - 
+	\begin{bmatrix}
+		x_0 \\ 
+		y_0
+	\end{bmatrix} 
+	= \mathbf{0}.
+\end{equation}
+Jakobián takové vazby je pak pouze jedna matice $ \mathrm{L}^i = \mathbf{\Phi}_{ram}^{i}$.
+
+
+\subsection{Pohybové rovnice MBS flexible}
+Pro jedno těleso platí LRST ve tvaru podobném jako \ref{eq:RFE_LRST}
+\begin{equation}\label{eq:MBS_LRST}
+	\frac{d}{dt} \left( \frac{\partial E_k}{\partial \mathbf{\dot{q}}^i} \right)^T  - \left( \frac{\partial E_k}{\partial {\mathbf{q}^i}}\right) ^T = \mathbf{Q}^i + \mathbf{\Phi}^{iT}\lambda,
+\end{equation}
+kde kinetická energie je vyjádřena vztahem \ref{eq:MBS_Ek}, kde matice tělesa $ \mathbf{M}^i $ je obecně funkcí času i souřadnic, ale již ne derivací souřadnic. Pro jednotlivé členy LRST tak lze psát
+\begin{align}\label{eq:MBS_dEk dqt}
+	\frac{d}{dt} \left( \frac{\partial E_k}{\partial \mathbf{\dot{q}}^i} \right)^T &= \frac{d}{dt} \left( \mathbf{M}^{i} \cdot \mathbf{\dot{q}}^i \right) = \mathbf{M}^{i} \cdot \mathbf{\ddot{q}}^i + \mathbf{\dot{M}}^{i} \cdot \mathbf{\dot{q}}^i ,\\
+	\left( \frac{\partial E_k}{\partial {\mathbf{q}^i}}\right) ^T &= \left[ \frac{\partial}{\partial \mathbf{{q}}^i} \left( \frac{1}{2} \, \mathbf{\dot{q}}^{iT} \cdot \mathbf{M}^{i} \cdot \mathbf{\dot{q}}^i \right) \right]^T = \frac{1}{2} \left(  \mathbf{\dot{q}}^{iT} \cdot \frac{\partial \mathbf{M}^{i}}{\partial \mathbf{{q}}^i}  \cdot \mathbf{\dot{q}}^i \right)^T.
+\end{align}
+Po převedení členů neobsahujících druhou derivaci souřadnice na pravou stranu rovnice, vznikne vektor označovaný $ \mathbf{Q}_{v}^{i} $, který reprezentuje přídavné silové účinky, např. Coriolisovy síly.
+
+Pro $ i $-té těleso tak vyplývá rovnice ve tvaru
+\begin{equation}\label{eq:MBS_fin}
+	\mathbf{M}^{i} \cdot \mathbf{\ddot{q}}^i -  \mathbf{\Phi}^{iT}\mathbf{\lambda}= \mathbf{Q}_{v}^{i} + \mathbf{Q}_{e}^{i} -  \mathrm{K}^i \cdot \mathbf{q}^i
+\end{equation}
+a po připojení vazbových rovnic $ \mathbf{F}(q,t) $ s použitím Baumgartovy stabilizace (rovnice \ref{eq:Baumgartovo p_2}) lze zapsat algebraicko-diferenciální soustavu rovnic
+\begin{equation}\label{eq:MBS_alg-dif}
+	\begin{bmatrix}
+		\mathbf{M}^{i} & \mathbf{\Phi}^{iT} \\ 
+		\mathbf{\Phi}^{i} & \mathbf{0}
+	\end{bmatrix} 
+	\cdot
+	\begin{bmatrix}
+		\mathbf{\ddot{q}}^i \\ 
+		\mathbf{-\lambda}
+	\end{bmatrix} =
+	\begin{bmatrix}
+		\mathbf{Q}_{v}^{i} + \mathbf{Q}_{e}^{i} -  \mathrm{K}^i \cdot \mathbf{q}^i \\ 
+		- \mathbf{\dot{\Phi}}\mathbf{\dot{q}} - 2\alpha \mathbf{\Phi} \mathbf{q} - \beta^2\mathbf{F}
+	\end{bmatrix} 
+	=
+	\begin{bmatrix}
+		\mathbf{p}_1 \\ 
+		\mathbf{p}_2
+	\end{bmatrix} .
+\end{equation}
+Soustavu algebraicko-diferenciálních rovnic lze převést na soustavu ODR způsobem uváděným v části \ref{sec:Baumgart}.
+\newpage
+\section{Hodnocení metod}\label{sec:Hodnoceni metod}
+
+Deformační model metody poddajných tělísek je snadno představitelný, jelikož jde o přímou fyzikální diskretizaci, avšak úskalí v porovnání s metodou MBS lze nalézt hned několik. Z odvození v sekci \ref{sec:RFE} je patrné, že vzniklá soustava rovnic velice rychle nabývá na velikosti, která samozřejmě závisí jak na celkovém počtu těles, tak na počtu diskrétních tělísek. Každé tělísko v soustavě je popsáno čtyřmi přirozenými souřadnicemi a po převedení soustavy celkový počet proměnných popisujících polohu a rychlost tělísek je $ 2\cdot4\cdot n_{i_{celk}} $. K tomu navíc připadá na každé tělísko podmínka tuhosti, tedy celkem $ n_{i_{celk}} $ Lagrangeových multiplikátorů. S tak velkým množstvím proměnných narůstá výpočetní čas, je obtížnější definice počátečních podmínek i interpretace výsledků. Výpočetní čas také rapidně narůstá, pokud tělesa v soustavě mají vysoké tuhostí parametry, tedy průřezových charakteristik a materiálových vlastností. Numericky se totiž soustava dostává blízko singulárním bodům a numerické iterace tak probíhají s minimálním časovým krokem kvůli udržení dostatečné přesnosti. Zároveň se v některých případech může jako problematická ukázat absence úhlu natočení tělíska jako proměnného parametru. Nejen, že se musí numericky ošetřit definiční obor funkce $ \arccos $ objevující se v rovnici \ref{eq:RFE_phi}, ale i jinak prostá kinematická podmínka konstantních otáček naráží na numerickou nespojitost a je třeba enormně zvyšovat Baumgartovy stabilizační koeficienty $ \alpha $ a $ \beta $, za účelem vyhlazení průběhu požadované úhlové rychlosti. Použití metody RFE se tak zdá být vhodné pro tělesa, u kterých lze dopředu očekávat znatelné deformace. Z hlediska náročnosti i času je tedy výhodné kombinovat poddajné tělesa s tělesy tuhými, na které lze snáze aplikovat kinematické podmínky.
+
+Metoda označovaná v této práci jako MBS flex může být oproti metodě RFE zpočátku složitější na pochopení. Při aplikaci na dlouhé štíhlé nosníky, lze zjednodušeně uvažovat pouze ohybové deformace jako v kapitole \ref{sec:MBS}. Přesnost výpočtu však mnohem více závisí na počtu použitých vlastních tvarů kmitu. Na základě vztahu \ref{eq:MBS_yxt} lze celý deformační model připodobnit součtu Fourierovy řady, který sice vyjadřuje přesné řešení, ale v reálném výpočtu je potřeba dojít k celočíselné mezi, která ve výsledku určuje přesnost lineární kombinace. Zvyšování počtu uvažovaných tvarových funkcí s přesností roste i čas, ale zároveň počet zahrnutých tvarů musí být nejméně o dva menší než je počet diskrétních bodů na tělese. Pokud by byl menší, docházelo by k singularitě matice soustavy a nebylo by tedy možné dojít k numerickému řešení. Přesnost dále může ovlivňovat fakt, že integrály vystupující v matici $ \mathbf{M} $ jsou pouze přibližně nahrazeny numerickou integrací obdélníkovou metodou. Zvýšení počtu počítaných bodů na tělese zjemní dělení intervalu délky tělesa a výsledek numerické integrace bude o to přesnější. Odvození jednotlivých vyžadují více kroků, které jsou často komplexnější než u metody poddajných tělísek např. matice $ K_{ff} $ ve srovnání s potenciální energií pružiny. Oproti metodě RFE obsahuje výsledná soustava méně proměnných a je tak snadnější na interpretaci i definici počátečních podmínek, kdy stačí definovat pouze polohu a rychlost počátku tělesa a při předpokladu nezdeformované soustavy na začátku děje lze modální poddajné souřadnice i jejich derivace vzít jako nulové.
+
+
+
+
+
+
+
