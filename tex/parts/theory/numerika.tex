@@ -180,11 +180,17 @@ Nyní se pokusíme aproximovat integrál toku přes hranice z rovnice \ref{eq:po
 \end{equation*}
 Tok přes stěnu $f$ (část hranice $\Gamma_j$) se souřadnicí středu $\mathbf{x_f}$ můžeme aproximovat pomocí
 \begin{equation}\label{eq:aprox_tok}
-\int_{f}\mathbf{F}\cdot \mathbf{n} \,\mathrm{d}S=\int_{f}(\mathbf{u}W-\kappa\nabla W)\cdot \mathbf{n}\, \mathrm{d}S \approx \left(\mathbf{u} W_f - \kappa \nabla W_f \right) \cdot \mathbf{S_f} = \mathbf{F_f} \cdot \mathbf{S_f},
+\int_{f}\mathbf{F}\cdot \mathbf{n} \,\mathrm{d}S
+=
+\int_{f}(\mathbf{u}W-\kappa\nabla W)\cdot \mathbf{n}\, \mathrm{d}S 
+\approx 
+\left(\mathbf{u} W_f - \kappa \nabla W_f \right) \cdot \mathbf{S_f} 
+= 
+\mathbf{F_f} \cdot \mathbf{S_f},
 \end{equation}
 kde $\mathbf{S_f}=\int_{\Gamma_j}\mathbf{n}\,\mathrm{d}S$, což je konstantní vlastnost geometrie stěny, $W_f(t) = W(\mathbf{x_f},t)$ a $\nabla W_f(t) = \nabla W (\mathbf{x_f}, t)$.
 
-Pro řešení úlohy je také potřeba zvolit, kde budou ukládány proměnné. Jinými slovy, jestli v našich rovnicích bude neznámá např. $W_j$, nebo $W_f$. V praxi se používá více možností i případných kombinací, jak uvádí \cite{blazek2015computational, hirsch2007numerical}.
+Pro řešení úlohy je také potřeba zvolit, kde budou ukládány proměnné. Jinými slovy, jestli v našich rovnicích bude neznámá např. ve středu buňky (bude reprezentovat střední hodnotu v celé buňce) $W_j$, nebo uprostřed stěny $W_f$. V praxi se používá více možností i případných kombinací, jak uvádí \cite{blazek2015computational, hirsch2007numerical}.
 Standardně se používá ukládání hodnot ve středu buněk, ve středu stěn či ve vrcholech.
 V některých případech se objevuje i smíšený způsob (anglicky \textit{staggered}), kde hodnoty různých veličin jsou ukládány na jiných místech.
 Dále budeme předpokládat, že proměnné uchováváme ve středu buněk (anglicky \textit{cell-centered}), tedy že proměnnou bude hodnota $W_j$.
@@ -198,22 +204,67 @@ Způsobů diskretizace numerického toku je mnoho, neboť jde o jednu ze stěže
 \subsubsection{Diskretizace difuzivního toku}
 Jak uvádí rovnice \ref{eq:aprox_tok}, aproximujeme člen difuzivního toku přes stěnu $f$ jako
 \begin{equation*}
--\int_f \kappa \nabla W \mathrm{d}S \approx \mathbf{F_D} = -\kappa \nabla W_f \cdot \mathbf{S_f}.
+-\int_f \kappa \nabla W \cdot \mathbf{n}\mathrm{d}S \approx \mathbf{F_D} = -\kappa \nabla W_f \cdot \mathbf{S_f}.
 \end{equation*}
 Pro diskretizaci takového členu můžeme vztah upravit na
 \begin{equation*}
 \mathbf{F_D} = -\kappa \dfrac{\partial W_f}{\partial \mathbf{n_f}} S_f,
 \end{equation*}
-kde $\dfrac{\partial W_f}{\partial \mathbf{n_f}}$ je tzv. derivace ve směru normály stěny $f$ a $S_f$ je plocha stěny. Pokud stěna $f$ je právě mezi buňkami $ j=C $ a $ j=N $, tak lze derivaci ve směru aproximovat pomocí 
+kde $\dfrac{\partial W_f}{\partial \mathbf{n_f}}$ je tzv. derivace ve směru normály stěny $f$ a $S_f$ je plocha stěny. Pokud stěna $f$ je právě mezi středy buněk $ j=C $ a $ j=N $, tedy $ n_f $ je vnější normála vzhledem k buňce $ C $ a vnitřní vzhledem k $ N $, tak lze derivaci ve směru aproximovat pomocí 
 \begin{equation*}
 \dfrac{\partial W_f}{\partial \mathbf{n_f}} \approx \dfrac{W_N-W_C}{||\mathbf{x_N}-\mathbf{x_C}||}.
 \end{equation*}
 
 \subsubsection{Diskretizace konvektivního toku}
-
+Druhou částí toku přes střenu je konvektivní tok, z rovnice \ref{eq:aprox_tok} tedy
+\begin{equation*}
+\int_f \mathbf{u}W\cdot \mathbf{n}\, \mathrm{d}S
+\approx
+\mathbf{F_K}
+=
+W_f \mathbf{u_f}\cdot \mathbf{S_f}=W_f\phi_f,
+\end{equation*}
+kde jsme skalární součin $ \mathbf{u_f}\cdot \mathbf{S_f} $ označily jako $ \phi_f $, tzv. konvektivní tok přes stěnu $ f $. Interpolace $ W_f $ lze pro případ ortogonální sítě s konstantním krokem zapsat jednoduše jako
+\begin{equation*}
+W_f = \dfrac{W_C+W_N}{2}.
+\end{equation*}
+Interpolaci lze provést i lepšími způsoby, které kompenzují případné nedokonalosti či nerovnoměrnosti v síti. Například pro ortogonální síť s nerovnoměrným krokem je vhodnější formulovat interpolaci jako
+\begin{equation*}
+W_f \approx \dfrac{||\mathbf{x_{Nf}}|| W_C + ||\mathbf{x_{Cf}}|| W_N }
+{||\mathbf{x_{Nf}}|| + ||\mathbf{x_{Cf}}||}
+= 
+\dfrac{||\mathbf{x_{Nf}}|| W_C + ||\mathbf{x_{Cf}}|| W_N }
+{||\mathbf{x_{CN}}||},
+\end{equation*}
+kde $ \mathbf{x_{jf}} $ je vektor mezi středem buňky $ j=C,N $ a středem stěny $ f $.
 
 \section{SIMPLE algoritmus}
+
+
 myslenka, 'podvod', relaxace
+
+Algoritmus SIMPLE (zkratka pro \textit{semi-implicit pressure linked equations}) pro řešení problému proudění nestlačitelné tekutiny lze v jeho původní variantě nalézt například v \cite{patankar1983calculation}. Od té doby se objevilo spoustu úprav a vylepšení jako SIMPLER, SIMPLEST nebo SIMPLEC. 
+
+\subsection{Myšlenka segregovaných algoritmů}
+Algoritmus SIMPLE je jeden ze základních příkladů tzv. segregovaných algoritmů. Rovnice ze soustavy NS rovnic se zde neřeší jako jeden celek, ale odděleně každá zvlášť. Výhodou oproti klasickému sdruženému algoritmu je, že se vyhneme řešení rozsáhlé soustavy rovnic se špatně podmíněnou maticí, jak poukazuje \cite{furst2020mko2}. 
+
+Segregované algoritmy obecně naráží na problémy s konvergencí či přesností jakmile se zvýší závislost mezi jednotlivými rovnicemi soustavy. Jinými slovy matice soustavy sestavená sdruženou metodou začne být lépe podmíněná. V případě soustavy NS rovnic pro tekutinu o konstantní hustotě může být měřítkem fiktivní Machovo číslo $ M = \dfrac{||\mathbf{u}||}{c} $, kde $ c $ má význam klidové rychlosti zvuku v tekutině.
+
+\subsection{Varianta algoritmu SIMPLE s rovnicí pro tlak}
+V softwarové knihovně OpenFOAM \cite{weller1998tensorial}, která je pro potřeby aplikace v rámci této práce využita, je dle \cite{furst2020mko2} algoritmus SIMPLE implementován v následující formě. 
+
+Nejprve se stanoví odhad rychlosti $ \mathbf{u}^* $ pomocí tlak z předchozí iterace (případně z počáteční podmínky) z diskretizované rovnice hybnosti \ref{eq:NS_icoPseudotlak}, ve které je konvektivní člen linearizován Picardovou aproximací. Pro odhad rychlosti tak dostáváme rovnici
+\begin{equation}
+a_C^0\mathbf{u_C^*}=\sum_f a_{CN}^0 \mathbf{u_N^*}+\mathbf{Q_C^0}-\nabla p_c^0.
+\end{equation}
+Zde horní indexy označují iteraci, tedy index $ \null^0 $ předchozí iteraci, index $ \null^* $ odhad hodnoty nové iterace a později $ \null^n $ hodnotu v nové iteraci. Dolní indexy pak označují buňku $ C $, která sdílí stěnu $ f $ se sousední buňkou $ N $. Koeficienty $ a $ jsou určeny podle metody diskretizace jednotlivých členů rovnice.
+
+2
+
+1 urceni odhadu rychlosti ze stareho tlaku, starych zdrojovych clenu a koeficientu $ a_C $ (relaxace rovnice) 3.86
+2 urceni odhadu tlaku z noveho odhadu rychlosti 3.90
+3 ziskani novych hodnot rychlosti a toku $ \phi_f $ 3.91,3.92
+4 vypocet noveho tlaku (relaxace korekce) 3.93
 
 \section{Turbulence, modelování turbulence}
 v rychlosti o RANS, model turbulence Spalart a K-Omega rozdil vyhody a vhodnost aplikace (ucel modelu)

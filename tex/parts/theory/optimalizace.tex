@@ -259,9 +259,9 @@ kam dosadíme variaci vazebních rovnic $ R(\phi,g)=0 $
 \dfrac{\partial J}
 {\partial g}\Bigr|_{g^{(n)}},
 \end{equation*}
-V optimalizačních úlohách se k zjištění gradientů typicky používá metoda konečných diferencí. Náročnost výpočtu ale roste přímo úměrně s počtem návrhových parametrů, kdežto ve sdružené metodě závisí vyhodnocení gradientu převážně na rychlosti výpočtu nových PDR. Ve sdružené metodě je pak navíc potřeba odvodit příslušné PDR a to teoreticky pro každou cílovou funkci. Prakticky lze ale určit dostatečně obecný předpis pro cílovou funkci, odvodit rovnice pro ni a konkrétní předpis dosadit až později.
+V optimalizačních úlohách se k zjištění gradientů typicky používá metoda konečných diferencí. Náročnost výpočtu ale roste přímo úměrně s počtem návrhových parametrů, kdežto ve sdružené metodě závisí vyhodnocení gradientu převážně na rychlosti výpočtu sdružených PDR. Ve sdružené metodě je pak navíc potřeba odvodit příslušné PDR a to teoreticky pro každou cílovou funkci. Prakticky lze ale určit dostatečně obecný předpis pro cílovou funkci, odvodit rovnice pro ni a konkrétní předpis dosadit až později.
 
-\subsection{Sdružené rovnice pro nestlačitelné proudění}
+\subsection{Sdružené rovnice pro proudění nestlačitelné tekutiny}
 
 V této podsekci budou odvozeny sdružené rovnice pro tvarovou optimalizaci v nestlačitelném proudění podle \cite{papadimitriou2007continuous, furst2020mko2}. Podmiňující rovnice budou tedy NS rovnice pro stacionární stav s tekutinou o konstantní hustotě, tedy rovnice hybnosti
 \begin{equation}\label{eq:rce_hybnosti}
@@ -719,13 +719,29 @@ Hraniční integrály nám pak dávají návod na sestavení okrajových podmín
 \, \mathrm{d}S
 &= 0.
 \end{align}
-Systém sdružených rovnic nápadně připomíná původní systém nestlačitelných NS rovnic. Mezi zásadní rozdíly patří linearita rovnic a také, že v porovnání s původními NS rovnicemi má konvektivní člen opačné znaménko. To značí, že informace se v šíří proti směru stavové rychlosti $ \mathbf{u} $ namísto po směru proudu. Sdružené rovnice často bývají o něco jednodušší, neboť existuje celá řada cenových funkcí, které závisí pouze na hraničních hodnotách. Ku příkladu třecí ztráty, výslednice sil na těleso nebo stlačení. Pro takové cílové funkce pak odpadávají pravé strany sdružených rovnic, neboť $ J_\Omega = 0 $.
+Systém sdružených rovnic nápadně připomíná původní systém NS rovnic pro nestlačitelné tekutiny. Mezi zásadní rozdíly patří linearita rovnic a také, že v porovnání s původními NS rovnicemi má konvektivní člen opačné znaménko. To značí, že informace se v šíří proti směru stavové rychlosti $ \mathbf{u} $ namísto po směru proudu. Sdružené rovnice často bývají o něco jednodušší, neboť existuje celá řada cenových funkcí, které závisí pouze na hraničních hodnotách. Ku příkladu třecí ztráty, výslednice sil na těleso nebo stlačení. Pro takové cílové funkce pak odpadávají pravé strany sdružených rovnic, neboť $ J_\Omega = 0 $.
 
 
-\section{Pohyb site}
+\section{Pohyb sítě}
 
 Nastinit nekolik moznych zpusobu, popsat vic zpusob pomoci obecneho prevodu na B-spliny z OF
 
+Prozatím jsme pracovali s obecnými návrhovými parametry $ g $. V rámci zaměření a cíle této práce je nyní konkretizujeme. Pro tvarovou optimalizaci má smysl definovat návrhové parametry, které jsou svázané s tvarem výpočetní oblasti. Například pro křídlo letadla budeme chtít měnit profil, pro optimalizaci ztrát v koleni potrubí pak tvar samotného kolene atp. Pro tuto práci budeme později uvažovat kompresorovou mříž a měnit se tedy bude tvar lopatky.
+
+První přístup co přichází v úvahu je brát přímo souřadnice bodů profilu jako návrhové parametry. To ovšem znamená spoustu návrhových parametrů, jejíchž počet při zjemňování sítě roste. V případě metody sdružené optimalizace to vlastně nevadí. Právě naopak bychom těžili tu největší výhodu sdružené optimalizace, tedy (téměř) nezávislost rychlosti výpočtu gradientu optimalizace na počtu návrhových proměnných. Druhým, už horším avšak stále řešitelným problémem, je zachování platnosti a funkčnosti výpočetní sítě. Snadno se dá představit, že při pohybu pouze hranice, se mohou začít stěny křížit, vznikat záporné objemy apod. Takovou situaci lze řešit dodatečným výpočtem a posunem i ostatních ovlivněných bodů. 
+
+Lepším a obecně lépe fungujícím způsobem je podle \cite{adjoint2020foam} využít parametrizace oblasti pomocí objemových B-spline.
+Po vydefinování sítě řídících bodů jak ukazuje například obrázek \ref{fig:zrcatko}, je každý z bodů sítě namapován z kartézského prostoru $ \mathcal{R}^3(x,y,z) $ do parametrického prostoru $ \mathcal{R}^3(u,v,w) $.
+Objemové B-spline pak definují zobrazení z parametrického prostoru do kartézského. 
+Matematický popis tohoto postupu je detailněji popsán v \cite{papoutsis2015noise}. 
+
+V rámci optimalizace jsou jako návrhové parametry brány souřadnice řídících bodů objemových B-spline. Na základě získaných gradientů se nejprve pohne s řídícími body a následně se změna propaguje na každý parametrizovaný bod v kartézském prostoru sítě.
+
+\begin{figure}
+	\includegraphics[width=0.7\textwidth]{./img/ridici_body.png}
+	\caption{Řídící body objemového B-spline okolo automobilového zrcátka. Příklad z \cite{papoutsis2015noise}.}
+	\label{fig:zrcatko}
+\end{figure}
 
 
 \section{Optimalizacni cyklus}
@@ -735,5 +751,6 @@ flowchart s naznacenim kde kdy se jake rovnice pocitaji (hlavni NS-rce, sdruzene
 \begin{figure}
 \includegraphics[width=0.9\textwidth]{./img/flowchart/optimalizacni_cyklus.pdf}
 \caption{Optimalizacni cyklus}
+\label{fig:flowchart_opt_cyklus}
 \end{figure}
 
