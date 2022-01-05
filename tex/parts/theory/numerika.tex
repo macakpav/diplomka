@@ -37,9 +37,9 @@ a difuzivní tok vyjádřený pomocí zobecněného Fickova gradientního zákon
 \mathbf{F_D}(W) = \kappa \rho \nabla(W/\rho),
 \end{equation}
 kde $\kappa$ je koeficient difuzivity a dohromady tedy
-\begin{equation*}
+\begin{equation}
 \int_{\Gamma}\mathbf{F}(W) \cdot \mathbf{n} \, \mathrm{d}S = \int_{\Gamma}W\left[\mathbf{u}\cdot\mathbf{n}\right] - \kappa \rho \left[\nabla(W/\rho)\cdot \mathbf{n} \right] \mathrm{d}S.
-\end{equation*}
+\end{equation}
 Rovnici \ref{eq:zachovani} tak můžeme rozepsat do podoby
 \begin{equation}\label{eq:zachovani_skalarStoky}
 \dfrac{\partial}{\partial t} \int_{\Omega}W\,\mathrm{d}V + \int_{\Gamma}W\left[\mathbf{u}\cdot\mathbf{n}\right] - \kappa \rho \left[\nabla(W/\rho)\cdot \mathbf{n} \right] \mathrm{d}S = \int_{\Omega}Q_\Omega(W) \, \mathrm{d}V + \int_{\Gamma} \mathbf{Q_\Gamma}(W) \cdot \mathbf{n} \, \mathrm{d}S.
@@ -54,9 +54,9 @@ Takto odvozený obecný zákon zachování (někdy taky bilanční rovnici) lze 
 
 \subsection{Zákon zachování hmoty, Rovnice kontinuity}
 Pro jednosložkové tekutiny vyjadřuje zákon zachování hmoty, tedy že hmotu v systému nelze vytvořit, ani ztratit, i.e. zdroj hmoty se uvnitř kontrolního nepředpokládá. Musí tedy platit, že změna hmotnosti uvnitř kontrolního objemu musí být rovna toku hmoty přes hranice kontrolního objemu, tedy
-\begin{equation*}
+\begin{equation}
 -\dfrac{\partial}{\partial t}\int_\Omega \rho \,\mathrm{d}V = \int_\Gamma \rho \, u_i \, n_i \mathrm{d}S = \int_\Omega \dfrac{\partial\left(\rho u_i\right)}{\partial x_i}\mathrm{d}V.
-\end{equation*}
+\end{equation}
 \nomenclature[P]{$\dfrac{\partial}{\partial w}$}{Parciální derivace podle veličiny $w$}
 \nomenclature[D]{$t$}{Čas}
 \nomenclature[U]{$u_i,\, \mathbf{u}$}{Vektor rychlosti}
@@ -69,9 +69,9 @@ Po převedení obou integrálů na jednu stranu, záměně operací integrace a 
 \dfrac{\partial \rho}{\partial t} + \dfrac{\partial \left(\rho u_i\right)}{\partial x_i} = 0.
 \end{equation}
 Ke stejné rovnici dojdeme, pokud do rovnice zachovaní \ref{eq:zachovani_skalarStoky} dosadíme za obecnou skalární veličinu $W$ hustotu $\rho$, uplatníme předpoklad nulových zdrojů na pravé straně a uvědomíme si, že difuzivní tok z rovnice \ref{eq:diff_tok} bude nulový, neboť 
-\begin{equation*}
+\begin{equation}
 \nabla(W/\rho) = \nabla(\rho/\rho) = \nabla(1) = 0.
-\end{equation*} 
+\end{equation} 
 Za předpokladu nestlačitelnosti tekutiny, tedy že $\rho = konst.$ lze navíc rovnici \ref{eq:kontinuita_stlacitelna} zjednodušit na 
 \begin{equation}\label{eq:kontinuita_nestlacitelna}
 \dfrac{\partial u_i}{\partial x_i} = \nabla\cdot\mathbf{u} = 0,
@@ -80,17 +80,17 @@ což se běžně označuje jako rovnice kontinuity pro proudění nestlačiteln�
 
 \subsection{Zákon zachování hybnosti, Rovnice hybnosti}
 Odvození rovnice hybnosti vychází z druhého Newtonova zákona, který říká, že změna hybnosti je způsobena součtem sil účinkujících na element hmotnosti.
-Hybnost nekonečně malé části kontrolního objemu je\begin{equation*}
+Hybnost nekonečně malé části kontrolního objemu je\begin{equation}
 \rho \mathbf{u}\,\mathrm{d}V
-\end{equation*}
+\end{equation}
 a tedy změna hybnosti uvnitř kontrolního objemu je
-\begin{equation*}
+\begin{equation}
 \dfrac{\partial}{\partial t}\int_\Omega\rho\mathbf{u}\,\mathrm{d}V.
-\end{equation*}
+\end{equation}
 Sledovanou zachovávanou veličinou vektorovou veličinou $\mathbf{W}$ z analogie předchozího vztahu s prvním členem rovnice \ref{eq:zachovani_vektor} je hybnost $\rho \mathbf{u}$. Formálním použitím rovnice \ref{eq:konv_tok} dostáváme vztah pro tenzor konvektivního toku
-\begin{equation*}
+\begin{equation}
 \mathbb{F}_K(\mathbf{\rho\mathbf{u}})\cdot \mathbf{n}=\rho\mathbf{u} (\mathbf{u}\cdot\mathbf{n})
-\end{equation*}
+\end{equation}
 Difuzivní tok zůstává nulový neboť hybnost nemůže difundovat v tekutině za klidového stavu.
 
 Nejdůležitější částí odvození rovnice hybnosti je interpretace zdrojových členů. Zdroj hybnosti je z hlediska fyziky vždy síla.
@@ -100,38 +100,38 @@ Nejdůležitější částí odvození rovnice hybnosti je interpretace zdrojov�
 \end{enumerate}
 
 Objemové zdroje lze vyjádřit jednoduše. Pokud příslušnou vnější sílu vztáhneme na jednotku objemu $\rho \mathbf{f_e}$ lze psát
-\begin{equation*}
+\begin{equation}
 \int_{\Omega} \mathbf{Q_\Omega} \mathrm{d}V = \int_{\Omega} \rho \mathbf{f_e} \,\mathrm{d}V.
-\end{equation*}
+\end{equation}
 Povrchové zdroje jsou rozdělené na sférické působení okolního tlaku $p$ a tenzor viskózního napětí $\tau$, tedy
 \begin{align*}
 \mathbb{Q}_\Gamma &= -p \mathbb{I}+\tau, \\
 Q_{\Gamma ij}&= -p \delta_{ij}+\tau_{ij},
 \end{align*}
 kde $\mathbb{I}$ je jednotkový tensor, případně $\delta_{ij}$ Kronekerovo delta. Pro Newtonskou tekutinu lze tenzor viskózního smykového napětí vyjádřit podle \cite{hirsch2007numerical} jako 
-\begin{equation*}
+\begin{equation}
 \tau_{ij}=\mu \left[ \left( \dfrac{\partial u_j}{\partial x_i} + \dfrac{\partial u_i}{\partial x_j} \right) - \dfrac{2}{3} \delta_{ij} \left(\nabla \cdot \mathbf{u}\right)  \right],
-\end{equation*}
+\end{equation}
 za předpokladu konstantní dynamické viskozity $\mu$ jak poukazuje \cite{dvorak1987vnitrniaerodynamika}.
 
 Nyní lze již psát soustavu pohybových Navier-Stokesových (NS) rovnic v integrálním tvaru, tedy rovnice hybnosti pro stlačitelnou Newtonskou tekutinu, jako
-\begin{equation*}
+\begin{equation}
 \dfrac{\partial}{\partial t} \int_{\Omega} \rho \mathbf{u} \,\mathrm{d}V + \int_{\Gamma} \rho \mathbf{u} (\mathbf{u}\cdot \mathbf{n}) + p\mathbf{n} - \tau \cdot \mathbf{n} \,\mathrm{d}S = \int_\Omega \mathbf{Q_\Omega} \,\mathrm{d}V.
-\end{equation*}
+\end{equation}
 
 Často lze rovnici hybnosti nalézt i v diferenciálním tvaru, například v \cite{hirsch2007numerical}
-\begin{equation*}
+\begin{equation}
 \rho \dfrac{\partial \mathbf{u}}{\partial t} + \rho (\mathbf{u} \cdot \nabla)\mathbf{u} +\nabla p - \mu \left[ \Delta \mathbf{u} + \dfrac{1}{3} \nabla(\nabla \cdot \mathbf{u}) \right] = \rho \mathbf{f_e}
-\end{equation*}
+\end{equation}
 
 \subsection{NS rovnice pro nestlačitelnou tekutinu}
 
 Obecný systém NS rovnic lze pro speciální případy zjednodušit zanedbáním některých fyzikálních vlivů. 
 V této práci budeme později využívat zjednodušený tvar NS rovnic  pro nestlačitelnou tekutinu. 
 Tedy $\rho=konst.$ čímž dostáváme rovnici kontinuity ve zjednodušeném tvaru \ref{eq:kontinuita_nestlacitelna}, tedy
-\begin{equation*}
+\begin{equation}
 \nabla\cdot\mathbf{u} = 0
-\end{equation*}
+\end{equation}
 a NS rovnice hybnosti v diferenciálním tvaru podle \cite{hirsch2007numerical} má podobu 
 \begin{equation}\label{eq:NS_icoDiff}
 \rho \dfrac{\partial \mathbf{u}}{\partial t}+ \rho(\mathbf{u}\cdot \nabla)\mathbf{u} = -\nabla p + \mu \Delta \mathbf{u} + \rho \mathbf{f_e}.
@@ -161,9 +161,9 @@ Tyto konečné objemy (někdy buňky) jsou analogií kontrolních objemů z pods
 \end{equation}
 kde pro jednoduchost zápisu ponecháváme jen objemové zdroje na pravé straně.
 Pro každý konečný objem nyní definujeme prostorově střední hodnotu sledované veličiny 
-\begin{equation*}
+\begin{equation}
 \overline{W}|_{\Omega_j}= W_j(t) = \frac{1}{|\Omega_j|}\int_{\Omega_j}W(\mathbf{x},t) \,\mathrm{d} V.
-\end{equation*}
+\end{equation}
 Stejným způsobem nahradíme i objemové zdroje v rovnici \ref{eq:zachovani_MKO} a integrál toku $\mathbf{F}$ nahradíme součtem přes hranice. Dostaneme tvar rovnice zachování, napsanou pro j-tý kontrolní konečný objem
 \begin{equation}\label{eq:polodiskretniMKO}
 \frac{\partial}{\partial t} (W_j|\Omega_j|) + \sum_{\forall f} \int_{f}\mathbf{F}\cdot \mathbf{n} \,\mathrm{d}S = Q_j|\Omega_j|,
@@ -175,9 +175,9 @@ Prozatím jsme ještě neprovedly žádné aproximace či přibližné náhrady.
 \subsection{Aproximace numerickým tokem}
 
 Nyní se pokusíme aproximovat integrál toku přes hranice z rovnice \ref{eq:polodiskretniMKO}. Pro lepší představu teď předpokládejme, že tok zachovávané veličiny je dán z rovnic \ref{eq:diff_tok} a \ref{eq:konv_tok} jako
-\begin{equation*}
+\begin{equation}
 \mathbf{F}=\mathbf{u}W-\kappa \nabla W.
-\end{equation*}
+\end{equation}
 Tok přes stěnu $f$ (část hranice $\Gamma_j$) se souřadnicí středu $\mathbf{x_f}$ můžeme aproximovat pomocí
 \begin{equation}\label{eq:aprox_tok}
 \int_{f}\mathbf{F}\cdot \mathbf{n} \,\mathrm{d}S
@@ -196,46 +196,46 @@ V některých případech se objevuje i smíšený způsob (anglicky \textit{sta
 Dále budeme předpokládat, že proměnné uchováváme ve středu buněk (anglicky \textit{cell-centered}), tedy že proměnnou bude hodnota $W_j$.
 Pro další postup je tedy potřeba aproximovat hodnoty $W_f$ a $\nabla W_f \cdot \mathbf{S_f}$ pomocí zavedených neznámých ve středech buněk a získat tak $ \mathbf{F_f} = \mathbf{F_f}(W_j)$.
 Poté již můžeme napsat semidiskrétní tvar (ve smyslu MKO) rovnice zachování skalární veličiny 
-\begin{equation*}
+\begin{equation}
 \frac{\partial}{\partial t} (W_j|\Omega_j|) + \sum_{\forall f} \mathbf{F_f} \cdot \mathbf{S_f} = Q_j|\Omega_j|.
-\end{equation*}
+\end{equation}
 Způsobů diskretizace numerického toku je mnoho, neboť jde o jednu ze stěžejních částí MKO. Numerický tok totiž zásadním způsobem ovlivňuje stabilitu a přesnost následného výpočtu. Dále jsou uvedeny pouze základní příklady způsobu diskretizace, neboť jejich rozbor není předmětem této práce.
 
 \subsubsection{Diskretizace difuzivního toku}
 Jak uvádí rovnice \ref{eq:aprox_tok}, aproximujeme člen difuzivního toku přes stěnu $f$ jako
-\begin{equation*}
+\begin{equation}
 -\int_f \kappa \nabla W \cdot \mathbf{n}\mathrm{d}S \approx \mathbf{F_D} = -\kappa \nabla W_f \cdot \mathbf{S_f}.
-\end{equation*}
+\end{equation}
 Pro diskretizaci takového členu můžeme vztah upravit na
-\begin{equation*}
+\begin{equation}
 \mathbf{F_D} = -\kappa \dfrac{\partial W_f}{\partial \mathbf{n_f}} S_f,
-\end{equation*}
+\end{equation}
 kde $\dfrac{\partial W_f}{\partial \mathbf{n_f}}$ je tzv. derivace ve směru normály stěny $f$ a $S_f$ je plocha stěny. Pokud stěna $f$ je právě mezi středy buněk $ j=C $ a $ j=N $, tedy $ n_f $ je vnější normála vzhledem k buňce $ C $ a vnitřní vzhledem k $ N $, tak lze derivaci ve směru aproximovat pomocí 
-\begin{equation*}
+\begin{equation}
 \dfrac{\partial W_f}{\partial \mathbf{n_f}} \approx \dfrac{W_N-W_C}{||\mathbf{x_N}-\mathbf{x_C}||}.
-\end{equation*}
+\end{equation}
 
 \subsubsection{Diskretizace konvektivního toku}
 Druhou částí toku přes střenu je konvektivní tok, z rovnice \ref{eq:aprox_tok} tedy
-\begin{equation*}
+\begin{equation}
 \int_f \mathbf{u}W\cdot \mathbf{n}\, \mathrm{d}S
 \approx
 \mathbf{F_K}
 =
 W_f \mathbf{u_f}\cdot \mathbf{S_f}=W_f\phi_f,
-\end{equation*}
+\end{equation}
 kde jsme skalární součin $ \mathbf{u_f}\cdot \mathbf{S_f} $ označily jako $ \phi_f $, tzv. konvektivní tok přes stěnu $ f $. Interpolace $ W_f $ lze pro případ ortogonální sítě s konstantním krokem zapsat jednoduše jako
-\begin{equation*}
+\begin{equation}
 W_f = \dfrac{W_C+W_N}{2}.
-\end{equation*}
+\end{equation}
 Interpolaci lze provést i lepšími způsoby, které kompenzují případné nedokonalosti či nerovnoměrnosti v síti. Například pro ortogonální síť s nerovnoměrným krokem je vhodnější formulovat interpolaci jako
-\begin{equation*}
+\begin{equation}
 W_f \approx \dfrac{||\mathbf{x_{Nf}}|| W_C + ||\mathbf{x_{Cf}}|| W_N }
 {||\mathbf{x_{Nf}}|| + ||\mathbf{x_{Cf}}||}
 = 
 \dfrac{||\mathbf{x_{Nf}}|| W_C + ||\mathbf{x_{Cf}}|| W_N }
 {||\mathbf{x_{CN}}||},
-\end{equation*}
+\end{equation}
 kde $ \mathbf{x_{jf}} $ je vektor mezi středem buňky $ j=C,N $ a středem stěny $ f $.
 
 \section{SIMPLE algoritmus}
@@ -255,9 +255,17 @@ V softwarové knihovně OpenFOAM \cite{weller1998tensorial}, která je pro potř
 
 Nejprve se stanoví odhad rychlosti $ \mathbf{u}^* $ pomocí tlak z předchozí iterace (případně z počáteční podmínky) z diskretizované rovnice hybnosti \ref{eq:NS_icoPseudotlak}, ve které je konvektivní člen linearizován Picardovou aproximací. Pro odhad rychlosti tak dostáváme rovnici
 \begin{equation}
-a_C^0\mathbf{u_C^*}=\sum_f a_{CN}^0 \mathbf{u_N^*}+\mathbf{Q_C^0}-\nabla p_c^0.
+a_C^0\mathbf{u_C^*}
+=
+\sum_f a_{CN}^0 \mathbf{u_N^*}+\mathbf{Q_C^0}-\nabla p_c^0.
 \end{equation}
 Zde horní indexy označují iteraci, tedy index $ \null^0 $ předchozí iteraci, index $ \null^* $ odhad hodnoty nové iterace a později $ \null^n $ hodnotu v nové iteraci. Dolní indexy pak označují buňku $ C $, která sdílí stěnu $ f $ se sousední buňkou $ N $. Koeficienty $ a $ jsou určeny podle metody diskretizace jednotlivých členů rovnice.
+
+Označíme část rovnice pro odhad rychlosti
+\begin{equation}\label{key}
+ \dfrac{1}{a_C^0} (\sum_f a_{CN}^0 \mathbf{u_N^*}+\mathbf{Q_C^0}) = \mathbf{\widehat{u}^*_C}
+\end{equation}
+a po interpolaci na stěny
 
 2
 
