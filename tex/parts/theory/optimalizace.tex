@@ -3,9 +3,9 @@ Zájem o optimalizaci proudění tekutin je od nepaměti a předmětem vědecké
 \section{Základy optimalizace}\label{sec:zaklady_opt}
 Pro popis problému optimalizace se používají pojmy:
 \begin{itemize}
-	\item \textit{stavové proměnné} $ \phi $ nebo také fyzikální veličiny či proměnné jako tlak, rychlost, teplota atd. dané většinou z konkrétních rovnic
+	\item \textit{primární proměnné} $ \phi $ nebo také fyzikální veličiny či proměnné jako tlak, rychlost, teplota atd. dané většinou z konkrétních rovnic
 	\item \textit{návrhové parametry} $ g $ materiálové vlastnosti, vstupní rychlost, tvar geometrie nebo hranice
-	\item \textit{cílová funkce/funkcionál} $ J(\phi,g) $ hodnocení kombinace stavových a návrhových parametrů, např. tlaková ztráta, stlačení nebo vztlak
+	\item \textit{cílová funkce/funkcionál} $ J(\phi,g) $ hodnocení kombinace primárních a návrhových parametrů, např. tlaková ztráta, stlačení nebo vztlak
 	\item \textit{vazební rovnice} $ R(\phi,g)=0 $ rovnice proudění
 \end{itemize}
 Problém optimalizace lze pak matematicky formulovat následovně. \cite{karman1997inverse}
@@ -53,12 +53,12 @@ Definujeme tak novou cílovou funkci
 \begin{equation}\label{eq:L_funkcional}
 L(\phi, g,\,\xi) = J(\phi, g) + \left\langle R(\phi, g),\xi \right\rangle,
 \end{equation}
-kde $ \xi $ jsou tzv. sdružené proměnné (sdružené ke stavovým proměnným) a $  \left\langle \, \cdot\,,\cdot \,  \right\rangle $ je symetrická, bilineární forma, jejíž podoba je zpravidla jasná až z konkrétně řešeného problému.
+kde $ \xi $ jsou tzv. sdružené proměnné (sdružené k primárním proměnným) a $  \left\langle \, \cdot\,,\cdot \,  \right\rangle $ je symetrická, bilineární forma, jejíž podoba je zpravidla jasná až z konkrétně řešeného problému.
 Dostáváme tak nový problém, jehož řešení je však podle \cite{karman1997inverse} ekvivalentní s problémem \ref{prob:optimalizace}.
 
 \begin{problem}\label{prob:Lagrange}
 Nechť je dána množina parametrů $ g=\left\lbrace g_n, \, n=1,...,N\right\rbrace $, cílová funkce $ J(\phi, g) $ a vazební rovnice $ R(\phi, g)=0 $.
-Najděte takovou kombinaci parametrů g, stavových proměnných $ \phi $ a sdružených proměnných $ \xi $ tak, aby $ L(\phi, g,\,\xi) = J(\phi, g) + \left\langle R(\phi, g),\xi \right\rangle$ bylo  stacionární.
+Najděte takovou kombinaci parametrů g, primárních proměnných $ \phi $ a sdružených proměnných $ \xi $ tak, aby $ L(\phi, g,\,\xi) = J(\phi, g) + \left\langle R(\phi, g),\xi \right\rangle$ bylo  stacionární.
 \end{problem}
 
 Z matematického hlediska je dobré podotknout, že všechny argumenty $ L $ jsou na sobě nezávislé. Pro $ J $ tomu tak nebylo, protože $ \xi $ a $ g $ spolu byli svázané přes podmiňující rovnice $ R(\phi, g)=0 $ a nešlo je tak volit nezávisle. Abychom splnili podmínku stacionarity, jak požaduje problém \ref{prob:Lagrange}, musí být variance $ L $ podle všech proměnných rovna nule.
@@ -91,8 +91,8 @@ R(\phi, g)=0,
 \end{equation}
 která tvoří první část systému optimálních rovnic. Variace podle sdružených proměnných nám z části ukázala, že stacionární bod rozšířeného funkcionálu $ L(\phi, g,\,\xi)  $ splňuje vazební rovnice.
 
-\subsubsection{Variace stavových proměnných}
-Dále vezměme variaci vzhledem ke stavovým proměnným $ \phi $, tedy
+\subsubsection{Variace primárních proměnných}
+Dále vezměme variaci vzhledem ke primárním proměnným $ \phi $, tedy
 \begin{equation*}
 \delta_\phi L =
 \lim\limits_{\epsilon\rightarrow0}
@@ -178,7 +178,7 @@ Poslední část variace $ \delta L $ je vzhledem k návrhovým parametrům $ g 
 {\epsilon}
 =0,
 \end{equation*}
-kde obdobně jako pro stavové proměnné po dosazení z rovnice \ref{eq:L_funkcional} dostaneme
+kde obdobně jako pro primární proměnné po dosazení z rovnice \ref{eq:L_funkcional} dostaneme
 \begin{equation*}
 \lim\limits_{\epsilon\rightarrow0} \dfrac
 {J(\phi, g+\epsilon\delta g) + 
@@ -271,7 +271,7 @@ kde operátor $ D(\mathbf{u})=\frac{1}{2}(\nabla\mathbf{u}+\nabla\mathbf{u}^T) $
 \begin{equation}
 R^p=-\nabla \cdot \mathbf{u}.
 \end{equation}\label{eq:rce_kontinuity}
-Stavové proměnné jsou tedy v tomto případě rychlost $ \mathbf{u} $ a měrný tlak ve smyslu rovnice \ref{eq:NS_icoPseudotlak}, tedy $ p = \dfrac{p_{fyz}}{\rho}$. K nim budou odpovídat sdružené proměnné $ \xi = (\mathbf{v},q) $. Obecnou cílovou funkci lze v rámci mnoha inženýrských aplikací zapsat pomocí integrálu přes výpočetní oblast a integrálu přes hranici, tedy
+Primární proměnné jsou tedy v tomto případě rychlost $ \mathbf{u} $ a měrný tlak ve smyslu rovnice \ref{eq:NS_icoPseudotlak}, tedy $ p = \dfrac{p_{fyz}}{\rho}$. K nim budou odpovídat sdružené proměnné $ \xi = (\mathbf{v},q) $. Obecnou cílovou funkci lze v rámci mnoha inženýrských aplikací zapsat pomocí integrálu přes výpočetní oblast a integrálu přes hranici, tedy
 \begin{equation}\label{eq:cenova_fce}
 J(\mathbf{u},p,g)=\int_{\Omega} J_\Omega(\mathbf{u},p,g) \, \mathrm{d}V + \int_{\Gamma}J_\Gamma(\mathbf{u},p,g) \, \mathrm{d}S.
 \end{equation}
@@ -285,7 +285,7 @@ a pokračovat k odvození sdružených rovnic a definujeme vhodnou bilineární 
 \begin{equation}
 \left\langle \mathbf{a},\mathbf{b} \right\rangle = \int_{\Omega} \mathbf{a} \cdot \mathbf{b} \, \mathrm{d}V.
 \end{equation} 
-Vyjdeme předpisu \ref{eq:sdruzene_rce_variace} pro variaci upravené cenové funkce podle stavových proměnných
+Vyjdeme předpisu \ref{eq:sdruzene_rce_variace} pro variaci upravené cenové funkce podle primárních proměnných
 \begin{equation} \label{eq:sdruzena_variace}
 \delta_\phi L = 
 \frac{\partial J}{\partial \phi}\delta\phi
@@ -341,7 +341,7 @@ Odvozené vztahy nyní dosadíme do předpisu \ref{eq:sdruzena_variace}
 \, \mathrm{d}V.
 }_\mathrm{V} 
 \end{multline}
-Postupně teď pomocí Gaussovy věty (integrace per-partes) přesuneme derivace na sdružené proměnné, tak abychom mohli vytknout variace stavových proměnných. Pro odvození některých členů je výhodnější použít indexový zápis s Einstainovou sumační konvencí, tedy
+Postupně teď pomocí Gaussovy věty (integrace per-partes) přesuneme derivace na sdružené proměnné, tak abychom mohli vytknout variace primárních proměnných. Pro odvození některých členů je výhodnější použít indexový zápis s Einstainovou sumační konvencí, tedy
 \begin{equation*}
 \mathrm{I}
 =
@@ -663,7 +663,7 @@ a poté co dáme k sobě členy se stejnou variací a typem integrálu
 \end{align*}
 dostáváme stejný výraz jako je odvozen v \cite{othmer2008continuous}.
 
-Podmínka $ \delta_\phi L $ musí být splněna pro libovolnou variaci stavových proměnných. Z objemových integrálů nám tedy vychází sdružené NS rovnice pro nestlačitelnou tekutinu ve stacionárním stavu, které můžeme zapsat jako
+Podmínka $ \delta_\phi L $ musí být splněna pro libovolnou variaci primárních proměnných. Z objemových integrálů nám tedy vychází sdružené NS rovnice pro nestlačitelnou tekutinu ve stacionárním stavu, které můžeme zapsat jako
 \begin{align}
 2D(\mathbf{v})\mathbf{u}
 + \nabla \cdot \left( 2\nu D(\mathbf{v}) \right)
@@ -719,7 +719,7 @@ Hraniční integrály nám pak dávají návod na sestavení okrajových podmín
 \, \mathrm{d}S
 &= 0.
 \end{align}
-Systém sdružených rovnic nápadně připomíná původní systém NS rovnic pro nestlačitelné tekutiny. Mezi zásadní rozdíly patří linearita rovnic a také, že v porovnání s původními NS rovnicemi má konvektivní člen opačné znaménko. To značí, že informace se v šíří proti směru stavové rychlosti $ \mathbf{u} $ namísto po směru proudu. Sdružené rovnice často bývají o něco jednodušší, neboť existuje celá řada cenových funkcí, které závisí pouze na hraničních hodnotách. Ku příkladu třecí ztráty, výslednice sil na těleso nebo stlačení. Pro takové cílové funkce pak odpadávají pravé strany sdružených rovnic, neboť $ J_\Omega = 0 $.
+Systém sdružených rovnic nápadně připomíná původní systém NS rovnic pro nestlačitelné tekutiny. Mezi zásadní rozdíly patří linearita rovnic a také, že v porovnání s původními NS rovnicemi má konvektivní člen opačné znaménko. To značí, že informace se v šíří proti směru primární rychlosti $ \mathbf{u} $ namísto po směru proudu. Sdružené rovnice často bývají o něco jednodušší, neboť existuje celá řada cenových funkcí, které závisí pouze na hraničních hodnotách. Ku příkladu třecí ztráty, výslednice sil na těleso nebo stlačení. Pro takové cílové funkce pak odpadávají pravé strany sdružených rovnic, neboť $ J_\Omega = 0 $.
 
 
 \section{Pohyb sítě}
