@@ -32,7 +32,7 @@
 		
 		 Vyhodnocení cílové funkce };
 %	\node (B8) [process, below of = B7, yshift = -0.5cm] {  };
-	\node (B9) [decision, below of = B7, yshift = -0.5cm] { Armijo podmínky?};
+	\node (B9) [decision, below of = B7, yshift = -0.5cm] { Došlo ke zlepšení? };
 	\node (B10) [process, left of = B7, xshift = -3cm] { Zmenšení kroku };
 	\node (B11) [decision, right of = B9, xshift = 3cm] { Poslední iterace?};
 	\node (B12) [startstop, below of = B11, yshift = -0.5cm] {Optimalizovaný tvar};
@@ -56,9 +56,9 @@
 				\draw [arrow] (B6)--(B7);
 				\draw [arrow] (B7)--(B9);
 %				\draw [arrow] (B8)--(B9);
-				\draw [arrow] (B9)-- ++(-3,0) node {nesplněny}-|(B10);
+				\draw [arrow] (B9)-- ++(-3,0) node {ne}-|(B10);
 				\draw [arrow] (B10) |-(B6);
-				\draw [arrow] (B9)-- node {splněny} (B11);
+				\draw [arrow] (B9)-- node {ano} (B11);
 				\draw [arrow] (B11)-- ++(0,1.5) node {ne} |-   (B2);
 				\draw [arrow] (B11) -- node {ano} (B12);
 				

@@ -1,44 +1,42 @@
 %!TEX ROOT=../../_main.tex
-Zájem o optimalizaci proudění tekutin je od nepaměti a předmětem vědeckého bádání minimálně od doby vynalezení integrálního počtu \cite{karman1997inverse}. Tato kapitola se zabývá základní definicí problému optimalizace a představuje známou, avšak v oblasti proudění tekutiny, prozatím nepříliš hojně užívanou metodu optimalizace. Dále jsou odvozeny základy této metody pro její aplikaci v druhé části této práce.
+Zájem o optimalizaci v proudění tekutin je od nepaměti a předmětem vědeckého bádání minimálně od doby vynalezení integrálního počtu \cite{karman1997inverse}. Tato kapitola se zabývá základní definicí problému optimalizace a představuje známou, avšak v oblasti proudění tekutiny prozatím nepříliš hojně užívanou metodu optimalizace. Dále jsou odvozeny základy této metody pro její aplikaci v druhé části této práce.
 \section{Základy optimalizace}\label{sec:zaklady_opt}
 Pro popis problému optimalizace se používají pojmy:
 \begin{itemize}
-	\item \textit{primární proměnné} $ \phi $ nebo také fyzikální veličiny či proměnné jako tlak, rychlost, teplota atd. dané většinou z konkrétních rovnic
-	\item \textit{návrhové parametry} $ g $ materiálové vlastnosti, vstupní rychlost, tvar geometrie nebo hranice
-	\item \textit{cílová funkce/funkcionál} $ J(\phi,g) $ hodnocení kombinace primárních a návrhových parametrů, např. tlaková ztráta, stlačení nebo vztlak
-	\item \textit{vazební rovnice} $ R(\phi,g)=0 $ rovnice proudění
+	\item \textit{primární proměnné} $ \phi $ nebo také fyzikální veličiny jako tlak, rychlost, teplota atd. dané většinou z konkrétních rovnic,
+	\item \textit{sdružené proměnné} $ \xi $ nebo také sdružené veličiny odpovídající primárním, tedy například sdružený tlak, sdružená rychlost,
+	\item \textit{návrhové parametry} $ g $ jako jsou materiálové vlastnosti, vstupní rychlost, tvar geometrie nebo hranice,
+	\item \textit{cílová funkce/funkcionál} $ J(\phi,g) $ hodnocení kombinace primárních a návrhových parametrů, jako je tlaková ztráta, stlačení nebo vztlak,
+	\item \textit{vazební rovnice} $ R(\phi,g)=0 $ jsou rovnice proudění.
 \end{itemize}
-Problém optimalizace lze pak matematicky formulovat následovně. \cite{karman1997inverse}
+Problém optimalizace lze pak podle \cite{karman1997inverse} matematicky formulovat následovně. 
 \begin{problem}\label{prob:optimalizace}
 Nechť je dána množina parametrů $ g=\left\lbrace g_n, \, n=1,...,N\right\rbrace $, cílová funkce $ J(\phi, g) $ a vazební rovnice $ R(\phi, g)=0 $. 
 Najděte takovou kombinaci parametrů $ g $ a $ \phi $, která minimalizuje funkci $ J(\phi, g) $ a zároveň splňuje platnost podmiňujících rovnic $ R(\phi, g)=0$ . 
 \end{problem}
-\nomenclature[B]{$ b_n $}{Optimalizační parametry}
-\nomenclature[J]{$ J $}{Cílová funkce}
-\nomenclature[R]{$ R_i $}{Podmiňující rovnice}
 Metod na řešení optimalizačního problému je hned několik.
 Obecně je lze rozlišit na obecné a lokální optimalizační metody. Mezi všeobecně známe patři například metoda genetických algoritmu(obecná) a gradientní optimalizační metody(lokální). 
-Základní rozdíl těchto metod je, že obecné optimalizační metody se zpravidla snaží přiblížit globálnímu optimu v celém prostoru přípustných parametrů, kdežto lokální metody na základě počátečního odhadu spadají do nejbližšího lokálního minima.
+Základní rozdíl mezi těmito metodami je, že obecné optimalizační metody se zpravidla snaží přiblížit globálnímu optimu v celém prostoru přípustných parametrů, kdežto lokální metody na základě počátečního odhadu spadají do nejbližšího lokálního minima.
 
 Typický optimalizační cyklus lokální metody lze zapsat následovně:
 \begin{addmargin}[3em]{2em}% 1em left, 2em right
 	\begin{description}
-	\item 	Mějme počáteční odhad $ g^{(0)} $
+	\item 	Mějme počáteční odhad $ g^{(0)} $.
 	\item 	Pro $ n=0,1,2... $
 	 	\begin{enumerate}
-			\item Vyřešit $ R(\phi^{(n)},g^{(n)}) $ pro zjištění $ \phi^{(n)} $
-			\item Spočítat $ \dfrac{\mathrm{d}J}{\mathrm{d}g}(\phi^{(n)},g^{(n)}) $
-			\item Pomocí výsledků 1 a 2 zjistit optimální krok $ \delta g $ - např. $ \delta g = -\alpha \dfrac{\mathrm{d}J}{\mathrm{d}g}(\phi^{(n)},g^{(n)}) $
-			\item Změnit návrhové proměnné $ g^{(n+1)} = g^{(n)} + \delta g $
+			\item Vyřešit $ R(\phi^{(n)},g^{(n)}) $ pro zjištění $ \phi^{(n)} $.
+			\item Spočítat $ \dfrac{\mathrm{d}J}{\mathrm{d}g}(\phi^{(n)},g^{(n)}) $.
+			\item Pomocí výsledků 1 a 2 zjistit optimální krok $ \delta g $ - např. $ \delta g = -\alpha \dfrac{\mathrm{d}J}{\mathrm{d}g}(\phi^{(n)},g^{(n)}) $.
+			\item Změnit návrhové proměnné $ g^{(n+1)} = g^{(n)} + \delta g $.
 		\end{enumerate}
 	\end{description}
 \end{addmargin}
-Různé algoritmy se odlišují ve způsobu vyhodnocení gradientu v kroku 2. (citlivostní gradient, sdružená metoda) a následně se větví při volbě vhodného optimalizačního kroku (CGM, BFSG).  
+Různé algoritmy se odlišují ve způsobu vyhodnocení gradientu v kroku 2. (citlivostní gradient, sdružená metoda) a následně se větví podle práce s tímto gradientem, jako například metoda konjugovaných gradientů (CGM)\cite{hestenes1952methods}, algoritmus Broyden–Fletcher–Goldfarb–Shanno (BFGS)\cite{fletcher1987practical} nebo projekce omezení \cite{rosen1960gradient} pro dodatečně podmíněnou optimalizaci.  
 
 \section{Metoda sdružené optimalizace}
 
 Metoda sdružené optimalizace se snaží vyřešit problém popsaný v sekci \ref{sec:zaklady_opt}. 
-Jde o speciální případ gradientní metody optimalizace, a tedy se předpokládá, že původní výběr optimalizovaných parametrů se nachází poměrně blízko hledaného optima. Nové, optimálnější řešení se dostane podle předpisu
+Jde o speciální případ optimalizace gradientní metodou, a tedy se předpokládá, že původní výběr optimalizovaných parametrů se nachází poměrně blízko hledaného optima. Nové, optimálnější řešení se dostane podle předpisu
 \begin{equation}\label{eq:bnew_step}
 g^{(n+1)}=g^{(n)}-\alpha\cdot\dfrac{\mathrm{d}J}{\mathrm{d}g}(\phi^{(n)}, \, g^{(n)}),
 \end{equation}
@@ -47,7 +45,6 @@ Co se týče znaménka v rovnici \ref{eq:bnew_step}, tak to je v tomto případe
 
 Hlavním znakem sdružené gradientní optimalizace je způsob vyhodnocení gradientu cílové funkce vzhledem parametrům, tedy $ \frac{\mathrm{d}J}{\mathrm{d}g} $. 
 Pro vyhodnocení tohoto gradientu jsou odvozeny nové parciální diferenciální rovnice (PDR).
-\nomenclature[P]{PDR}{Parciální diferenciální rovnice}
 Proces odvození nových PDR z metody Lagrangeových multiplikátorů, která specifikuje novou cílovou funkci, která v sobě bude zahrnovat podmiňující rovnice. 
 Definujeme tak novou cílovou funkci 
 \begin{equation}\label{eq:L_funkcional}
@@ -89,10 +86,10 @@ Díky libovolnosti variace $ \delta\xi $ dostáváme původní vazební rovnici
 \begin{equation}\label{eq:vazebni_rce}
 R(\phi, g)=0,
 \end{equation}
-která tvoří první část systému optimálních rovnic. Variace podle sdružených proměnných nám z části ukázala, že stacionární bod rozšířeného funkcionálu $ L(\phi, g,\,\xi)  $ splňuje vazební rovnice.
+která tvoří první část systému optimálních rovnic. Variace podle sdružených proměnných ukázala, že stacionární bod rozšířeného funkcionálu $ L(\phi, g,\,\xi)  $ splňuje vazební rovnice\cite{karman1997inverse}.
 
 \subsubsection{Variace primárních proměnných}
-Dále vezměme variaci vzhledem ke primárním proměnným $ \phi $, tedy
+Dále vezměme variaci vzhledem k primárním proměnným $ \phi $, tedy
 \begin{equation*}
 \delta_\phi L =
 \lim\limits_{\epsilon\rightarrow0}
@@ -134,9 +131,9 @@ neboli
 {  \left\langle\xi , R(\phi,g) + \dfrac{\partial R}{\partial \phi} \epsilon \delta\phi + O(e^2) - R(\phi,g)\right\rangle }
 {\epsilon}
 \right)
-=0,
+=0.
 \end{equation*}
-kde vypadnou členy bez derivace, a po zkrácení $ \epsilon $ dostáváme
+Členy bez derivací se odečtou, a po zkrácení $\epsilon$ dostáváme
 \begin{equation*}
 \lim\limits_{\epsilon\rightarrow 0} 
 \left(
@@ -162,7 +159,7 @@ a označíme $ (\cdot)^* $ sdružený operátor k $  \left\langle \, \cdot\,,\cd
 +  \left\langle \left(\dfrac{\partial R}{\partial \phi}\right)^* \xi ,  \delta\phi\right\rangle
 =0.
 \end{equation*}
-Další část systému optimálních rovnic jsou tedy tzv. sdružené rovnice
+Další část systému optimálních rovnic jsou tedy tzv. sdružené rovnice \cite{karman1997inverse}
 \begin{equation}\label{eq:sdruzene_rce}
 \left( \dfrac{\partial R}{\partial \phi} \right)^* \xi = 
 - \left(\dfrac{\partial J}{\partial \phi}\right)^*.
@@ -186,17 +183,17 @@ kde obdobně jako pro primární proměnné po dosazení z rovnice \ref{eq:L_fun
 {\epsilon}
 =0
 \end{equation*}
-a po aplikování stejného postupu jako pro vztah \ref{eq:sdruzene_rce}, dostaneme poslední část optimálního systému rovnic, tzv. podmínky optimálnosti
+a po aplikování stejného postupu jako pro vztah \ref{eq:sdruzene_rce}, dostaneme poslední část optimálního systému rovnic, tzv. podmínky optimálnosti \cite{karman1997inverse}
 \begin{equation}\label{eq:podminky_optimalnosti}
 \left( \dfrac{\partial R}{\partial g} \right)^* \xi = 
 - \left(\dfrac{\partial J}{\partial g}\right)^*.
 \end{equation}
 
 \subsubsection{Řešení soustavy optimálních rovnic}
-Řešením soustavy optimálních rovnic \ref{eq:vazebni_rce}, \ref{eq:sdruzene_rce} a \ref{eq:podminky_optimalnosti} dává řešení problému \ref{prob:Lagrange} a tedy i \ref{prob:optimalizace}. Analyticky lze systém vyřešit pouze ve speciálních případech a oproti základnímu systému, tedy vazebním rovnicím, je tento nesegregovaný systém často masivní, jak upozorňuje \cite{karman1997inverse}. Vyřešením této soustavy jako nesegregované dostaneme přímo optimální hodnoty návrhových parametrů, bohužel to v mnoha případech není možné. Řešení soustavy rovnic segregovaným způsobem už je schůdnější varianta, vyžaduje však iteraci a lze ukázat, že iterační metoda řešící každou z tří části odděleně je ekvivalentní k metodě nejvyššího spádu, jejíž rychlost konvergence je často nedostačující. Jak bylo již řečeno v úvodu této sekce, lze sdruženou metodu použít i jiným způsobem a to pro výpočet gradientu/variace $ \frac{\mathrm{d} J}{\mathrm{d} g} $, který je posléze použit v optimalizačním cyklu podle předpisu \ref{eq:bnew_step}.
+Vyřešením soustavy optimálních rovnic \ref{eq:vazebni_rce}, \ref{eq:sdruzene_rce} a \ref{eq:podminky_optimalnosti} získáme řešení problému \ref{prob:Lagrange} a tedy i \ref{prob:optimalizace}. Analyticky lze systém vyřešit pouze ve speciálních případech a oproti základnímu systému, tedy vazebním rovnicím, je tento nesegregovaný systém často masivní, jak upozorňuje \cite{karman1997inverse}. Vyřešením této soustavy jako nesegregované dostaneme přímo optimální hodnoty návrhových parametrů, bohužel to v mnoha případech není možné. Řešení soustavy rovnic segregovaným způsobem už je schůdnější varianta, vyžaduje však iterativní proces a lze ukázat, že iterační metoda řešící každou z tří části odděleně je ekvivalentní k metodě nejvyššího spádu\cite{karman1997inverse}, jejíž rychlost konvergence je často nedostačující. Jak bylo již řečeno v úvodu této sekce, lze sdruženou metodu použít i jiným způsobem a to pro výpočet gradientu/variace $ \frac{\mathrm{d} J}{\mathrm{d} g} $, který je posléze použit v optimalizačním cyklu podle předpisu \ref{eq:bnew_step}.
 
 \subsection{Gradient pomocí sdružené metody}
-Získat gradient cílové funkce je v rámci optimalizačního cyklu, nastíněného na začátku této sekce, tradičně nejnáročnější operace. Gradient cílové funkce lze za použití řetízkového pravidla zapsat jako
+Získat gradient cílové funkce je v rámci optimalizačního cyklu, nastíněného na začátku této sekce, je typicky nejnáročnější operace. Gradient cílové funkce lze za použití řetízkového pravidla zapsat jako
 \begin{equation}\label{eq:gradient_cilove_fce}
 \dfrac
 {\mathrm{d}J}
@@ -259,15 +256,15 @@ kam dosadíme variaci vazebních rovnic $ R(\phi,g)=0 $
 \dfrac{\partial J}
 {\partial g}\Bigr|_{g^{(n)}},
 \end{equation*}
-V optimalizačních úlohách se k zjištění gradientů typicky používá metoda konečných diferencí. Náročnost výpočtu ale roste přímo úměrně s počtem návrhových parametrů, kdežto ve sdružené metodě závisí vyhodnocení gradientu převážně na rychlosti výpočtu sdružených PDR. Ve sdružené metodě je pak navíc potřeba odvodit příslušné PDR a to teoreticky pro každou cílovou funkci. Prakticky lze ale určit dostatečně obecný předpis pro cílovou funkci, odvodit rovnice pro ni a konkrétní předpis dosadit až později.
+V optimalizačních úlohách se ke zjištění gradientů typicky používá metoda konečných diferencí. Náročnost výpočtu ale roste přímo úměrně s počtem návrhových parametrů, kdežto ve sdružené metodě závisí vyhodnocení gradientu převážně na rychlosti výpočtu sdružených PDR. Ve sdružené metodě je pak navíc potřeba odvodit příslušné PDR a to teoreticky pro každou cílovou funkci. Prakticky lze ale určit dostatečně obecný předpis pro cílovou funkci, odvodit rovnice pro ni a konkrétní předpis dosadit až později.
 
-\subsection{Sdružené rovnice pro proudění nestlačitelné tekutiny}
+\subsection{Sdružené rovnice pro proudění nestlačitelné tekutiny} \label{sec:adjoint_rce}
 
 V této podsekci budou odvozeny sdružené rovnice pro tvarovou optimalizaci v nestlačitelném proudění podle \cite{papadimitriou2007continuous, furst2020mko2}. Podmiňující rovnice budou tedy NS rovnice pro stacionární stav s tekutinou o konstantní hustotě, tedy rovnice hybnosti
 \begin{equation}\label{eq:rce_hybnosti}
-\mathbf{R^u}=\left(\mathbf{u}\cdot\nabla\right)\mathbf{u} + \nabla p - \nabla \cdot 2 \nu D(\mathbf{u}),
+\mathbf{R^u}=\left(\mathbf{u}\cdot\nabla\right)\mathbf{u} + \nabla p - \nabla \cdot 2 \nu \mathbb{D}(\mathbf{u}),
 \end{equation}
-kde operátor $ D(\mathbf{u})=\frac{1}{2}(\nabla\mathbf{u}+\nabla\mathbf{u}^T) $, a rovnice kontinuity
+kde operátor $ \mathbb{D}(\mathbf{u}) $ má stejný význam jako v případě rovnice \ref{eq:RANS_hybnostVekt}, a rovnice kontinuity
 \begin{equation}
 R^p=-\nabla \cdot \mathbf{u}.
 \end{equation}\label{eq:rce_kontinuity}
@@ -279,9 +276,9 @@ S takto definovanými proměnnými, vazebními rovnicemi a cenovou funkcí lze d
 \begin{equation}
 L= J + \int_\Omega \xi \cdot \mathbf{R} \,\mathrm{d}\Omega 
 %= J + \int_\Omega \mathbf{v}\cdot\mathbf{R^u}+p\, R^p \,\mathrm{d}\Omega
-= \int_\Omega \mathbf{v}\cdot\mathbf{R^u}+ q R^p +J_\Omega  \,\mathrm{d}\Omega + \int_{\Gamma}J_\Gamma \, \mathrm{d}S
+= \int_\Omega \mathbf{v}\cdot\mathbf{R^u}+ q R^p +J_\Omega  \,\mathrm{d}\Omega + \int_{\Gamma}J_\Gamma \, \mathrm{d}S.
 \end{equation}
-a pokračovat k odvození sdružených rovnic a definujeme vhodnou bilineární formu 
+K odvození sdružených rovnic a definujeme vhodnou bilineární formu 
 \begin{equation}
 \left\langle \mathbf{a},\mathbf{b} \right\rangle = \int_{\Omega} \mathbf{a} \cdot \mathbf{b} \, \mathrm{d}V.
 \end{equation} 
@@ -293,7 +290,7 @@ Vyjdeme předpisu \ref{eq:sdruzene_rce_variace} pro variaci upravené cenové fu
 \int_{\Omega} 
 \xi \cdot \dfrac{\partial R}{\partial \phi}  \delta\phi 
 \, \mathrm{d}V
- = 0
+ = 0.
 \end{equation}
 Pro člen s $ J $ můžeme přímo psát
 \begin{align}
@@ -301,13 +298,13 @@ Pro člen s $ J $ můžeme přímo psát
 \dfrac{\partial J}{\partial p} &\delta p \,\,= \int_{\Omega} \dfrac{\partial J_{\Omega}}{\partial p} \delta p  \, \mathrm{d}V + \int_{\Gamma} \dfrac{\partial J_{\Gamma}}{\partial p} \delta p  \, \mathrm{d}S.
 \end{align}
 Pro člen se sdruženými proměnnými $ \xi \cdot \dfrac{\partial R}{\partial \phi} $ provedeme variaci $ \delta\phi $ postupně pro každou rovnici
-\begin{gather*}
-\delta_\mathbf{u} \mathbf{R^u}=
-(\delta \mathbf{u}\cdot \nabla )\mathbf{u} + (\mathbf{u}\cdot \nabla )\delta\mathbf{u} - \nabla \cdot (2\nu D(\delta \mathbf{u}) ) ,\\
-\delta_p \mathbf{R^u}= \nabla \delta p,\\
-\delta_\mathbf{u}R^p = -\nabla \cdot \delta \mathbf{u} ,\\
-\delta_p R^p = 0.
-\end{gather*}
+\begin{align}
+\delta_\mathbf{u} \mathbf{R^u}&=
+(\delta \mathbf{u}\cdot \nabla )\mathbf{u} + (\mathbf{u}\cdot \nabla )\delta\mathbf{u} - \nabla \cdot (2\nu \mathbb{D}(\delta \mathbf{u}) ) ,\\
+\delta_p \mathbf{R^u}&= \nabla \delta p,\\
+\delta_\mathbf{u}R^p &= -\nabla \cdot \delta \mathbf{u} ,\\
+\delta_p R^p &= 0.
+\end{align}
 Pro úplnost je potřeba podotknout, že jsme vynechali variaci kinematické viskozity $ \nu $. 
 Pro laminární proudění je to naprosto platný postup. 
 Pokud ale budeme modelovat turbulenci za pomocí přídavné turbulentní vazkosti $ \nu = \nu_t + \widetilde{\nu} $, tak buďto musíme udělat předpoklad tzv. zmražené turbulence (anglicky frozen turbulence) a nebo rozepsat i variace rovnic turbulence. Zkoumání variace modelů turbulence je nad rámec této práce a detailněji se o něm píše v \cite{zymaris2009continuous}, kde se rozebírá i vliv zjednodušujícího předpokladu zmrazené turbulence na výsledek pro případ různých Reynoldsových čísel. 
@@ -326,7 +323,7 @@ Odvozené vztahy nyní dosadíme do předpisu \ref{eq:sdruzena_variace}
 \int_{\Omega} 
 		\underbrace{\mathbf{v} \cdot(\delta \mathbf{u}\cdot \nabla )\mathbf{u}}_\mathrm{I}
 		+ \underbrace{\mathbf{v} \cdot(\mathbf{u}\cdot \nabla )\delta\mathbf{u}}_\mathrm{II}
-		\underbrace{ - \mathbf{v} \cdot (\nabla \cdot (2\nu D(\delta \mathbf{u}) ))}_\mathrm{III}
+		\underbrace{ - \mathbf{v} \cdot (\nabla \cdot (2\nu \mathbb{D}(\delta \mathbf{u}) ))}_\mathrm{III}
 \, \mathrm{d}V
 +\\+
 \underbrace{
@@ -341,7 +338,7 @@ Odvozené vztahy nyní dosadíme do předpisu \ref{eq:sdruzena_variace}
 \, \mathrm{d}V.
 }_\mathrm{V} 
 \end{multline}
-Postupně teď pomocí Gaussovy věty (integrace per-partes) přesuneme derivace na sdružené proměnné, tak abychom mohli vytknout variace primárních proměnných. Pro odvození některých členů je výhodnější použít indexový zápis s Einstainovou sumační konvencí, tedy
+Postupně teď pomocí Gaussovy věty (integrace per-partes) přesuneme derivace na sdružené proměnné, tak abychom mohli vytknout variace primárních proměnných. Pro odvození některých členů je výhodnější použít indexový zápis s Einsteinovou sumační konvencí, tedy
 \begin{equation*}
 \mathrm{I}
 =
@@ -365,7 +362,7 @@ v_j \delta u_i u_j n_i
 \frac{\partial( v_j \delta u_i )}{x_i}u_j
 \, \mathrm{d}V,
 \end{equation*}
-rozepíšeme derivaci součinu
+lze rozepsat derivaci součinu jako
 \begin{equation*}
 \mathrm{I}
 =
@@ -438,7 +435,7 @@ Nejpracnější je pak člen číslo tři, tedy
 \mathrm{III}
 =
 \int_{\Omega} 
--\mathbf{v}\cdot \left(\nabla \cdot (2\nu D(\delta \mathbf{u}) )\right)
+-\mathbf{v}\cdot \left(\nabla \cdot (2\nu \mathbb{D}(\delta \mathbf{u}) )\right)
 \, \mathrm{d}V
 =
 \int_{\Omega} 
@@ -470,7 +467,7 @@ a podruhé, zvlášť na oba členy v objemovém integrálu,
 \mathrm{III}
 =
 \int_{\Gamma} 
-- 2\nu \mathbf{v} \cdot  D(\delta \mathbf{u})\cdot \mathbf{n}
+- 2\nu \mathbf{v} \cdot  \mathbb{D}(\delta \mathbf{u})\cdot \mathbf{n}
 \, \mathrm{d}S
 +
 \int_{\Gamma} 
@@ -487,14 +484,14 @@ a podruhé, zvlášť na oba členy v objemovém integrálu,
 \mathrm{III}
 =
 \int_{\Gamma} 
-2\nu \mathbf{n} \cdot  D(\mathbf{v})\cdot \delta \mathbf{u}
+2\nu \mathbf{n} \cdot  \mathbb{D}(\mathbf{v})\cdot \delta \mathbf{u}
 \, \mathrm{d}S
 - \int_{\Gamma} 
-2\nu \mathbf{v} \cdot  D(\delta \mathbf{u})\cdot \mathbf{n}
+2\nu \mathbf{v} \cdot  \mathbb{D}(\delta \mathbf{u})\cdot \mathbf{n}
 \, \mathrm{d}S
 -
 \int_{\Omega} 
-\nabla \cdot \left( 2\nu D(\mathbf{v}) \right) \cdot \delta \mathbf{u}
+\nabla \cdot \left( 2\nu \mathbb{D}(\mathbf{v}) \right) \cdot \delta \mathbf{u}
 \, \mathrm{d}V.
 \end{equation}
 Dále
@@ -590,14 +587,14 @@ Konečně lze tedy rozepsat rovnici \ref{eq:sdruzena_variace} pomocí odvozenýc
 \, \mathrm{d}V
 +\\+
 \int_{\Gamma} 
-2\nu \mathbf{n} \cdot  D(\mathbf{v})\cdot \delta \mathbf{u}
+2\nu \mathbf{n} \cdot  \mathbb{D}(\mathbf{v})\cdot \delta \mathbf{u}
 \, \mathrm{d}S
 - \int_{\Gamma} 
-2\nu \mathbf{v} \cdot  D(\delta \mathbf{u})\cdot \mathbf{n}
+2\nu \mathbf{v} \cdot  \mathbb{D}(\delta \mathbf{u})\cdot \mathbf{n}
 \, \mathrm{d}S
 -
 \int_{\Omega} 
-\nabla \cdot \left( 2\nu D(\mathbf{v}) \right) \cdot \delta \mathbf{u}
+\nabla \cdot \left( 2\nu \mathbb{D}(\mathbf{v}) \right) \cdot \delta \mathbf{u}
 \, \mathrm{d}V
 +\\+
 \int_{\Gamma} 
@@ -624,7 +621,7 @@ a poté co dáme k sobě členy se stejnou variací a typem integrálu
 \dfrac{\partial J_{\Omega}}{\partial \mathbf{u}}
 - \nabla \mathbf{v}\cdot \mathbf{u}
 - (\mathbf{u} \cdot \nabla)\mathbf{v}
-- \nabla \cdot \left( 2\nu D(\mathbf{v}) \right)
+- \nabla \cdot \left( 2\nu \mathbb{D}(\mathbf{v}) \right)
 + \nabla q
 \right)
 \cdot \delta \mathbf{u}
@@ -635,14 +632,14 @@ a poté co dáme k sobě členy se stejnou variací a typem integrálu
 \dfrac{\partial J_{\Gamma}}{\partial \mathbf{u}}
 + (\mathbf{v}\cdot \mathbf{u} )\mathbf{n} 
 + (\mathbf{n} \cdot \mathbf{u}) \mathbf{v}
-+ 2\nu \mathbf{n} \cdot  D(\mathbf{v})
++ 2\nu \mathbf{n} \cdot  \mathbb{D}(\mathbf{v})
 - q \mathbf{n}
 \right)
 \cdot \delta \mathbf{u}
 \, \mathrm{d}S
 \\-
 &\int_{\Gamma} 
-2\nu \mathbf{v} \cdot  D(\delta \mathbf{u})\cdot \mathbf{n}
+2\nu \mathbf{v} \cdot  \mathbb{D}(\delta \mathbf{u})\cdot \mathbf{n}
 \, \mathrm{d}S,
 \\+
 &\int_{\Omega} 
@@ -665,14 +662,14 @@ dostáváme stejný výraz jako je odvozen v \cite{othmer2008continuous}.
 
 Podmínka $ \delta_\phi L $ musí být splněna pro libovolnou variaci primárních proměnných. Z objemových integrálů nám tedy vychází sdružené NS rovnice pro nestlačitelnou tekutinu ve stacionárním stavu, které můžeme zapsat jako
 \begin{align}
-2D(\mathbf{v})\mathbf{u}
-+ \nabla \cdot \left( 2\nu D(\mathbf{v}) \right)
+2\mathbb{D}(\mathbf{v})\mathbf{u}
++ \nabla \cdot \left( 2\nu \mathbb{D}(\mathbf{v}) \right)
 - \nabla q 
-=
+&=
 \dfrac{\partial J_{\Omega}}{\partial \mathbf{u}} 
 \\
 \nabla \cdot \mathbf{v} 
-= 
+&= 
 \frac{\partial J_\Omega}{\partial p},
 \end{align}
 kde jsme použili  
@@ -689,7 +686,7 @@ kde jsme použili
 \right)
 u_j
 =
-2D(\mathbf{v})\mathbf{u}.
+2\mathbb{D}(\mathbf{v})\mathbf{u}.
 \end{equation*}
 Hraniční integrály nám pak dávají návod na sestavení okrajových podmínek pro sdružené rovnice a to tak, aby
 \begin{align}
@@ -699,15 +696,15 @@ Hraniční integrály nám pak dávají návod na sestavení okrajových podmín
 \dfrac{\partial J_{\Gamma}}{\partial \mathbf{u}}
 + (\mathbf{v}\cdot \mathbf{u} )\mathbf{n} 
 + (\mathbf{n} \cdot \mathbf{u}) \mathbf{v}
-+ 2\nu \mathbf{n} \cdot  D(\mathbf{v})
++ 2\nu \mathbf{n} \cdot  \mathbb{D}(\mathbf{v})
 - q \mathbf{n}
 \right)
 \cdot \delta \mathbf{u}
 \, \mathrm{d}S
 &= 
 \int_{\Gamma} 
-2\nu \mathbf{v} \cdot  D(\delta \mathbf{u})\cdot \mathbf{n}
-\, \mathrm{d}S
+2\nu \mathbf{v} \cdot  \mathbb{D}(\delta \mathbf{u})\cdot \mathbf{n}
+\, \mathrm{d}S,
 \\
 \label{eq:sdruzenaOP2}
 \int_{\Gamma}
@@ -724,12 +721,15 @@ Systém sdružených rovnic nápadně připomíná původní systém NS rovnic p
 
 \section{Pohyb sítě}
 
-Nastinit nekolik moznych zpusobu, popsat vic zpusob pomoci obecneho prevodu na B-spliny z OF
+Prozatím jsme pracovali s obecnými návrhovými parametry $ g $. V rámci zaměření a cíle této práce je nyní konkretizujeme. Pro tvarovou optimalizaci má smysl definovat návrhové parametry, které jsou svázané s tvarem výpočetní oblasti. Například pro křídlo letadla budeme chtít měnit profil, pro optimalizaci ztrát v koleni potrubí pak tvar samotného kolene atp. V této práci budeme později uvažovat kompresorovou mříž a měnit se tedy bude tvar lopatky.
 
-Prozatím jsme pracovali s obecnými návrhovými parametry $ g $. V rámci zaměření a cíle této práce je nyní konkretizujeme. Pro tvarovou optimalizaci má smysl definovat návrhové parametry, které jsou svázané s tvarem výpočetní oblasti. Například pro křídlo letadla budeme chtít měnit profil, pro optimalizaci ztrát v koleni potrubí pak tvar samotného kolene atp. Pro tuto práci budeme později uvažovat kompresorovou mříž a měnit se tedy bude tvar lopatky.
+První přístup, co přichází v úvahu, je brát jako návrhové parametry přímo souřadnice bodů profilu. To ovšem znamená spoustu návrhových parametrů, jejíchž počet při zjemňování sítě roste. V případě metody sdružené optimalizace to vlastně nevadí. Právě naopak bychom těžili tu největší výhodu sdružené optimalizace, tedy (téměř) nezávislost rychlosti výpočtu gradientu optimalizace na počtu návrhových proměnných. Druhým, už horším avšak stále řešitelným problémem, je zachování platnosti a funkčnosti výpočetní sítě. Snadno se dá představit, že při pohybu pouze hranice, se mohou začít stěny křížit, vznikat záporné objemy apod. Takovou situaci lze řešit dodatečným výpočtem a posunem i ostatních ovlivněných bodů. 
 
-První přístup co přichází v úvahu je brát přímo souřadnice bodů profilu jako návrhové parametry. To ovšem znamená spoustu návrhových parametrů, jejíchž počet při zjemňování sítě roste. V případě metody sdružené optimalizace to vlastně nevadí. Právě naopak bychom těžili tu největší výhodu sdružené optimalizace, tedy (téměř) nezávislost rychlosti výpočtu gradientu optimalizace na počtu návrhových proměnných. Druhým, už horším avšak stále řešitelným problémem, je zachování platnosti a funkčnosti výpočetní sítě. Snadno se dá představit, že při pohybu pouze hranice, se mohou začít stěny křížit, vznikat záporné objemy apod. Takovou situaci lze řešit dodatečným výpočtem a posunem i ostatních ovlivněných bodů. 
-
+\begin{figure}[h]
+	\includegraphics[width=0.7\textwidth]{./img/ridici_body.png}
+	\caption[Řídící body objemového B-splive ve 3D]{Řídící body objemového B-spline okolo automobilového zrcátka. Příklad z \cite{papoutsis2015noise}.}
+	\label{fig:zrcatko}
+\end{figure}
 Lepším a obecně lépe fungujícím způsobem je podle \cite{adjoint2020foam} využít parametrizace oblasti pomocí objemových B-spline.
 Po vydefinování sítě řídících bodů jak ukazuje například obrázek \ref{fig:zrcatko}, je každý z bodů sítě namapován z kartézského prostoru $ \mathcal{R}^3(x,y,z) $ do parametrického prostoru $ \mathcal{R}^3(u,v,w) $.
 Objemové B-spline pak definují zobrazení z parametrického prostoru do kartézského. 
@@ -737,20 +737,21 @@ Matematický popis tohoto postupu je detailněji popsán v \cite{papoutsis2015no
 
 V rámci optimalizace jsou jako návrhové parametry brány souřadnice řídících bodů objemových B-spline. Na základě získaných gradientů se nejprve pohne s řídícími body a následně se změna propaguje na každý parametrizovaný bod v kartézském prostoru sítě.
 
+
+
+\section{Optimalizační cyklus}
+
+Na obrázku \ref{fig:flowchart_opt_cyklus} je vizualizován průběh optimalizace. Před zahájením optimalizace je potřeba krom geometrie vytvořit výpočetní síť, definovat způsob diskretizace členů v primárních i sdružených rovnicích, zvolit řešiče soustav lineárních rovnic, definovat okrajové podmínky pro všechny proměnné, nastavit parametry optimalizace včetně cílové funkce atd. 
+
+V jedné iteraci optimalizačního algoritmu je pak potřeba nejprve vyřešit primární rovnice a vyhodnotit cílovou funkci. Řešení primárních rovnic se pak promítne ve zdrojových členech sdružených rovnic. Ty se pak vyřeší a v závislosti na návrhových parametrech se vyhodnotí gradient $ \dfrac{\partial J}{\partial g} $. Optimalizační krok $ \eta $ ve smyslu rovnice \ref{eq:bnew_step} se pro první iteraci musí zvolit nebo jinak určit, například základě podmínky maximálního pohybu sítě.
+
+Následně se zvoleným způsobem pohne se sítí (či se změní jiné návrhové parametry $ g $), znovu se vyřeší primární rovnice a vyhodnotí cílová funkce. Následně je možné aplikovat postup hledání nejlepšího kroku (anglicky \textit{line search}), který zmenšuje krok $ \eta $, tak aby došlo ke zlepšení cílové funkce. Hledání nejlepšího kroku je iterační proces, který vyžaduje vyřešit primární rovnice v každé iteraci, což může být v některých případech náročná operace a maximální počet hledacích iterací se tak často omezuje.
+
+Po přijetí nových návrhových parametrů lze optimalizaci ukončit, či přejít k další iteraci optimalizačního cyklu.
+
 \begin{figure}
-	\includegraphics[width=0.7\textwidth]{./img/ridici_body.png}
-	\caption{Řídící body objemového B-spline okolo automobilového zrcátka. Příklad z \cite{papoutsis2015noise}.}
-	\label{fig:zrcatko}
-\end{figure}
-
-
-\section{Optimalizacni cyklus}
-
-flowchart s naznacenim kde kdy se jake rovnice pocitaji (hlavni NS-rce, sdruzene rce, pohyb site)
-
-\begin{figure}
-\includegraphics[width=0.9\textwidth]{./img/flowchart/optimalizacni_cyklus.pdf}
-\caption{Optimalizacni cyklus}
+\includegraphics[width=1\textwidth]{./img/flowchart/optimalizacni_cyklus.pdf}
+\caption[Optimalizační cyklus]{Diagram průběhu optimalizačního algoritmu pro sdruženou metodu.}
 \label{fig:flowchart_opt_cyklus}
 \end{figure}
 

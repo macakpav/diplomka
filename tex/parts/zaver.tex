@@ -1,0 +1,26 @@
+%!TEX ROOT=../_main.tex
+V první části této práce je představen teoretický základ numerického modelování problému proudění pomocí metody konečných objemů se zaměřením na proudění tekutiny s konstantní hustotou. Dále je rozebrán základ matematické teorie okolo problému optimalizace a jeho řešení sdruženou metodou. Pro potřeby aplikace je zmíněn i způsob manipulace s výpočetní sítí a shrnutí obecného optimalizačního cyklu.
+
+V druhé části je představena metodika využití optimalizace tvaru lopatky kompresorové mříže sdruženou metodou za pomoci knihovny OpenFOAM v2106 a je uveden základní popis problematiky simulací proudění v kompresorových mřížích. Geometrie zkoumané mříže je vytvořena pomocí souřadnic lopatky GHH 1-S1 publikované v \cite{steinert1990design}.
+
+Přínosem v části aplikace je zejména odvození a implementace nových cílových funkcí pro sdruženou metodu optimalizace. Obě nové funkce mají za cíl měnit směr proudu na výstupu z kompresorové mříže. První cílová funkce optimalizuje velikost rychlosti na výstupu ve směru osy $ y $, takzvaná přímá formulace cílové funkce. Druhá cílová funkce optimalizuje velikost síly působící na lopatku ve směru osy $ y $, takzvaná nepřímá formulace. Hodnoty cílové rychlosti a cílové síly jsou voleny tak, aby odpovídaly dané změně úhlu výstupního proudu $ \Delta\alpha_{2} $. Záminkou pro následné srovnání těchto formulací je, že přímá formulace pracuje jen s jednou primární proměnnou a je definovaná integrálem pouze po výstupní hranici. Nepřímá formulace definuje cílovou funkci pomocí integrálu přímo na lopatce, tedy na měněné geometrii. Navíc pro vyhodnocení působící síly jsou použity všechny proměnné primárních rovnic a využívá tedy více informací z proudového pole.
+
+Výsledky optimalizace získané pomocí obou formulací cílové funkce jsou následně srovnány. Z porovnání průběhů residuí v sekci \ref{sec:vysledky_opt} byly vyvozeny následující závěry:
+\begin{enumerate}
+	\item Obě metody potřebují stejný počet iterací pro dosažení cílového úhlu výstupního proudu. Přímá formulace vede ale na znatelně nižší časy výpočtu.
+	\item Průběh residuí naznačuje, že nepřímá formulace je stabilnější. To by mohlo hrát roli pro složitější aplikace, ale v rámci této práce se na problémy se stabilitou vlivem formulace cílové nenarazilo.
+	\item Přímá formulace je schopna zkonvergovat blíže cílovému úhlu výstupního proudu než nepřímá. V rámci celkové přesnosti numerických simulací zatížených chybami diskretizace, ale mají vylepšení v rámci desetin procent malou důvěryhodnost.
+\end{enumerate}
+
+V rámci optimalizačních cyklů byl použit model turbulence Spalart-Allmaras. Ten byl ale původně vyvinut pro vnější aerodynamiku, konkrétně obtékání profilu křídla ve volném proudu. Proto byly výsledky dodatečně ověřeny simulací s modelem k-$ \omega $ SST, který je pro vnitřní aerodynamiku turbostrojů vhodnější. V rámci malých změn výstupního úhlu $ \Delta\alpha_2 \in \langle -2^\circ,+4^\circ \rangle $ splňují získané tvary lopatky cílovou změnu výstupního úhlu s přesností jednoho procenta. Ve smyslu tohoto ověření lze tedy říci, že navržená metodika má smysl, přestože využívá méně vhodného modelu turbulence.
+
+Navázat na publikované postupy lze vícero způsoby. Výsledky optimalizace by šlo verifikovat simulací úplných Navierových-Stokesových rovnic pro stlačitelnou tekutinu. Machovo číslo na vstupu mříže GHH 1-S1 $ M_1=0.62 $ je přece jen blízko hranice, kdy se ještě dá předpokladu nestlačitelnosti věřit. Pro špatné úhly náběhu byla již v původní publikaci \cite{steinert1990design} zjištěna přítomnost rázových vln. Nejlepší by ale bylo validovat výsledky experimentálně.
+
+V rámci pokroku simulačních postupů se pak nabízí odvodit sdružené rovnice i pro pokročilejší modely turbulence než Spalar-Allmaras. Odvození takových rovnic je ale zdlouhavý proces náchylný k chybám, ale možné to je, jak ukazuje například \cite{kavvadias2015continuous}. Pro aplikaci na kompresorové mříže či dokonce na trojrozměrnou optimalizaci geometrie kompresorového stupně by se zajisté vyplatilo odvodit a implementovat sdruženou metodu pro úplné Navier-Stokesovy rovnice pro proudění stlačitelné tekutiny. 
+
+
+
+
+
+
+

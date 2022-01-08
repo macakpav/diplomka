@@ -1,0 +1,91 @@
+%!TEX ROOT=../_main.tex
+\nomenclature[O]{$ \Omega $}{Kontrolní objem}
+\nomenclature[G]{$ \Gamma $}{Uzavřená hranice kontrolního objemu}
+\nomenclature[U]{$ \mathbf{u},\, u_i$}{Vektor rychlosti}
+\nomenclature[N]{$ \mathbf{n},\, n_i$}{Vektor jednotkové normály}
+\nomenclature[S]{$ \mathrm{d}S$}{Element hranice $ \Gamma $}
+\nomenclature[V]{$ \mathrm{d}V$}{Element objemu $ \Omega $}
+\nomenclature[W]{$ W $}{Obecná skalární veličina}
+\nomenclature[W]{$ \mathbf{W}$}{Obecná vektorová veličina}
+\nomenclature[Q]{$ Q_\Omega(W) $}{Objemový zdroj veličiny $ W $}
+\nomenclature[Q]{$ \mathbf{Q_\Gamma}(W)$}{Povrchový zdroj veličiny $ W $}
+\nomenclature[Q]{$ \mathbb{Q}_\Omega(\mathbf{W}) $}{Objemový zdroj vektorové veličiny $ \mathbf{W} $}
+\nomenclature[Q]{$ \mathbb{Q}_\Gamma(\mathbf{W})$}{Povrchový zdroj vektorové veličiny $ \mathbf{W} $}
+\nomenclature[F]{$ \mathbf{F}(W)$}{Vektor hustoty toku veličiny $ W $}
+\nomenclature[F]{$ \mathbf{F_K}(W)$}{Konvektivní část vektoru hustoty toku veličiny $ W $}
+\nomenclature[F]{$ \mathbf{F_D}(W)$}{Difuzivní část vektoru hustoty toku veličiny $ W $}
+\nomenclature[F]{$ \mathbb{F}(\mathbf{W})$}{Tenzor hustoty toku vektorové veličiny $ \mathbf{W} $}
+\nomenclature[F]{$ \mathbb{F}_K(\mathbf{W})$}{Konvektivní část tenzoru hustoty toku vektorové veličiny $ \mathbf{W} $}
+\nomenclature[F]{$ \mathbb{F}_D(\mathbf{W})$}{Difuzivní část tenzoru hustoty toku vektorové veličiny $ \mathbf{W} $}
+\nomenclature[R]{$ \rho $}{Hustota tekutiny}
+\nomenclature[K]{$ \kappa $}{Koeficient difuzivity}
+\nomenclature[P]{$\dfrac{\partial}{\partial \mathbf{x}},\,\dfrac{\partial}{\partial x_i}$}{Parciální derivace podle vektorové veličiny $\mathbf{x},\,x_i$}
+\nomenclature[P]{$\dfrac{\partial}{\partial x}$}{Parciální derivace podle skalární veličiny $x$}
+\nomenclature[D]{$t$}{Čas}
+\nomenclature[F]{$\mathbf{f_e}$}{Vektor vnější síly vztažený k jednotce hmotnosti}
+\nomenclature[I]{$\mathbb{I}$}{Jednotkový tenzor/matice}
+\nomenclature[D]{$\delta_{ij}$}{Kroneckerovo delta}
+\nomenclature[T]{$\tau_{ij},\, \tau$}{Tenzor napětí}
+\nomenclature[P]{$p$}{Kinematický tlak $ p=\dfrac{p_s}{\rho} $ $ \mathrm{[m^2\,s^{-2}]} $}
+\nomenclature[P]{$p_s$}{Statický tlak $ \mathrm{[kg\,m^{-1}\,s^{-2}]} $}
+
+\nomenclature[M]{MKO}{Metoda konečných objemů}
+\nomenclature[P]{PDR}{Parciální diferenciální rovnice}
+\nomenclature[N]{NS}{Navierovy-Stokesovy (rovnice)}
+\nomenclature[O]{$ \Omega_j $}{Konečný objem, buňka}
+\nomenclature[G]{$ \Gamma_j $}{Uzavřená hranice konečného objemu}
+\nomenclature[O]{$ \|\Omega_j\| $}{Velikost konečního objemu}
+\nomenclature[G]{$ \|\Omega_j\| $}{Velikost hranice konečního objemu}
+\nomenclature[F]{$ f $}{Část hranice $ \Gamma_j $, stěna}
+\nomenclature[X]{$ \mathbf{x_f} $}{Souřadnice středu stěny $ f $}
+\nomenclature[1]{$ \approx $}{Přibližně}
+\nomenclature[1]{$ \doteq $}{Zaokrouhleně}
+\nomenclature[W]{$ W_f $}{Hodnota veličiny $ W $ ve středu stěny $ f $}
+\nomenclature[W]{$ W_C,\, W_N $}{Střední hodnota veličiny $ W $ v buňce $ C $, respektive sousední buňce $ N $}
+\nomenclature[N]{$ \mathbf{n_f} $}{Jednotkový normálový vektor stěny $ f $}
+\nomenclature[P]{$ \phi_f $}{Objemový tok stěnou $ f $}
+\nomenclature[M]{$ \mathrm{M} $}{Machovo číslo}
+\nomenclature[C]{$ c $}{Rychlost zvuku}
+
+\nomenclature[A]{$ \mathbb{A}$}{Matice soustavy linárních rovnic}
+\nomenclature[B]{$ \mathbf{b}$}{Pravá strana soustavy lineárních rovnic}
+\nomenclature[A]{$ \alpha_r$}{Relaxační koeficient soustavy lineárních rovnic}
+\nomenclature[B]{$ \beta$}{Relaxační koeficient pro explicitní relaxaci}
+\nomenclature[S]{SIMPLE}{Zkratka anglického \textit{Semi-implicit pressure linked equations}}
+\nomenclature[N]{$ \nu $}{Kinematická viskozita}
+
+
+\nomenclature[P]{$ \phi $}{Primární proměnné}
+\nomenclature[G]{$ g $}{Návrhové parametry}
+\nomenclature[J]{$ J,\, J(\phi,g) $}{Cílová funkce/funkcionál}
+\nomenclature[R]{$ R,\, R(\phi,g) $}{Vazební rovnice}
+\nomenclature[X]{$ \xi $}{Sdružené proměnné}
+\nomenclature[L]{$ L$}{Rozšířená cenová funkce/funkcionál}
+\nomenclature[d]{$ \delta_w$}{Variace podle veličiny $ w $}
+\nomenclature[J]{$ J_\Omega $}{Objemová část cílové funkce odpovídající předpisu \ref{eq:cenova_fce}}
+\nomenclature[J]{$ J_\Gamma $}{Hraniční část cílové funkce odpovídající předpisu \ref{eq:cenova_fce}}
+\nomenclature[V]{$ \mathbf{v} $}{Sdružená rychlost}
+\nomenclature[Q]{$ q $}{Sdružený tlak}
+
+
+
+\nomenclature[G]{$ \Gamma_1, \Gamma_P, \Gamma_2 $}{ Hranice vstupu do kompresrové mříže, hranice lopatky a hranice výstupu ze mříže}
+\nomenclature[A]{$ \alpha_1, \alpha_2 $}{ Úhel proudu na vstupu do, respektive výstupu z kompresrové mříže}
+\nomenclature[U]{$ \mathbf{u_1}, \mathbf{u_2} $}{ Vektor rychlosti na vstupu do, respektive výstupu z kompresrové mříže}
+\nomenclature[P]{$ p_1, p_2 $}{ Kinematický tlak na vstupu do, respektive výstupu z kompresrové mříže}
+\nomenclature[F]{$ F_{yP} $}{ Celková síla působící na lopatku ve směru osy $ y $}
+\nomenclature[L]{$ L_{t} $}{ Turbulentní směšovací délka }
+
+
+\nomenclature[N]{$ \nu_{t} $}{ Turbulentní viskozita/vazkost}
+\nomenclature[N]{$ \widetilde{\nu} $}{ Spalartova-Allmarasova turbulentní proměnná}
+\nomenclature[K]{$ k $}{ Turbulentní kinetická energie}
+\nomenclature[O]{$ \omega $}{ Míra turbulentní disipace}
+\nomenclature[S]{SST}{ Zkratka anglického \textit{Shear Stress Transport}}
+\nomenclature[S]{SA}{ Spalartův-Alamarasův (model turbulence) }
+
+
+
+
+
+

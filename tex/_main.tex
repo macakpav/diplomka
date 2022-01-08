@@ -16,7 +16,7 @@
 	mainlanguage = czech,
 	otherlanguages = {slovak,english},
 	title-czech = {Tvarová optimalizace lopatkové mříže sdruženou metodou},
-	title-english = {Shape optimization of blade cascade with adjoint method},
+	title-english = {Shape optimization of blade cascade using adjoint method},
 	subtitle-czech = {},
 	subtitle-english = {},
 	doctype = M,
@@ -31,9 +31,9 @@
 	subfieldofstudy-english = {Applied Sciences in Mechanical Engineering},
 	fieldofstudy-czech = {Matematické modelování v technice},
 	subfieldofstudy-czech = {Aplikované vědy ve strojním inženýrství},
-	keywords-czech = {Optimalizace, CFD, OpenFOAM, Lopatková mříž},
-	keywords-english = {Optimization, CFD, OpenFOAM, Compressor cascade},
-	day = 1,
+	keywords-czech = {Optimalizace, MKO, CFD, OpenFOAM, Lopatková mříž},
+	keywords-english = {Optimization, FVM, CFD, OpenFOAM, Airfoil cascade},
+	day = 16,
 	month = 1,
 	year = 2022,
 	specification-file = {others/zadani_BP.pdf},
@@ -41,7 +41,7 @@
 %	front-list-of-figures = false,
 %	front-list-of-tables = false,
 %	monochrome = true,
-	layout-short = true,
+	layout-short = false,
 }
 
 \ctuprocess
@@ -65,70 +65,76 @@
 % Theorem declarations, this is the reasonable default, anybody can do what they wish.
 % If you prefer theorems in italics rather than slanted, use \theoremstyle{plainit}
 \theoremstyle{plainit} 
-\newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{theorem}{Theorem}
 \newtheorem{definition}[theorem]{Definice}
 \newtheorem{problem}[theorem]{Problém}
 
-\theoremstyle{definition}
-\newtheorem{example}[theorem]{Example}
-\newtheorem{conjecture}[theorem]{Conjecture}
+% Marginpars used as navigation aids.
+\usepackage{mparhack}
 
-\theoremstyle{note}
-\newtheorem*{remark*}{Remark}
-\newtheorem{remark}[theorem]{Remark}
+\newcommand\indexmp[1]{{\sffamily\bfseries#1}}
+
+\ExplSyntaxOn
+\cs_new:Nn \ctuman_domarginpar:n {
+	\marginpar
+	[ \raggedleft \footnotesize \sffamily #1 ]
+	{ \raggedright \footnotesize \sffamily #1 }
+}
+\cs_generate_variant:Nn \ctuman_domarginpar:n { x }
+\DeclareDocumentCommand \ctump { m } {
+	\clist_set:Nn \ctuman_temp_clist { #1 }
+	\ctuman_domarginpar:x { \clist_use:Nnnn \ctuman_temp_clist { \\ } { \\ } { \\ } }
+	\clist_map_inline:Nn \ctuman_temp_clist { \index{##1|indexmp} }
+	\ignorespaces
+}
+\ExplSyntaxOff
+
 
 \setlength{\parskip}{5ex plus 0.2ex minus 0.2ex}
 
-\clubpenalty 10000  %prvni radek odstavce nebude sam na konci stranky (vdova) 
-\widowpenalty 10000 %posledni radek odstavce nepujde na novou stranku  (sirotek) 
+%\clubpenalty 10000  %prvni radek odstavce nebude sam na konci stranky (vdova) 
+%\widowpenalty 10000 %posledni radek odstavce nepujde na novou stranku  (sirotek) 
 
 
 % Abstract in Czech
 \begin{abstract-czech}
-	\lipsum[1]
+	Cílem diplomové práce je tvarová optimalizace tvaru lopatky pomocí sdružené metody a numerické simulace proudění metodou konečných objemů. Za tímto účelem jsou zopakovány základy metody konečných objemů a jejího použití pro řešení soustavy Navierových-Stokesových rovnic ve formulaci pro tekutinu s konstantní hustotou. Následně je popsán obecný optimalizační problém a návrh na jeho řešení sdruženou metodou. Ta vyžaduje odvození sdružených rovnic, které je popsáno v části \ref{sec:adjoint_rce}.
 
+	V praktické části jsou odvozeny zdrojové členy pro sdružené rovnice na základě formulace nové cenové funkce pro změnu úhlu výstupního proudu.
+	Praktický příklad aplikace využívá knihovnu OpenFOAM a aplikuje optimalizační postup na lopatkovou mříž GHH 1-S1\cite{steinert1990design}. 
+	Nově získané tvary lopatek jsou pro ověření simulovány s modelem turbulence k-$ \omega $ SST\cite{menter1994two, menter2003ten}. Použitý postup je na základě ověření funkční pro změnu úhlu výstupního proudu $ \Delta\alpha_{2} \in \langle -2^\circ,+6^\circ\rangle $. 
 \end{abstract-czech}
 
 % Abstract in English
 \begin{abstract-english}
-	\lipsum[1]
-
+	The goal of this work is shape optimisation of airfoil using adjoint method and numerical simulation of fluid flow using finite volume method. Basics of finite volume method for solution of Navier-Stokes equation in their variant for incompressible fluid flow are revised. The general problematic of optimisation is presented and proposition of its solution using adjoint method is made. A derivation of adjoint equations follows in chapter \ref{sec:adjoint_rce}.
+	
+	In part of aplication, source terms for adjoint equations are derived for newly formulated target function with purpose of changing the angle of velocity at outlet of airfoil cascade. The example uses OpenFOAM library and airfoil cascase GHH 1-S1\cite{steinert1990design}. New airfoil shapes are then verified using a more suitable turbulence model for internal aerodynamic, namely the k-$ \omega $ SST\cite{menter1994two, menter2003ten}. The presented approach is found to be valid based on this verification for changes in outlet velocity angle in  $ \Delta\alpha_{2} \in \langle -2^\circ,+6^\circ\rangle $. 
 \end{abstract-english}
 
 % Acknowledgements / Podekovani
 \begin{thanks}
-Chtěl bych poděkovat svému vedoucímu práce doc. Ing. Jiřímu Fürstovi, Ph.D. za odborné vedení, za pomoc a rady při zpracování této práce. Zároveň děkuji své rodině a přátelům za jejich podporu při studiu.
+	\setcounter{page}{4}
+Chtěl bych poděkovat svému vedoucímu práce doc. Ing. Jiřímu Fürstovi, Ph.D. za odborné vedení, za ochotnou pomoc a rady při zpracování této práce. Zároveň děkuji své rodině a přátelům za jejich podporu při studiu.
 \end{thanks}
 
 % Declaration / Prohlaseni
 \begin{declaration}
 Prohlašuji, že jsem předloženou práci vypracoval samostatně a uvedl veškerou použitou literaturu.
 
+\medskip
+
 V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 \end{declaration}
 
-% Only for testing purposes
-\listfiles
-\usepackage{amsmath, gensymb}
+
+
 \usepackage[pagewise]{lineno}
-\usepackage{lipsum,blindtext}
-\usepackage{mathrsfs} % provides \mathscr used in the ridiculous examples
-\usepackage{mathtools}
-
 \usepackage{scrextend}
-
 \usepackage[]{nomencl} 
 \makenomenclature
 \renewcommand{\nomname}{Seznam použitých symbolů a zkratek}
 % \nomenclature[⟨prefix⟩]{⟨symbol⟩}{⟨description⟩}
-
-
-%\usepackage{imakeidx}
-\makeindex
-		% makeindex -s ctuthesis.ist _main
 		
 %INKSCAPE-LATEX interface
 \newcommand{\executeiffilenewer}[3]{%
@@ -146,23 +152,27 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 		
 \begin{document}
 
-
 \maketitle
 
+\setcounter{page}{-1}
+\part{Teoretická část}
 \chapter{Úvod}
 \input{parts/uvod.tex}
 
-\part{Teoretická část}
-\input{parts/theory.tex}
+\chapter{Základy numerického řešení Navierových-Stokesových rovnic}
+\input{parts/theory/numerika.tex}
+
+\chapter{Optimalizace sdruženou metodou}
+\input{parts/theory/optimalizace.tex}
 
 \part{Praktická aplikace}
 \input{parts/application.tex}
 
 
 \chapter{Závěr}
-\lipsum[1]
+\input{parts/zaver.tex}
  
-
+\input{others/nomencl.tex}
 
 
 
@@ -197,11 +207,9 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 
 \printnomenclature
 
-\printindex
-
 \bibliographystyle{abbrv}
 \bibliography{bibliography/_main}
 
-
+\newpage
 
 \end{document}
