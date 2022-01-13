@@ -25,7 +25,7 @@
 	department-english = {Department of Mathematics},
 	author = {Bc. Pavel Mačák},
 	supervisor = {doc. Ing. Jiří Fürst, Ph.D.},
-	supervisor-address = { Ústav technické matematiky \\ Resslova 307/9 \\ Praha 6},
+	supervisor-address = { Ústav technické matematiky \\ Karlovo náměstí 13 \\ Praha 2},
 	%supervisor-specialist = {John Doe},
 	fieldofstudy-english = {Mathematical modelling},
 	subfieldofstudy-english = {Applied Sciences in Mechanical Engineering},
@@ -71,6 +71,9 @@
 
 % Marginpars used as navigation aids.
 \usepackage{mparhack}
+
+% Table multirow
+\usepackage{multirow}
 
 \newcommand\indexmp[1]{{\sffamily\bfseries#1}}
 
@@ -128,7 +131,8 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 \end{declaration}
 
 
-
+\usepackage{amsmath}
+\DeclareMathOperator{\sign}{sgn}
 \usepackage[pagewise]{lineno}
 \usepackage{scrextend}
 \usepackage[]{nomencl} 
@@ -207,7 +211,7 @@ V Praze, \ctufield{day}.~\monthinlanguage{title}~\ctufield{year}
 
 \printnomenclature
 
-\bibliographystyle{abbrv}
+\bibliographystyle{ieeetr}
 \bibliography{bibliography/_main}
 
 \newpage

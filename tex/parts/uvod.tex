@@ -1,18 +1,18 @@
 %!TEX ROOT=../_main.tex
 Lopatkové mříže reprezentují základní experimentální techniku pro vyhodnocení kvality tvaru lopatky. 
-Přestože jde o značné zjednodušení oproti reálným provozním podmínkám, mají lopatkové mříže vypovídající hodnotu o kvalitě návrhu lopatky\cite{steinert1990design}. 
-Lopatky testované pomocí lopatkových mříží najdou uplatnění ve větrných elektrárnách\cite{jafari2018aerodynamic} nebo ve vývoji axiálních kompresorů\cite{hobbs1983development}, na což se zaměřuje i prezentovaná práce.
+Přestože jde o značné zjednodušení oproti reálným provozním podmínkám, mají lopatkové mříže vypovídající hodnotu o kvalitě návrhu lopatky \cite{steinert1990design}. 
+Lopatky testované pomocí lopatkových mříží najdou uplatnění ve větrných elektrárnách \cite{jafari2018aerodynamic} nebo ve vývoji axiálních kompresorů \cite{hobbs1983development}, na což se zaměřuje i prezentovaná práce.
 
-Kompresory jsou stroje sloužící ke stlačování vzduchu. Stlačený vzduch je užitečný v nejrůznějších průmyslových aplikacích jako transport zemního plynu, ochranná atmosféra jídla, čištění odpadních vod\cite{dalbert1999radial} nebo ve spalovacích motorech, kde stlačený vzduch zvyšuje výkon pomocí přeplňování. 
-Na základě změny směru proudu přes rotor (rotující část kompresoru) je lze rozdělit do dvou skupin - axiální a radiální\cite{cumpsty1989compressor}. 
-Radiální kompresory značně mění směr přitékajícího proudu, neboť jej otáčí ze směru osového do směru radiálního či naopak. 
+Kompresory jsou stroje sloužící ke stlačování vzduchu. Stlačený vzduch je užitečný v nejrůznějších průmyslových aplikacích jako transport zemního plynu, ochranná atmosféra jídla, čištění odpadních vod \cite{dalbert1999radial} nebo ve spalovacích motorech, kde stlačený vzduch zvyšuje výkon pomocí přeplňování. 
+Na základě změny směru proudu přes rotor (rotující část kompresoru) je lze rozdělit do dvou skupin - axiální a radiální \cite{cumpsty1989compressor}. 
+Radiální kompresory značně mění směr přitékajícího proudu, neboť jej otáčí ze směru osového do směru radiálního. 
 U axiálního kompresoru si proud obecně zachovává osový směr. 
 Stlačení na jeden stupeň axiálního kompresoru je zpravidla nižší než u radiálního. 
 Axiální kompresory se tedy často navrhují jako vícestupňové, tedy s více navazujícími řadami rotorových a statorových (nehybných) řad lopatek jak uvádí \cite{Farokhi2014_propulsion}. 
 To je často mnohem náročnější úkol než návrh jednoho stupně radiálního kompresoru. 
-Ty na druhou strany, krom většího stlačení na stupeň, fungují ve větším rozsahu hmotnostních průtoků\cite{Xu_2006} a jsou tím pádem spolehlivější v nenávrhových, což hraje velkou roli v leteckém inženýrství\cite{kovavr2021searching}.
+Ty na druhou strany, krom většího stlačení na stupeň, fungují ve větším rozsahu hmotnostních průtoků \cite{Xu_2006} a jsou tím pádem spolehlivější v nenávrhových režimech, což hraje velkou roli v leteckém inženýrství \cite{kovavr2021searching}.
 
-Dnešní axiální kompresory pro průmyslové aplikace jsou charakteristické tím, že jsou vždy navržené a adaptované na konkrétní požadavky součástí za nimi, kde je potřeba stlačený vzduch\cite{steinert1990design}. 
+Dnešní axiální kompresory pro průmyslové aplikace jsou charakteristické tím, že jsou vždy navržené a adaptované na konkrétní požadavky součástí za nimi, kde je potřeba stlačený vzduch \cite{steinert1990design}. 
 Vývoj průmyslových axiálních kompresorů se často soustředí na stabilitu a velkou variabilitu vzhledem k hmotnostnímu toku a stlačení, aby byly použitelné pro větší pásmo operačních podmínek. 
 Dále se důraz klade na účinnost, minimalizaci velikosti lopatky a co největší provozní spolehlivost. 
 
@@ -21,11 +21,11 @@ Pro tvarovou optimalizaci byly v \cite{lotfi2006shape} použity genetické algor
 Vícekriteriální topologickou optimalizací v subsonický návrhových podmínkách se nedávno zabýval \cite{blinov2019multi}. 
 Větší problém pak představuje optimalizace tvaru lopatek pro axiální kompresory s transsonickým prouděním jak dokládá \cite{song2014blade}. 
 
-Metody pro trojrozměrnou analýzu jsou schopny již delší dobu dosáhnout vysoké přesnosti zachycení reality a jsou dnes běžně používány pro předpověď výkonnostních parametrů nejrůznějších geometrií křídel a lopatek v turbostrojích\cite{karman1997inverse}. 
+Metody pro trojrozměrnou analýzu jsou schopny již delší dobu dosáhnout vysoké přesnosti zachycení reality a jsou dnes běžně používány pro předpověď výkonnostních parametrů nejrůznějších geometrií křídel a lopatek v turbostrojích \cite{karman1997inverse}. 
 Tyto, dnes už základní metody, ale nedávají informaci o tom, jak geometrii modifikovat pro dosažení lepších výkonnostních parametrů. 
 Ve vědeckých publikacích se tak stále častěji objevují a používají techniky pro optimalizaci z řad genetických algoritmů \cite{karman2000genetic, yang2020nature}, heuristických metod \cite{vstefek2011benchmarking} a sdružených gradientních metod \cite{karman1997inverse}.
 
-
+Cílem této práce je tvarová optimalizace lopatky v lopatkové mříži pomocí sdružené metody. Rovnice proudění jsou řešeny metodou konečných objemů, jejíž základy jsou v úvodu práce zopakovány. Dále je popsán problém optimalizace se zaměřením na jeho řešení sdruženou metodou. Pro praktickou aplikaci tvarové optimalizace je zvolena lopatková mříž GHH 1-S1 \cite{steinert1990design}. Nově definované cílové funkce pro optimalizaci jsou implementovány pomocí knihovny OpenFOAM se záměrem měnit výstupní úhel proudu. Výsledky jsou ověřeny výpočtem s vhodnějším modelem turbulence \cite{menter2003ten}.
 
 
 

@@ -1,16 +1,16 @@
 %!TEX ROOT=../../_main.tex
 
-Problém proudění či mechanika tekutiny je v rámci této práce chápán jako zkoumání pohybu velkého množství částic a jejich interakce. Velké množství ve smyslu, že zkoumané fluidum má takovou hustotu, že lze použít aproximaci reality pomocí matematického kontinua. To nám říká, že i v nekonečně malá (infinitesimální) část tekutiny obsahuje dostatečný počet částic, pro které lze specifikovat střední rychlost a střední kinetickou energii. Jsme tak schopni definovat pojmy rychlost, tlak, teplota, hustota a další důležité veličiny jako spojité funkce v rámci celého kontinua. Tato kapitola vychází různou měrou z publikací \cite{blazek2015computational, dvorak1987vnitrniaerodynamika, hirsch2007numerical, shapiro1953dynamics, furst2020mko2}
+Problém proudění či mechanika tekutin je v rámci této práce chápán jako zkoumání pohybu velkého množství částic a jejich interakce. Velké množství ve smyslu, že zkoumané fluidum má takovou hustotu, že lze použít aproximaci reality pomocí matematického kontinua. To nám říká, že i nekonečně malá (infinitesimální) část tekutiny obsahuje dostatečný počet částic, pro které lze specifikovat střední rychlost a střední kinetickou energii. Jsme tak schopni definovat pojmy rychlost, tlak, teplota, hustota a další důležité veličiny jako spojité funkce v rámci celého kontinua. Tato kapitola vychází různou měrou z publikací \cite{blazek2015computational, dvorak1987vnitrniaerodynamika, hirsch2007numerical, shapiro1953dynamics, furst2020mko2}
 
 \section{Základy matematického popisu proudění} \label{sec:zaklady_popisu}
 
 Odvození základních rovnic mechaniky tekutin se opírá tzv. zákony zachování. Pro případ obecné tekutiny to jsou
 \begin{enumerate}
-	\item zachování hmoty
+	\item zachování hmoty,
 	\item zachování hybnosti a
 	\item zachování energie.
 \end{enumerate}
-Pro případ nestlačitelné tekutiny si pak vystačíme pouze s prvními dvěma zmíněnými zákony zachování.
+Pro případ proudění tekutiny s konstantní hustotou si pak vystačíme pouze s prvními dvěma zmíněnými zákony zachování.
 
 Zachování určité veličiny znamená, že její časovou změnu uvnitř libovolného objemu lze vyjádřit jako množství veličiny proudící přes hranici zvoleného objemu a produkci veličiny uvnitř objemu. Často se také mluví o bilanci veličiny v určitém objemu. Množství veličiny, které proudí přes hranici objemu se nazývá tok. Obecně se tok dá rozdělit na dvě složky. Konvekci, způsobenou konvektivním přenosem veličiny, a difuzi, způsobenou pohybem molekul tekutiny v klidovém stavu. Difuzivní přenos závisí na gradientu dané veličiny a pro případ homogenní distribuce tedy vymizí.
 
@@ -18,15 +18,6 @@ Zachování určité veličiny znamená, že její časovou změnu uvnitř libov
 V předchozí kapitole se o zákonech zachování mluvilo v kontextu jistého objemu. Takovémuto libovolně zvolitelnému objemu se často říká kontrolní objem, nebo - pro účely numerické matematiky vhodněji - konečný kontrolní objem.
 
 Mějme obecný kontrolní objem $\Omega$ s uzavřenou hranicí $\Gamma$, který je pevný v prostoru s daným proudovým polem jak naznačuje obrázek \ref{fig:kontrolni-objem}. Zároveň lze definovat element hranice $\mathrm{d}S$ a jeho vnější normálu $\mathbf{n}$.
-\begin{figure}[h]
-	\def\svgwidth{0.8\textwidth}
-	\def\svgwidth{\columnwidth}
-	\graphicspath{{img/inkscape/}}
-	\includesvg{img/inkscape/kontr_objem}
-	%\includegraphics[width=0.7\textwidth]{img/inkscape/drawing.eps}
-	\caption[Kontrolní objem]{Pevný kontrolní objem v obecném proudovém poli.}
-	\label{fig:kontrolni-objem}
-\end{figure}
 
 Pro obecnou zachovávanou veličinu $W$ lze zákon zachování psát jako
 \begin{equation}\label{eq:zachovani}
@@ -42,26 +33,32 @@ a difuzivní tok vyjádřený pomocí zobecněného Fickova gradientního zákon
 \end{equation}
 kde $\kappa$ je koeficient difuzivity a dohromady tedy
 \begin{equation}
-\int_{\Gamma}\mathbf{F}(W) \cdot \mathbf{n} \, \mathrm{d}S = \int_{\Gamma}W\left[\mathbf{u}\cdot\mathbf{n}\right] - \kappa \rho \left[\nabla(W/\rho)\cdot \mathbf{n} \right] \mathrm{d}S.
+\int_{\Gamma}\mathbf{F}(W) \cdot \mathbf{n} \, \mathrm{d}S = \int_{\Gamma}\left(W\left(\mathbf{u}\cdot\mathbf{n}\right) - \kappa \rho \left(\nabla(W/\rho)\cdot \mathbf{n} \right)\right) \mathrm{d}S.
 \end{equation}
 Rovnici \ref{eq:zachovani} tak můžeme rozepsat do podoby
-\begin{equation}\label{eq:zachovani_skalarStoky}
-\dfrac{\partial}{\partial t} \int_{\Omega}W\,\mathrm{d}V + \int_{\Gamma}W\left[\mathbf{u}\cdot\mathbf{n}\right] - \kappa \rho \left[\nabla(W/\rho)\cdot \mathbf{n} \right] \mathrm{d}S = \int_{\Omega}Q_\Omega(W) \, \mathrm{d}V + \int_{\Gamma} \mathbf{Q_\Gamma}(W) \cdot \mathbf{n} \, \mathrm{d}S.
-\end{equation}
+\begin{multline}\label{eq:zachovani_skalarStoky}
+\dfrac{\partial}{\partial t} \int_{\Omega}W\,\mathrm{d}V + \int_{\Gamma}\left(W\left(\mathbf{u}\cdot\mathbf{n}\right) - \kappa \rho \left(\nabla(W/\rho)\cdot \mathbf{n} \right)\right) \mathrm{d}S = \\ = \int_{\Omega}Q_\Omega(W) \, \mathrm{d}V + \int_{\Gamma} \mathbf{Q_\Gamma}(W) \cdot \mathbf{n} \, \mathrm{d}S.
+\end{multline}
 Pro vektorovou veličinu lze udělat velmi podobné rozdělení, pouze s tím rozdílem, že všechny tři funkce $W$ ($\mathbf{F}, Q_{\Omega}, \mathbf{Q_\Gamma}$) budou o jeden tenzorový řád vyšší. Rovnice \ref{eq:zachovani} s rozdělením na tenzory konvektivního a difuzivního toku tak dostane podobu
-\begin{equation}\label{eq:zachovani_vektor}
-\dfrac{\partial}{\partial t} \int_{\Omega}\mathbf{W} \, \mathrm{d}V + \int_{\Gamma}\left(\mathbb{F}_K(\mathbf{W})-\mathbb{F}_D(\mathbf{W}) \right)\cdot \mathbf{n} \, \mathrm{d}S = \int_{\Omega} \mathbf{Q_\Omega}(\mathbf{W}) \, \mathrm{d}V + \int_{\Gamma} \mathbb{Q}_\Gamma(\mathbf{W}) \cdot \mathbf{n} \, \mathrm{d}S.
-\end{equation}
-Takto odvozený obecný zákon zachování (někdy taky bilanční rovnici) lze využít pro odvození základních rovnic proudění.
-
-
+\begin{multline}\label{eq:zachovani_vektor}
+\dfrac{\partial}{\partial t} \int_{\Omega}\mathbf{W} \, \mathrm{d}V + \int_{\Gamma}\left(\mathbb{F}_K(\mathbf{W})-\mathbb{F}_D(\mathbf{W}) \right)\cdot \mathbf{n} \, \mathrm{d}S =\\= \int_{\Omega} \mathbf{Q_\Omega}(\mathbf{W}) \, \mathrm{d}V + \int_{\Gamma} \mathbb{Q}_\Gamma(\mathbf{W}) \cdot \mathbf{n} \, \mathrm{d}S.
+\end{multline}
+Takto formulovaný obecný zákon zachování (někdy taky bilanční rovnici) lze využít pro odvození základních rovnic proudění.
+\begin{figure}
+	\def\svgwidth{\columnwidth}
+	\graphicspath{{img/inkscape/}}
+	\includesvg{img/inkscape/kontr_objem}
+	%\includegraphics[width=0.7\textwidth]{img/inkscape/drawing.eps}
+	\caption[Kontrolní objem]{Pevný kontrolní objem v obecném proudovém poli.}
+	\label{fig:kontrolni-objem}
+\end{figure}
 
 \subsection{Zákon zachování hmoty, rovnice kontinuity}
-Pro jednosložkové tekutiny vyjadřuje zákon zachování hmoty, tedy že hmotu v systému nelze vytvořit, ani ztratit, i.e. zdroj hmoty se uvnitř kontrolního nepředpokládá. Musí tedy platit, že změna hmotnosti uvnitř kontrolního objemu musí být rovna toku hmoty přes hranice kontrolního objemu, tedy
+Pro jednosložkové tekutiny vyjadřuje zákon zachování hmoty, že hmotu v systému nelze vytvořit, ani ztratit, i.e. zdroj hmoty se uvnitř kontrolního nepředpokládá. Musí tedy platit, že změna hmotnosti uvnitř kontrolního objemu musí být rovna toku hmoty přes hranice kontrolního objemu, tedy
 \begin{equation}
 -\dfrac{\partial}{\partial t}\int_\Omega \rho \,\mathrm{d}V = \int_\Gamma \rho \, u_i \, n_i \mathrm{d}S = \int_\Omega \dfrac{\partial\left(\rho u_i\right)}{\partial x_i}\mathrm{d}V.
 \end{equation}
-Po převedení obou integrálů na jednu stranu, záměně operací integrace a derivace a vyžití distributivity integrálu vzhledem k operaci součet, dostáváme obecný tvar rovnice kontinuity pro nestacionární proudění stlačitelné tekutiny
+Po převedení obou integrálů na jednu stranu, záměně operací integrace a derivace a vyžití distributivity integrálu vzhledem k operaci součet, dostáváme obecný tvar rovnice kontinuity pro nestacionární proudění tekutiny
 \begin{equation}\label{eq:kontinuita_stlacitelna}
 \dfrac{\partial \rho}{\partial t} + \dfrac{\partial \left(\rho u_i\right)}{\partial x_i} = 0.
 \end{equation}
@@ -69,11 +66,11 @@ Ke stejné rovnici dojdeme, pokud do rovnice zachovaní \ref{eq:zachovani_skalar
 \begin{equation}
 \nabla(W/\rho) = \nabla(\rho/\rho) = \nabla(1) = 0.
 \end{equation} 
-Za předpokladu nestlačitelnosti tekutiny, tedy že $\rho = konst.$ lze navíc rovnici \ref{eq:kontinuita_stlacitelna} zjednodušit na 
+Za předpokladu konstantní hustoty $\rho = konst.$ lze navíc rovnici \ref{eq:kontinuita_stlacitelna} zjednodušit na 
 \begin{equation}\label{eq:kontinuita_nestlacitelna}
 \dfrac{\partial u_i}{\partial x_i} = \nabla\cdot\mathbf{u} = 0,
 \end{equation}
-což se běžně označuje jako rovnice kontinuity pro proudění nestlačitelné tekutiny (v indexovém a vektorovém zápisu).
+což se běžně označuje jako rovnice kontinuity pro proudění tekutiny s konstantní hustotou (v indexovém a vektorovém zápisu).
 
 \subsection{Zákon zachování hybnosti, rovnice hybnosti}
 Odvození rovnice hybnosti vychází z druhého Newtonova zákona, který říká, že změna hybnosti je způsobena součtem sil účinkujících na element hmotnosti.
@@ -96,7 +93,7 @@ Nejdůležitější částí odvození rovnice hybnosti je interpretace zdrojov�
 	\item Povrchové síly působí přímo na povrchu $\Gamma$ kontrolního objemu. Jedná se o deformační působení vnějších sil. Tenzor napětí, kterým se často toto působení vyjadřuje lze rozdělit na sférickou a deviátorovou složku, které v případě tekutin lze interpretovat jako působení tlaku okolí a smykové a normálové napětí vznikající mezi okolím a kontrolním objemem.
 \end{enumerate}
 
-Objemové zdroje lze vyjádřit jednoduše. Pokud příslušnou vnější sílu vztáhneme na jednotku objemu $\rho \mathbf{f_e}$ lze psát
+Objemové zdroje lze vyjádřit jednoduše. Pokud příslušnou vnější sílu vztáhneme na jednotku objemu lze psát
 \begin{equation}
 \int_{\Omega} \mathbf{Q_\Omega} \mathrm{d}V = \int_{\Omega} \rho \mathbf{f_e} \,\mathrm{d}V.
 \end{equation}
@@ -107,35 +104,34 @@ Q_{\Gamma ij}&= -p_s \delta_{ij}+\tau_{ij},
 \end{align*}
 kde $\mathbb{I}$ je jednotkový tenzor, případně $\delta_{ij}$ Kroneckerovo delta. Pro Newtonskou tekutinu lze tenzor viskózního smykového napětí vyjádřit podle \cite{hirsch2007numerical} jako 
 \begin{equation}
-\tau_{ij}=\mu \left[ \left( \dfrac{\partial u_j}{\partial x_i} + \dfrac{\partial u_i}{\partial x_j} \right) - \dfrac{2}{3} \delta_{ij} \left(\nabla \cdot \mathbf{u}\right)  \right],
+\tau_{ij}=\mu \left[ \left( \dfrac{\partial u_j}{\partial x_i} + \dfrac{\partial u_i}{\partial x_j} \right) - \dfrac{2}{3} \delta_{ij} \left(\nabla \cdot \mathbf{u}\right)  \right].
 \end{equation}
-za předpokladu konstantní dynamické viskozity $\mu$ jak poukazuje \cite{dvorak1987vnitrniaerodynamika}.
 
-Nyní lze již psát soustavu pohybových Navierových-Stokesových (NS) rovnic v integrálním tvaru, tedy rovnice hybnosti pro stlačitelnou Newtonskou tekutinu, jako
+Nyní lze již psát soustavu pohybových Navierových-Stokesových (NS) rovnic v integrálním tvaru, tedy 
 \begin{equation}
-\dfrac{\partial}{\partial t} \int_{\Omega} \rho \mathbf{u} \,\mathrm{d}V + \int_{\Gamma} \rho \mathbf{u} (\mathbf{u}\cdot \mathbf{n}) + p\mathbf{n} - \tau \cdot \mathbf{n} \,\mathrm{d}S = \int_\Omega \mathbf{Q_\Omega} \,\mathrm{d}V.
+\dfrac{\partial}{\partial t} \int_{\Omega} \rho \mathbf{u} \,\mathrm{d}V + \int_{\Gamma} \left( \rho \mathbf{u} (\mathbf{u}\cdot \mathbf{n}) + p\mathbf{n} - \tau \cdot \mathbf{n}\right) \,\mathrm{d}S = \int_\Omega \mathbf{Q_\Omega} \,\mathrm{d}V.
 \end{equation}
 
-Často lze rovnici hybnosti nalézt i v diferenciálním tvaru, například v \cite{hirsch2007numerical}
+Často lze NS rovnici hybnosti nalézt pro tekutinu s konstantní viskozitou i v diferenciálním tvaru, například v \cite{hirsch2007numerical} a \cite{dvorak1987vnitrniaerodynamika}
 \begin{equation}
 \rho \dfrac{\partial \mathbf{u}}{\partial t} + \rho (\mathbf{u} \cdot \nabla)\mathbf{u} +\nabla p_s - \mu \left[ \Delta \mathbf{u} + \dfrac{1}{3} \nabla(\nabla \cdot \mathbf{u}) \right] = \rho \mathbf{f_e}.
 \end{equation}
 
-\subsection{Navierovy-Stokesovy rovnice pro nestlačitelnou tekutinu}
+\subsection{Navierovy-Stokesovy rovnice pro tekutinu s konstantní hustotou}
 
 Obecný systém NS rovnic lze pro speciální případy zjednodušit zanedbáním některých fyzikálních vlivů. 
-V této práci budeme později využívat zjednodušený tvar NS rovnic pro nestlačitelnou tekutinu. 
+V této práci budeme později využívat zjednodušený tvar NS rovnic pro tekutinu s konstantní hustotou. 
 Tedy $\rho=konst.$ čímž dostáváme rovnici kontinuity ve zjednodušeném tvaru \ref{eq:kontinuita_nestlacitelna}, tedy
 \begin{equation}\label{eq:NS_icoKontinuita}
 \nabla\cdot\mathbf{u} = 0
 \end{equation}
 a NS rovnice hybnosti v diferenciálním tvaru podle \cite{hirsch2007numerical} má podobu 
 \begin{equation}\label{eq:NS_icoDiff}
-\rho \dfrac{\partial \mathbf{u}}{\partial t}+ \rho(\mathbf{u}\cdot \nabla)\mathbf{u} = -\nabla p_s + \mu \Delta \mathbf{u} + \rho \mathbf{f_e}.
+\rho \dfrac{\partial \mathbf{u}}{\partial t}+ \rho(\mathbf{u}\cdot \nabla)\mathbf{u} = -\nabla p_s + \nabla \cdot (\mu \nabla \mathbf{u}) + \rho \mathbf{f_e}.
 \end{equation}
-Rovnici hybnosti jde dále vydělit konstantou hustoty, čímž dostaneme kinematický tlak $ p = \dfrac{p_s}{\rho} $ a rovnice \ref{eq:NS_icoDiff} přejde do tvaru
+Rovnici hybnosti jde dále vydělit konstantou hustoty, čímž dostaneme kinematický tlak $ p = \dfrac{p_s}{\rho} $ a viskozitu $ \nu=\dfrac{\mu}{\rho} $ a rovnice \ref{eq:NS_icoDiff} přejde do tvaru
 \begin{equation}\label{eq:NS_icoPseudotlak}
-\dfrac{\partial \mathbf{u}}{\partial t}+ (\mathbf{u}\cdot \nabla)\mathbf{u} = -\nabla p + \nu \Delta \mathbf{u} + \mathbf{f_e}.
+\dfrac{\partial \mathbf{u}}{\partial t}+ (\mathbf{u}\cdot \nabla)\mathbf{u} = -\nabla p + \nabla \cdot (\nu \nabla \mathbf{u}) + \mathbf{f_e}.
 \end{equation}
 
 
@@ -148,12 +144,20 @@ Popularita MKO pro numerické řešení problému proudění tkví podle \cite{h
 Zásadní výhodou z hlediska přesnosti MKO je pak princip tzv. konzervativní diskretizace (konzervativní ve smyslu zachovávající). Udržet v platnosti základní zákony zachování je důležitý aspekt správnosti řešení. MKO má tu výhodu, že konzervativní diskretizace je podle \cite{hirsch2007numerical} splněna automaticky díky přímé diskretizaci integrálního tvaru zákonů zachování. 
 
 \subsection{Konečný objem}
-MKO nese svůj název podle způsobu prostorové diskretizace, tj. rozdělení zkoumané oblasti $\Omega=\mathbb{R}^d$ na vzájemně disjunktní neprázdné otevřené podoblasti $\Omega_j$ s konečnou velikostí, matematicky psáno
+MKO nese svůj název podle způsobu prostorové diskretizace, tj. rozdělení zkoumané oblasti $\Omega\subset\mathbb{R}^d$ na vzájemně disjunktní neprázdné otevřené podoblasti $\Omega_j$ s konečnou velikostí, matematicky psáno
 \begin{align*}
 \overline{\Omega} = \cup^n_{i=1}\overline{\Omega}_i,&\\
 \Omega_i \cap \Omega_j = \emptyset,& \,\,\mathrm{pro} \, i \neq j.
 \end{align*}
-Tyto konečné objemy (někdy taky buňky) jsou analogií kontrolního objemů z části \ref{sec:kontrolni_objem}. Jakmile máme takto rozdělenou výpočetní oblast, tak na každý konečný objem aplikujeme zákon zachování v integrálním tvaru. To si můžeme dovolit, neboť zákony zachování byly v sekci \ref{sec:zaklady_popisu} odvozeny pro libovolný kontrolní objem a lze je tedy aplikovat na každý konečný podobjem zvlášť. Obecný zákon zachování popsaný rovnicí \ref{eq:zachovani} má pro j-tý kontrolní objem tvar
+\begin{figure}[]
+	\centering
+	\def\svgwidth{0.9\textwidth}
+	\graphicspath{{img/inkscape/}}
+	\includesvg{img/inkscape/cellsketch}
+	\caption[Konečný objem]{Náčrt prostorové diskretizace. Buňka se středem $ C $ je ohraničena čtyřmi stěnami $ f $ a sousedí se čtyřmi dalšími buňkami $ N $. Naznačeny jsou i vektor spojující středy buněk a vektor ze středu buňky $ C $ do středu stěny $ f $.}
+	\label{fig:cellsketch}
+\end{figure}
+Tyto konečné objemy (někdy taky buňky) na obrázku \ref{fig:cellsketch} jsou analogií kontrolního objemů z části \ref{sec:kontrolni_objem}. Jakmile máme takto rozdělenou výpočetní oblast, tak na každý konečný objem aplikujeme zákon zachování v integrálním tvaru. To si můžeme dovolit, neboť zákony zachování byly v sekci \ref{sec:zaklady_popisu} odvozeny pro libovolný kontrolní objem a lze je tedy aplikovat na každý konečný podobjem zvlášť. Obecný zákon zachování popsaný rovnicí \ref{eq:zachovani} má pro j-tý kontrolní objem tvar
 \begin{equation}\label{eq:zachovani_MKO}
 \frac{\partial}{\partial t} \int_{\Omega_j}W\,\mathrm{d}V + \int_{\Gamma_j} \mathbf{F} \cdot \mathbf{n} \,\mathrm{d}S = \int_{\Omega_j}Q_\Omega \,\mathrm{d}V,
 \end{equation}
@@ -208,7 +212,7 @@ Pro diskretizaci takového členu můžeme vztah upravit na
 \begin{equation}
 \mathbf{F_D} = -\kappa \dfrac{\partial W_f}{\partial \mathbf{n_f}} S_f,
 \end{equation}
-kde $\dfrac{\partial W_f}{\partial \mathbf{n_f}}$ je tzv. derivace ve směru normály stěny $f$ a $S_f$ je plocha stěny. Pokud stěna $f$ je právě mezi středy buněk $ j=C $ a $ j=N $, tedy $ n_f $ je vnější normála vzhledem k buňce $ C $ a vnitřní vzhledem k $ N $, tak lze derivaci ve směru aproximovat pomocí 
+kde $\dfrac{\partial W_f}{\partial \mathbf{n_f}}$ je tzv. derivace ve směru normály stěny $f$ a $S_f$ je plocha stěny. Pokud stěna $f$ je právě mezi středy buněk $ j=C $ a $ j=N $, tedy $ \mathbf{n_f} $ je vnější normála vzhledem k buňce $ C $ a vnitřní vzhledem k $ N $, tak lze derivaci ve směru aproximovat pomocí 
 \begin{equation}
 \dfrac{\partial W_f}{\partial \mathbf{n_f}} \approx \dfrac{W_N-W_C}{||\mathbf{x_N}-\mathbf{x_C}||}.
 \end{equation}
@@ -223,7 +227,7 @@ Druhou částí toku přes stěnu je konvektivní tok, z rovnice \ref{eq:aprox_t
 W_f \mathbf{u_f}\cdot \mathbf{S_f}=W_f\phi_f,
 \end{equation}
 kde jsme skalární součin $ \mathbf{u_f}\cdot \mathbf{S_f} $ označili jako $ \phi_f $, tzv. konvektivní tok přes stěnu $ f $. Interpolace $ W_f $ lze pro případ ortogonální sítě s konstantním krokem zapsat jednoduše jako
-\begin{equation}
+\begin{equation}\label{eq:konv_linterp}
 W_f = \dfrac{W_C+W_N}{2}.
 \end{equation}
 Interpolaci lze provést i lepšími způsoby, které kompenzují případné nedokonalosti či nerovnoměrnosti v síti. Například pro ortogonální síť s nerovnoměrným krokem je vhodnější formulovat interpolaci jako
@@ -236,9 +240,28 @@ W_f \approx \dfrac{||\mathbf{x_{Nf}}|| W_C + ||\mathbf{x_{Cf}}|| W_N }
 \end{equation}
 kde $ \mathbf{x_{jf}} $ je vektor mezi středem buňky $ j=C,N $ a středem stěny $ f $.
 
+Mnohem spolehlivější variantou jak aproximovat hodnotu $ W_f $ pomocí hodnot v buňkách $ C $ a $ N $ je tzv. protiproudé schéma (anglicky \textit{upwind scheme}). Hodnota $ W_f $ je aproximována podle znaménka $ \phi_f $. Kladné znaménko značí, že unášivá rychlost $ \mathbf{u_f} $ směřuje z buňky $ C $ do $ N $, jak tomu je i v případě naznačeném na obrázku \ref{fig:upwind}. Předpis pro hodnotu $ W $ na stěně lze tedy zapsat jako
+\begin{equation}\label{eq:upwind}
+W_f=
+\begin{cases}
+W_C \quad \text{pro}\, \phi_f>0,\\
+W_N \quad \text{pro}\, \phi_f<0.
+\end{cases}
+\end{equation}
+Schéma upwind je pouze prvního řádu přesnosti a v praxi se pak často kombinuje např. s lineární interpolací \ref{eq:konv_linterp} pro zvýšení přesnosti. Příkladem jsou TVD (zkratka anglického \textit{total variation dimishing}) schémata \cite{harten1983high, harten1984class} využívající princip monotónnosti \cite{godunov1959difference}.
+\begin{figure}
+	\def\svgwidth{0.85\textwidth}
+	\graphicspath{{img/inkscape/}}
+	\includesvg{img/inkscape/upwind}
+	%\includegraphics[width=0.7\textwidth]{img/inkscape/drawing.eps}
+	\caption[Schéma upwind]{Aproximace hodnoty $ W_f $ pomocí schématu upwind pro případ kladného toku stěnou $ f $.}
+	\label{fig:upwind}
+\end{figure}
+
+
 \section{SIMPLE algoritmus}\label{sec:simple}
 
-Algoritmus SIMPLE (zkratka pro \textit{semi-implicit pressure linked equations}) pro řešení problému proudění nestlačitelné tekutiny lze v jeho původní variantě nalézt například v \cite{patankar1983calculation}. Od té doby se objevilo spoustu úprav a vylepšení jako SIMPLER\cite{anderson1997computational}, SIMPLEST nebo SIMPLEC\cite{van1984enhancements}. 
+Algoritmus SIMPLE (zkratka pro \textit{semi-implicit pressure linked equations}) pro řešení problému proudění tekutiny s konstantní hustotou lze v jeho původní variantě nalézt například v \cite{patankar1983calculation}. Od té doby se objevilo spoustu úprav a vylepšení jako SIMPLER\cite{anderson1997computational}, SIMPLEST nebo SIMPLEC\cite{van1984enhancements}. 
 
 \subsection{Myšlenka segregovaných algoritmů}
 Algoritmus SIMPLE je jeden ze základních příkladů tzv. segregovaných algoritmů. Rovnice ze soustavy NS rovnic se zde neřeší jako jeden celek, ale odděleně každá zvlášť. Výhodou oproti klasickému sdruženému algoritmu je, že se vyhneme řešení rozsáhlé soustavy rovnic se špatně podmíněnou maticí, jak zmiňuje \cite{furst2020mko2}. 
@@ -263,13 +286,13 @@ což odpovídá vynásobení diagonálních prvků matice $ \mathbb{A} $ koefici
 \subsection{Varianta algoritmu SIMPLE s rovnicí pro tlak}
 V softwarové knihovně OpenFOAM \cite{weller1998tensorial}, která je pro potřeby aplikace v rámci této práce využita, je dle \cite{furst2020mko2} algoritmus SIMPLE implementován v následující formě. 
 
-Algoritmus řeší Navierovy-Stokesovy rovnice pro proudění nestlačitelné tekutiny a vychází ze tvaru
+Algoritmus řeší Navierovy-Stokesovy rovnice pro proudění tekutiny s konstantní hustotou a vychází ze tvaru
 \begin{align}
 \nabla \cdot (\mathbf{u} \mathbf{u} ) - \nabla \cdot (\nu \nabla \mathbf{u}) &= - \nabla p, \label{eq:simple_hyb}\\
 \nabla \cdot \mathbf{u} &=0. \label{eq:simple_kont}
 \end{align}
 
-Nejprve se stanoví odhad rychlosti $ \mathbf{u}^* $ pomocí tlaku z předchozí iterace (případně z počáteční podmínky) z diskretizované rovnice hybnosti \ref{eq:NS_icoPseudotlak}, ve které je konvektivní člen linearizován Picardovou aproximací\cite{furst2020mko2}. Pro odhad rychlosti tak dostáváme rovnici
+Nejprve se stanoví odhad rychlosti $ \mathbf{u}^* $ pomocí tlaku z předchozí iterace (případně z počáteční podmínky) z diskretizované rovnice hybnosti \ref{eq:NS_icoPseudotlak}, ve které je konvektivní člen linearizován Picardovou aproximací \cite{furst2020mko2}. Pro odhad rychlosti tak dostáváme rovnici
 \begin{equation}\label{eq:simple_odhadU}
 a_C^0\mathbf{u_C^*}
 =
@@ -313,7 +336,7 @@ Aktualizuje se i hodnota objemového toku stěnami podle rovnice
 \phi_f^n=\mathbf{\widehat{u}^*_f}\cdot \mathbf{S_f}-\dfrac{1}{a_f^0}\nabla p_f^n\cdot S_f.
 \end{equation}
 Cyklus další iterace pak začíná opět řešením rovnice \ref{eq:simple_odhadU}.
-
+\newpage
 Jedna celá iterace algoritmu SIMPLE ve variantě s rovnicí pro tlak lze tedy shrnout následovně:
 \begin{enumerate}
 	\item Na základě známých hodnot $ \mathbf{u^0} $ a $ \phi^0 $ se sestaví aproximace levé strany rovnice hybnosti \ref{eq:simple_hyb} pro rychlost $ \mathbf{u^*} $
@@ -344,26 +367,23 @@ Jedna celá iterace algoritmu SIMPLE ve variantě s rovnicí pro tlak lze tedy s
 	\phi_f^n&=\mathbf{\widehat{u}^*_f}\cdot \mathbf{S_f}-\dfrac{1}{a_f^0}\nabla p_f^n\cdot S_f.
 	\end{align}
 \end{enumerate}
-
-\section{Turbulence, modelování turbulence}
-v rychlosti o RANS, model turbulence Spalart a K-Omega rozdil vyhody a vhodnost aplikace (ucel modelu)
-
-\section{Modelování turbulence pomocí RANS}
-Numerické řešení Navierových-Stokesových rovnic ve tvaru \ref{eq:NS_icoKontinuita}, \ref{eq:NS_icoDiff} vede k přímé numerické simulaci(anglicky \textit{direct numerical simulation} DNS). Výpočetní síť pro DNS musí ale v takovém případě rozlišit jevy měřítka od charakteristického rozměru až po úroveň Kolmogorových měřítek. Počet buněk v síti pro DNS roste s mocninou Reynoldsova čísla $ Re^{\dfrac{9}{4}} $. Pro inženýrské aplikace s Reynoldsovými čísly v řádu miliónů se tak naráží na limitaci výpočetního výkonu.
-Tento problém se často obchází statistickým přístupem, takzvaným Reynoldsovým středěním\cite{dvorak1987vnitrniaerodynamika}. Tento způsob, často označovaný jako RANS či RAS, je založen na definici časového středění
+\newpage
+\section{Modelování turbulence metodou RANS}
+Numerické řešení Navierových-Stokesových rovnic ve tvaru \ref{eq:NS_icoKontinuita}, \ref{eq:NS_icoDiff} vede k přímé numerické simulaci(anglicky \textit{direct numerical simulation} DNS). Výpočetní síť pro DNS musí ale v takovém případě rozlišit jevy měřítka od charakteristického rozměru až po úroveň Kolmogorových měřítek. Počet buněk v síti pro DNS roste s mocninou Reynoldsova čísla $ Re^{\frac{9}{4}} $. Pro inženýrské aplikace s Reynoldsovými čísly v řádu miliónů se tak naráží na limitaci výpočetního výkonu.
+Tento problém se často obchází statistickým přístupem, takzvaným Reynoldsovým středěním \cite{dvorak1987vnitrniaerodynamika}. Tento způsob, často označovaný jako RANS či RAS, je založen na definici časového středění
 \begin{equation}
 \overline{W}=\lim\limits_{T\to\infty}\frac{1}{T}\int_{t}^{t+T}W(\tau)d\tau.
 \end{equation}
 Dále se předpokládá, že časově závislé hodnoty proudových proměnných můžeme rozdělit na střední (časově středěnou) a fluktuační složku, tedy
 \begin{align}
-p&=\overline{p}+p'\\
-\mathbf{u} &= \overline{\mathbf{u}}+\mathbf{u}'
+p&=\overline{p}+p',\\
+\mathbf{u} &= \overline{\mathbf{u}}+\mathbf{u}'.
 \end{align}
-Při aplikaci tohoto středění na rovnici kontinuity pro tekutinu s konstantní hustotou, dostaneme stejný tvar jako \ref{eq:NS_icoKontinuita} jen pro časově střední hodnoty\cite{dvorak1987vnitrniaerodynamika}, tedy
+Při aplikaci tohoto středění na rovnici kontinuity pro tekutinu s konstantní hustotou, dostaneme stejný tvar jako \ref{eq:NS_icoKontinuita} jen pro časově střední hodnoty \cite{dvorak1987vnitrniaerodynamika}, tedy
 \begin{equation}
 \nabla \cdot \overline{\mathbf{u}} = 0.
 \end{equation}
-Aplikací časového středění na rovnici hybnosti pro tekutinu s konstantní hustotou dostáváme
+Aplikací časového středění na rovnici hybnosti pro tekutinu s konstantní hustotou dostáváme \cite{dvorak1987vnitrniaerodynamika}
 \begin{equation}\label{eq:RANS_hybnostVekt}
 \dfrac{\partial \overline{\mathbf{u}}}{\partial t} + (\overline{\mathbf{u}}\cdot \nabla) \overline{\mathbf{u}}=-\nabla\overline{p} +\nabla \cdot (2\nu \mathbb{D} (\overline{\mathbf{u}}) - \overline{\mathbf{u}\mathbf{u}}),
 \end{equation}
@@ -374,17 +394,17 @@ kde operátor $ \mathbb{D}(\mathbf{u})=\frac{1}{2}(\nabla\mathbf{u}+\nabla\mathb
 \end{equation}
 
 \section{Modely turbulence}
-Ve středěné rovnici \ref{eq:RANS_hybnostVekt} přibyl oproti původní rovnici hybnosti neznámý člen $-\overline{u_i' u_j'}$ nazývaný turbulentní Reynoldsovo napětí. Výraz $ \frac{\partial}{\partial x_j}\overline{u_i' u_j'} $ vyjadřuje výměnu hybnosti mezi turbulencí a časově středním prouděním \cite{dvorak1987vnitrniaerodynamika}. Reynoldsovo turbulentní napětí je druhý statistický moment a systém PDR tak v této formě není uzavřený. Pokud bychom napsali vynásobili původní rovnici $ \cdot u_j $ ve snaze získat rovnici pro tento druhý statistický moment, tak by vznikl opět člen vyššího statistického momentu a tak dále. Pro uzavření RANS rovnic je tedy potřeba doplnit vztah pro výpočet šesti složek turbulentního Reynoldsova napětí. Existují dva základní principy. První způsob aproximuje rovnou složky tenzoru Reynoldsových napětí, takové aproximace nazýváme modely turbulence prvního řádu. Druhý způsob naopak aproximuje až třetí statistický moment vystupující v transportní rovnici pro turbulentní Reynoldsovo napětí. Takovéto aproximace nazýváme modely turbulence druhého řádu. V této práci se používají modely turbulence prvního řádu a jsou dále rozvedeny.
+Ve středěné rovnici \ref{eq:RANS_hybnostVekt} přibyl oproti původní rovnici hybnosti neznámý člen $-\overline{u_i' u_j'}$ nazývaný turbulentní Reynoldsovo napětí. Výraz $ \frac{\partial}{\partial x_j}\overline{u_i' u_j'} $ vyjadřuje výměnu hybnosti mezi turbulencí a časově středním prouděním \cite{dvorak1987vnitrniaerodynamika}. Reynoldsovo turbulentní napětí je druhý statistický moment a systém PDR tak v této formě není uzavřený. Pokud bychom vynásobili původní rovnici $ \cdot u_j $ ve snaze získat rovnici pro tento druhý statistický moment, tak by vznikl opět člen vyššího statistického momentu a tak dále. Pro uzavření RANS rovnic je tedy potřeba doplnit vztah pro výpočet šesti složek turbulentního Reynoldsova napětí. Existují dva základní principy. První způsob aproximuje rovnou složky tenzoru Reynoldsových napětí, takové aproximace nazýváme modely turbulence prvního řádu. Druhý způsob naopak aproximuje až třetí statistický moment vystupující v transportní rovnici pro turbulentní Reynoldsovo napětí. Takovéto aproximace nazýváme modely turbulence druhého řádu. V této práci se používají modely turbulence prvního řádu a jsou dále rozvedeny.
 
 \subsection{Boussinesqova hypotéza}
-Modely turbulence prvního řádu jsou často založeny na Boussinesqově hypotéze. Tato hypotéza aproximuje tenzor Reynoldsových napětí, který je, podobně jako v případě běžného tenzoru vazkých napětí, pomocí nově zavedené turbulentní viskozity $\nu_t$, středovaného tenzoru rychlosti deformace $\overline{D}_{ij}$ a kinetické energie turbulence $k= \frac{1}{2}\overline{u'_i u'_i}$. Finální vyjádření tenzoru Reynoldsových napětí podle Boussinesqovy hypotézy je následující
+Modely turbulence prvního řádu jsou často založeny na Boussinesqově hypotéze. Tato hypotéza aproximuje tenzor Reynoldsových napětí, který je, podobně jako v případě běžného tenzoru vazkých napětí, pomocí nově zavedené turbulentní viskozity $\nu_t$, středovaného tenzoru rychlosti deformace $\overline{D}_{ij}$ a turbulentní kinetické energie $k= \frac{1}{2}\overline{u'_i u'_i}$. Finální vyjádření tenzoru Reynoldsových napětí podle Boussinesqovy hypotézy je následující
 \begin{equation}\label{eq:boussinesq}
 -\overline{u'_i u'_j} = 2\nu_t \overline{S}_{ij} -\frac{2}{3}k\delta_{ij}.
 \end{equation}
-Takto byl problém uzavření systému RANS rovnic přenesen na problém hledání jediné proměnné $ \nu_t $. Modely turbulence prvního řádu se tedy liší ve způsobu jakým turbulentní vazkost počítají. V této práci bude následně použit model Spalart-Allmaras a $k\text{-}\omega$ SST, které jsou popsány ve zbytku této kapitoly.
+Takto byl problém uzavření systému RANS rovnic přenesen na problém hledání $ \nu_t $ a $ k $. Modely turbulence prvního řádu se tedy liší ve způsobu jakým turbulentní vazkost počítají. V této práci bude následně použit Spalartův-Allmarasův model a $k\text{-}\omega$ SST, které jsou popsány ve zbytku této kapitoly.
 
-\subsection{Model Spalart-Allmaras}
-Tento model turbulence je zástupcem jedno-rovnicových modelů turbulence a byl poprvé publikován Spalartem a Allmarasem v \cite{spalart1992one}. Tento jedno-rovnicový model je založen na transportu pomocné proměnné $\widetilde{\nu}$ (někdy také nazývané Spalartova-Allmarasova proměnná). V tomto případě je z Boussinesqovy hypotézy vynechán člen s kinetickou energií turbulence
+\subsection{Spalartův-Allmarasův model}
+Tento model turbulence je zástupcem jednorovnicových modelů turbulence a byl poprvé publikován Spalartem a Allmarasem v \cite{spalart1992one}. Tento jednorovnicový model je založen na transportu pomocné proměnné $\widetilde{\nu}$ (někdy také nazývané Spalartova-Allmarasova proměnná). V tomto případě je z Boussinesqovy hypotézy vynechán člen s kinetickou energií turbulence
 \begin{equation}
 -\overline{u'_i u'_j} = 2\nu_T \overline{S}_{ij}.
 \end{equation}
@@ -411,7 +431,7 @@ c_{b1} &= 0.1355,  &c_{b2} &= 0.622,  &c_{v1} &= 7.1,  &c_{t3} &= 1.2, &c_{t4} &
 c_{w1} &= \frac{c_{b1}}{\kappa^2} + \frac{1+c_{b2}}{\sigma},  &c_{w2} &= 0.3,  &c_{w3} &= 2,  &\kappa &= 0.41,  &\sigma &= 2/3.
 \end{align*}
 
-Spalartův-Allmarasův model turbulence není výpočetně nějak zvlášť náročný, neb je jen jedno-rovnicový. Na druhou stranu byl vyvinut pro aplikaci ve vnější aerodynamice (obtékání profilů křídel) a pro jiné aplikace tak není zaručena jeho spolehlivost.
+Spalartův-Allmarasův model turbulence není výpočetně nějak zvlášť náročný, neb je jen jednorovnicový. Na druhou stranu byl vyvinut pro aplikaci ve vnější aerodynamice (obtékání profilů křídel) a pro jiné aplikace tak není zaručena jeho spolehlivost.
 
 \subsection{$k\text{-}\omega$ SST model}
 
@@ -445,5 +465,5 @@ Konstanty tohoto modelu nabývají hodnot
 \beta^\ast &= 0.09,  &\kappa &= 0.41,  &a_1 &= 0.31.
 \end{align*} 
 
-Menterův model $ k\text{-}\omega $ SST vyšel z kombinace modelů $ k\text{-}\omega $ a $ k\text{-}\epsilon $ jako funkce vzdálenosti od stěny $ d $ přes vážící funkce $ F_1 $ a $ F_2 $. $ k\text{-}\omega $ funguje totiž lépe blízko stěny a $ k\text{-}\epsilon $ naopak lépe modeluje turbulenci ve volném proudu. Model $ k\text{-}\omega $ SST se na rozdíl od modelu Spalartova-Allmarasova běžně používá v aplikacích vnitřní aerodynamiky. Dalším zlepšením modelu $ k\text{-}\omega $ SST je jeho varianta přechodová, i.e. rozlišující mezi laminárním a turbulentním regionem. Model Langtryho-Menterův $ k\text{-}\omega $ SST, někdy označovaný jako $ \gamma\text{-}Re_\theta $, je pokročilý čtyř-rovnicový model a může tak značně zatížit výpočetní čas.
+Menterův model $ k\text{-}\omega $ SST vyšel z kombinace modelů $ k\text{-}\omega $ a $ k\text{-}\epsilon $ jako funkce vzdálenosti od stěny $ d $ přes vážící funkce $ F_1 $ a $ F_2 $. $ k\text{-}\omega $ funguje totiž lépe blízko stěny a $ k\text{-}\epsilon $ naopak lépe modeluje turbulenci ve volném proudu. Model $ k\text{-}\omega $ SST se na rozdíl od Spalartova-Allmarasova modelu běžně používá v aplikacích vnitřní aerodynamiky. Dalším zlepšením modelu $ k\text{-}\omega $ SST je jeho varianta přechodová, i.e. rozlišující mezi laminárním a turbulentním regionem. Tento Langtryho a Menterův model $ k\text{-}\omega $ SST, někdy označovaný jako $ \gamma\text{-}Re_\theta $, je pokročilý čtyř-rovnicový model a může tak značně zatížit výpočetní čas.
 

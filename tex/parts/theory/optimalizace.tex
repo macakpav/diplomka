@@ -32,7 +32,7 @@ Typický optimalizační cyklus lokální metody lze zapsat následovně:
 	\end{description}
 \end{addmargin}
 Různé algoritmy se odlišují ve způsobu vyhodnocení gradientu v kroku 2. (citlivostní gradient, sdružená metoda) a následně se větví podle práce s tímto gradientem, jako například metoda konjugovaných gradientů (CGM)\cite{hestenes1952methods}, algoritmus Broyden–Fletcher–Goldfarb–Shanno (BFGS)\cite{fletcher1987practical} nebo projekce omezení \cite{rosen1960gradient} pro dodatečně podmíněnou optimalizaci.  
-
+\newpage
 \section{Metoda sdružené optimalizace}
 
 Metoda sdružené optimalizace se snaží vyřešit problém popsaný v sekci \ref{sec:zaklady_opt}. 
@@ -60,7 +60,7 @@ Najděte takovou kombinaci parametrů g, primárních proměnných $ \phi $ a sd
 
 Z matematického hlediska je dobré podotknout, že všechny argumenty $ L $ jsou na sobě nezávislé. Pro $ J $ tomu tak nebylo, protože $ \xi $ a $ g $ spolu byli svázané přes podmiňující rovnice $ R(\phi, g)=0 $ a nešlo je tak volit nezávisle. Abychom splnili podmínku stacionarity, jak požaduje problém \ref{prob:Lagrange}, musí být variance $ L $ podle všech proměnných rovna nule.
 
-\subsection{Optimální systém rovnic}
+\subsection{Systém rovnic optimality}
 V této části jsou ukázány jednotlivé variace 
 \begin{equation}\label{eq:L_variace}
 \delta L = \delta_\xi L + \delta_\phi L + \delta_g L
@@ -153,7 +153,7 @@ použijeme
 \begin{equation*}
 \frac{\partial J}{\partial \phi}\delta\phi = \left\langle 1, \frac{\partial J}{\partial \phi}\delta\phi \right\rangle
 \end{equation*}
-a označíme $ (\cdot)^* $ sdružený operátor k $  \left\langle \, \cdot\,,\cdot \,  \right\rangle $, tedy
+a označíme $ (\cdot)^* $ sdružený operátor vzhledem k $  \left\langle \, \cdot\,,\cdot \,  \right\rangle $, tedy
 \begin{equation*}
 \left\langle   \left(\frac{\partial J}{\partial \phi}\right)^* ,\delta\phi  \right\rangle
 +  \left\langle \left(\dfrac{\partial R}{\partial \phi}\right)^* \xi ,  \delta\phi\right\rangle
@@ -189,7 +189,7 @@ a po aplikování stejného postupu jako pro vztah \ref{eq:sdruzene_rce}, dostan
 - \left(\dfrac{\partial J}{\partial g}\right)^*.
 \end{equation}
 
-\subsubsection{Řešení soustavy optimálních rovnic}
+\subsubsection{Řešení systému rovnic optimality}
 Vyřešením soustavy optimálních rovnic \ref{eq:vazebni_rce}, \ref{eq:sdruzene_rce} a \ref{eq:podminky_optimalnosti} získáme řešení problému \ref{prob:Lagrange} a tedy i \ref{prob:optimalizace}. Analyticky lze systém vyřešit pouze ve speciálních případech a oproti základnímu systému, tedy vazebním rovnicím, je tento nesegregovaný systém často masivní, jak upozorňuje \cite{karman1997inverse}. Vyřešením této soustavy jako nesegregované dostaneme přímo optimální hodnoty návrhových parametrů, bohužel to v mnoha případech není možné. Řešení soustavy rovnic segregovaným způsobem už je schůdnější varianta, vyžaduje však iterativní proces a lze ukázat, že iterační metoda řešící každou z tří části odděleně je ekvivalentní k metodě nejvyššího spádu\cite{karman1997inverse}, jejíž rychlost konvergence je často nedostačující. Jak bylo již řečeno v úvodu této sekce, lze sdruženou metodu použít i jiným způsobem a to pro výpočet gradientu/variace $ \frac{\mathrm{d} J}{\mathrm{d} g} $, který je posléze použit v optimalizačním cyklu podle předpisu \ref{eq:bnew_step}.
 
 \subsection{Gradient pomocí sdružené metody}
@@ -212,7 +212,7 @@ Získat gradient cílové funkce je v rámci optimalizačního cyklu, nastíněn
 \end{equation}
 Mějme řešení sdružených rovnic \ref{eq:sdruzene_rce} v n-té iteraci, i.e. mějme $ \xi^{(n)} $, které řeší
 \begin{equation}\label{eq:temp1}
-\xi^{(n)} \cdot \dfrac{\partial R}{\partial \phi} \Bigr|_{g^{(n)}}=\dfrac{\partial J}{\partial \phi}\Bigr|_{g^{(n)}}.
+\xi^{(n)} \cdot \dfrac{\partial R}{\partial \phi} (\phi^{(n)}, \, g^{(n)})=\dfrac{\partial J}{\partial \phi}(\phi^{(n)}, \, g^{(n)}).
 \end{equation}
 Dosazením \ref{eq:temp1} do rovnice \ref{eq:gradient_cilove_fce} dostaneme 
 \begin{equation*}
@@ -223,25 +223,25 @@ Dosazením \ref{eq:temp1} do rovnice \ref{eq:gradient_cilove_fce} dostaneme
 \cdot 
 \left(
 \dfrac{\partial R}
-{\partial \phi}\Bigr|_{g^{(n)}}
+{\partial \phi}(\phi^{(n)}, \, g^{(n)})
 \right)
 \dfrac{\mathrm{d}\phi}
-{\mathrm{d}g}\Bigr|_{g^{(n)}}
+{\mathrm{d}g}(\phi^{(n)}, \, g^{(n)})
 +
 \dfrac{\partial J}
-{\partial g}\Bigr|_{g^{(n)}},
+{\partial g}(\phi^{(n)}, \, g^{(n)}),
 \end{equation*}
 kam dosadíme variaci vazebních rovnic $ R(\phi,g)=0 $
 \begin{equation*}
 \left(
 \dfrac{\partial R}
-{\partial \phi}\Bigr|_{g^{(n)}}
+{\partial \phi}(\phi^{(n)}, \, g^{(n)})
 \right)
 \dfrac{\mathrm{d}\phi}
-{\mathrm{d}g}\Bigr|_{g^{(n)}}
+{\mathrm{d}g}(\phi^{(n)}, \, g^{(n)})
 =
 -\dfrac{\partial R}
-{\partial g}\Bigr|_{g^{(n)}},
+{\partial g}(\phi^{(n)}, \, g^{(n)}),
 \end{equation*}
 čímž se dopracujeme k hledanému vztahu
 \begin{equation*}
@@ -251,16 +251,16 @@ kam dosadíme variaci vazebních rovnic $ R(\phi,g)=0 $
 -\xi^{(n)} 
 \cdot 
 \dfrac{\partial R}
-{\partial g}\Bigr|_{g^{(n)}}
+{\partial g}(\phi^{(n)}, \, g^{(n)})
 +
 \dfrac{\partial J}
-{\partial g}\Bigr|_{g^{(n)}},
+{\partial g}(\phi^{(n)}, \, g^{(n)}),
 \end{equation*}
-V optimalizačních úlohách se ke zjištění gradientů typicky používá metoda konečných diferencí. Náročnost výpočtu ale roste přímo úměrně s počtem návrhových parametrů, kdežto ve sdružené metodě závisí vyhodnocení gradientu převážně na rychlosti výpočtu sdružených PDR. Ve sdružené metodě je pak navíc potřeba odvodit příslušné PDR a to teoreticky pro každou cílovou funkci. Prakticky lze ale určit dostatečně obecný předpis pro cílovou funkci, odvodit rovnice pro ni a konkrétní předpis dosadit až později.
+V optimalizačních úlohách, kde se ke zjištění gradientů používá metoda konečných diferencí, roste náročnost výpočtu úměrně k počtu návrhových parametrů. Ve sdružené metodě závisí vyhodnocení gradientu převážně na rychlosti výpočtu sdružených PDR. Ve sdružené metodě je ale navíc potřeba odvodit příslušné PDR a to teoreticky pro každou cílovou funkci. Prakticky lze ale určit dostatečně obecný předpis pro cílovou funkci, odvodit rovnice pro něj a konkrétní předpis dosadit až později.
 
-\subsection{Sdružené rovnice pro proudění nestlačitelné tekutiny} \label{sec:adjoint_rce}
+\subsection{Sdružené rovnice pro proudění tekutiny s konstantní hustotou} \label{sec:adjoint_rce}
 
-V této podsekci budou odvozeny sdružené rovnice pro tvarovou optimalizaci v nestlačitelném proudění podle \cite{papadimitriou2007continuous, furst2020mko2}. Podmiňující rovnice budou tedy NS rovnice pro stacionární stav s tekutinou o konstantní hustotě, tedy rovnice hybnosti
+V této podsekci budou odvozeny sdružené rovnice pro tvarovou optimalizaci v proudění tekutiny s konstantní hustotou podle \cite{papadimitriou2007continuous, furst2020mko2}. Podmiňující rovnice budou tedy NS rovnice pro stacionární stav s tekutinou o konstantní hustotě, tedy rovnice hybnosti
 \begin{equation}\label{eq:rce_hybnosti}
 \mathbf{R^u}=\left(\mathbf{u}\cdot\nabla\right)\mathbf{u} + \nabla p - \nabla \cdot 2 \nu \mathbb{D}(\mathbf{u}),
 \end{equation}
@@ -268,7 +268,7 @@ kde operátor $ \mathbb{D}(\mathbf{u}) $ má stejný význam jako v případě r
 \begin{equation}
 R^p=-\nabla \cdot \mathbf{u}.
 \end{equation}\label{eq:rce_kontinuity}
-Primární proměnné jsou tedy v tomto případě rychlost $ \mathbf{u} $ a měrný tlak ve smyslu rovnice \ref{eq:NS_icoPseudotlak}, tedy $ p = \dfrac{p_{fyz}}{\rho}$. K nim budou odpovídat sdružené proměnné $ \xi = (\mathbf{v},q) $. Obecnou cílovou funkci lze v rámci mnoha inženýrských aplikací zapsat pomocí integrálu přes výpočetní oblast a integrálu přes hranici, tedy
+Primární proměnné jsou tedy v tomto případě rychlost $ \mathbf{u} $ a kinematický tlak ve smyslu rovnice \ref{eq:NS_icoPseudotlak}, tedy $ p = \dfrac{p_{s}}{\rho}$. K nim budou odpovídat sdružené proměnné $ \xi = (\mathbf{v},q) $. Obecnou cílovou funkci lze v rámci mnoha inženýrských aplikací zapsat pomocí integrálu přes výpočetní oblast a integrálu přes hranici, tedy
 \begin{equation}\label{eq:cenova_fce}
 J(\mathbf{u},p,g)=\int_{\Omega} J_\Omega(\mathbf{u},p,g) \, \mathrm{d}V + \int_{\Gamma}J_\Gamma(\mathbf{u},p,g) \, \mathrm{d}S.
 \end{equation}
@@ -276,7 +276,7 @@ S takto definovanými proměnnými, vazebními rovnicemi a cenovou funkcí lze d
 \begin{equation}
 L= J + \int_\Omega \xi \cdot \mathbf{R} \,\mathrm{d}\Omega 
 %= J + \int_\Omega \mathbf{v}\cdot\mathbf{R^u}+p\, R^p \,\mathrm{d}\Omega
-= \int_\Omega \mathbf{v}\cdot\mathbf{R^u}+ q R^p +J_\Omega  \,\mathrm{d}\Omega + \int_{\Gamma}J_\Gamma \, \mathrm{d}S.
+= \int_\Omega \left(\mathbf{v}\cdot\mathbf{R^u}+ q R^p +J_\Omega\right)  \,\mathrm{d}\Omega + \int_{\Gamma}J_\Gamma \, \mathrm{d}S.
 \end{equation}
 K odvození sdružených rovnic a definujeme vhodnou bilineární formu 
 \begin{equation}
@@ -321,9 +321,11 @@ Odvozené vztahy nyní dosadíme do předpisu \ref{eq:sdruzena_variace}
 \int_{\Gamma} \dfrac{\partial J_{\Gamma}}{\partial p} \delta p  \, \mathrm{d}S
 +\\+
 \int_{\Omega} 
+		\left(
 		\underbrace{\mathbf{v} \cdot(\delta \mathbf{u}\cdot \nabla )\mathbf{u}}_\mathrm{I}
 		+ \underbrace{\mathbf{v} \cdot(\mathbf{u}\cdot \nabla )\delta\mathbf{u}}_\mathrm{II}
 		\underbrace{ - \mathbf{v} \cdot (\nabla \cdot (2\nu \mathbb{D}(\delta \mathbf{u}) ))}_\mathrm{III}
+		\right)
 \, \mathrm{d}V
 +\\+
 \underbrace{
@@ -347,7 +349,7 @@ Postupně teď pomocí Gaussovy věty (integrace per-partes) přesuneme derivace
 \, \mathrm{d}V
 =
 \int_{\Omega} 
-v_j \delta u_i \frac{\partial u_j}{x_i}
+v_j \delta u_i \frac{\partial u_j}{\partial x_i}
 \, \mathrm{d}V
 \end{equation*}
 a po aplikaci Gaussovy věty
@@ -359,7 +361,7 @@ v_j \delta u_i u_j n_i
 \, \mathrm{d}S
 -
 \int_{\Omega} 
-\frac{\partial( v_j \delta u_i )}{x_i}u_j
+\frac{\partial( v_j \delta u_i )}{\partial x_i}u_j
 \, \mathrm{d}V,
 \end{equation*}
 lze rozepsat derivaci součinu jako
@@ -371,11 +373,11 @@ v_j \delta u_i u_j n_i
 \, \mathrm{d}S
 -
 \int_{\Omega} 
-v_j\underbrace{\frac{\partial( \delta u_i )}{x_i}u_j}_{=0 \text{ z kontinuity} }
+v_j\underbrace{\frac{\partial( \delta u_i )}{\partial x_i}u_j}_{=0 \text{ z kontinuity} }
 \, \mathrm{d}V,
 -
 \int_{\Omega} 
-\delta u_i \frac{\partial v_j  }{x_i}u_j
+\delta u_i \frac{\partial v_j  }{\partial x_i}u_j
 \, \mathrm{d}V
 \end{equation*} 
 a tedy
@@ -387,7 +389,7 @@ v_j u_j n_i \delta u_i
 \, \mathrm{d}S
 -
 \int_{\Omega} 
-\frac{\partial v_j  }{x_i} u_j \delta u_i
+\frac{\partial v_j  }{\partial x_i} u_j \delta u_i
 \, \mathrm{d}V
 =
 \int_{\Gamma} 
@@ -407,7 +409,7 @@ Pro druhý člen můžeme psát
 \, \mathrm{d}V
 =
 \int_{\Omega} 
-v_j  u_i \frac{\partial (\delta u_j)}{x_i}
+v_j  u_i \frac{\partial (\delta u_j)}{\partial x_i}
 \, \mathrm{d}V
 \end{equation*}
 a stejným postupem jako v předchozím případě (Gaussova věta, derivace součinu, rovnice kontinuity) dostáváme
@@ -419,7 +421,7 @@ v_j u_i n_i \delta u_j
 \, \mathrm{d}S
 -
 \int_{\Omega} 
-u_i \frac{\partial v_j  }{x_i} \delta u_j
+u_i \frac{\partial v_j  }{\partial x_i} \delta u_j
 \, \mathrm{d}V
 =
 \int_{\Gamma} 
@@ -476,7 +478,7 @@ a podruhé, zvlášť na oba členy v objemovém integrálu,
 \, \mathrm{d}S
 -\\-
 \int_{\Omega} 
-\frac{\partial}{\partial x_j}\left( \nu \frac{\partial v_i}{\partial x_j} \right) \delta u_i + \frac{\partial}{\partial x_i}\left( \nu \frac{\partial v_i}{\partial x_j} \right) \delta u_j
+\left(\frac{\partial}{\partial x_j}\left( \nu \frac{\partial v_i}{\partial x_j} \right) \delta u_i + \frac{\partial}{\partial x_i}\left( \nu \frac{\partial v_i}{\partial x_j} \right) \delta u_j\right)
 \, \mathrm{d}V,
 \end{multline*}
 čímž dostáváme výraz
@@ -659,8 +661,7 @@ a poté co dáme k sobě členy se stejnou variací a typem integrálu
 \, \mathrm{d}S
 \end{align*}
 dostáváme stejný výraz jako je odvozen v \cite{othmer2008continuous}.
-
-Podmínka $ \delta_\phi L $ musí být splněna pro libovolnou variaci primárních proměnných. Z objemových integrálů nám tedy vychází sdružené NS rovnice pro nestlačitelnou tekutinu ve stacionárním stavu, které můžeme zapsat jako
+Podmínka $ \delta_\phi L $ musí být splněna pro libovolnou variaci primárních proměnných. Z objemových integrálů nám tedy vychází sdružené NS rovnice pro tekutinu s konstantní hustotou ve stacionárním stavu, které můžeme zapsat jako
 \begin{align}
 2\mathbb{D}(\mathbf{v})\mathbf{u}
 + \nabla \cdot \left( 2\nu \mathbb{D}(\mathbf{v}) \right)
@@ -689,7 +690,7 @@ u_j
 2\mathbb{D}(\mathbf{v})\mathbf{u}.
 \end{equation*}
 Hraniční integrály nám pak dávají návod na sestavení okrajových podmínek pro sdružené rovnice a to tak, aby
-\begin{align}
+\begin{multline}
 \label{eq:sdruzenaOP1}
 \int_{\Gamma}
 \left(
@@ -701,12 +702,12 @@ Hraniční integrály nám pak dávají návod na sestavení okrajových podmín
 \right)
 \cdot \delta \mathbf{u}
 \, \mathrm{d}S
-&= 
+= \\=
 \int_{\Gamma} 
 2\nu \mathbf{v} \cdot  \mathbb{D}(\delta \mathbf{u})\cdot \mathbf{n}
 \, \mathrm{d}S,
-\\
-\label{eq:sdruzenaOP2}
+\end{multline}
+\begin{equation}\label{eq:sdruzenaOP2}
 \int_{\Gamma}
 \left(
 \frac{\partial J_\Gamma}{\partial p}
@@ -714,9 +715,39 @@ Hraniční integrály nám pak dávají návod na sestavení okrajových podmín
 \right)
 \delta p
 \, \mathrm{d}S
-&= 0.
-\end{align}
-Systém sdružených rovnic nápadně připomíná původní systém NS rovnic pro nestlačitelné tekutiny. Mezi zásadní rozdíly patří linearita rovnic a také, že v porovnání s původními NS rovnicemi má konvektivní člen opačné znaménko. To značí, že informace se v šíří proti směru primární rychlosti $ \mathbf{u} $ namísto po směru proudu. Sdružené rovnice často bývají o něco jednodušší, neboť existuje celá řada cenových funkcí, které závisí pouze na hraničních hodnotách. Ku příkladu třecí ztráty, výslednice sil na těleso nebo stlačení. Pro takové cílové funkce pak odpadávají pravé strany sdružených rovnic, neboť $ J_\Omega = 0 $.
+= 0.
+\end{equation}
+Pro vstupní hranici s Dirichletovou okrajovou podmínku pro rychlost a nulovou Neumannovou pro tlak se pro sdružený tlak použije taktéž podmínka nulového gradientu
+\begin{equation}\label{key}
+\frac{\partial q}{\partial n}=0.
+\end{equation} 
+Pro normálovou složku sdružené rychlosti $\mathbf{v}$ je předepsáno
+\begin{equation}
+\mathbf{v}\cdot \mathbf{n}=-\dfrac{\partial J_{\Gamma}}{\partial p}
+\end{equation}
+a nulové složky tečné \cite{zymaris2009continuous}.
+
+Na výstupu, kde je tlak fixován Dirichletovou okrajovou podmínkou a rychlost má předepsaný nulový gradient, je situace složitější a okrajová podmínka úzce souvisí se zvoleným modelem turbulence. Odvození sdružených rovnic pro model turbulence je ale nad rámec této práce a konkrétní podoba okrajové podmínky použité v části aplikace je odvozena v \cite{zymaris2009continuous}. Pro $ q $ na výstupu bez sdružené turbulentní proměnné tak plyne Dirichletova okrajová podmínka
+\begin{equation}
+q = v_i u_i + u_i n_i v_j n_j + \nu \frac{\partial (v_in_i)}{\partial x_j}n_j+\frac{\partial J_\Gamma}{\partial u_i} n_i
+\end{equation}
+a pro $ \mathbf{v} $ pak
+\begin{equation}
+0=\mathbf{v_t}u_in_i+\nu\frac{\partial \mathbf{v_t}}{\partial x_j}n_j + \frac{\partial J_\Gamma}{\partial \mathbf{u_t}},
+\end{equation}
+kde $ \mathbf{u_t}=\mathbf{u}-(\mathbf{u\cdot n})\mathbf{n} $ a stejně pro sdruženou rychlost. Zbývající normálová složka $ v_n=\mathbf{v}\cdot\mathbf{n} $ pak musí splnit rovnici kontinuity
+\begin{equation}
+\int_{\Gamma}v_n\mathrm{d}S=\int_{\Omega}\frac{\partial J_\Omega}{\partial p}.
+\end{equation}
+Na stěně, kde je nulová Dirichletova podmínka pro rychlost a nulový gradient pro tlak, je nulová Neumannova podmínka i pro sdružený tlak
+\begin{equation}
+\frac{\partial q}{\partial n}=0
+\end{equation} 
+a pro rychlost
+\begin{equation}
+\mathbf{v} \cdot \mathbf{n}=-\dfrac{\partial J}{\partial p}.
+\end{equation}
+Systém sdružených rovnic nápadně připomíná původní systém NS rovnic pro tekutinu s konstantní hustotou. Mezi zásadní rozdíly patří linearita rovnic a také, že v porovnání s původními NS rovnicemi má konvektivní člen opačné znaménko. To značí, že informace se v šíří proti směru primární rychlosti $ \mathbf{u} $ namísto po směru proudu. Sdružené rovnice často bývají o něco jednodušší, neboť existuje celá řada cenových funkcí, které závisí pouze na hraničních hodnotách. Ku příkladu třecí ztráty, výslednice sil na těleso nebo stlačení. Pro takové cílové funkce pak odpadávají pravé strany sdružených rovnic, neboť $ J_\Omega = 0 $.
 
 
 \section{Pohyb sítě}
@@ -724,21 +755,20 @@ Systém sdružených rovnic nápadně připomíná původní systém NS rovnic p
 Prozatím jsme pracovali s obecnými návrhovými parametry $ g $. V rámci zaměření a cíle této práce je nyní konkretizujeme. Pro tvarovou optimalizaci má smysl definovat návrhové parametry, které jsou svázané s tvarem výpočetní oblasti. Například pro křídlo letadla budeme chtít měnit profil, pro optimalizaci ztrát v koleni potrubí pak tvar samotného kolene atp. V této práci budeme později uvažovat kompresorovou mříž a měnit se tedy bude tvar lopatky.
 
 První přístup, co přichází v úvahu, je brát jako návrhové parametry přímo souřadnice bodů profilu. To ovšem znamená spoustu návrhových parametrů, jejíchž počet při zjemňování sítě roste. V případě metody sdružené optimalizace to vlastně nevadí. Právě naopak bychom těžili tu největší výhodu sdružené optimalizace, tedy (téměř) nezávislost rychlosti výpočtu gradientu optimalizace na počtu návrhových proměnných. Druhým, už horším avšak stále řešitelným problémem, je zachování platnosti a funkčnosti výpočetní sítě. Snadno se dá představit, že při pohybu pouze hranice, se mohou začít stěny křížit, vznikat záporné objemy apod. Takovou situaci lze řešit dodatečným výpočtem a posunem i ostatních ovlivněných bodů. 
-
-\begin{figure}[h]
+\begin{figure}
 	\includegraphics[width=0.7\textwidth]{./img/ridici_body.png}
-	\caption[Řídící body objemového B-splive ve 3D]{Řídící body objemového B-spline okolo automobilového zrcátka. Příklad z \cite{papoutsis2015noise}.}
+	\caption[Řídicí body objemového B-spline ve 3D]{Řídicí body objemového B-spline okolo automobilového zrcátka. Příklad z \cite{papoutsis2015noise}.}
 	\label{fig:zrcatko}
 \end{figure}
 Lepším a obecně lépe fungujícím způsobem je podle \cite{adjoint2020foam} využít parametrizace oblasti pomocí objemových B-spline.
-Po vydefinování sítě řídících bodů jak ukazuje například obrázek \ref{fig:zrcatko}, je každý z bodů sítě namapován z kartézského prostoru $ \mathcal{R}^3(x,y,z) $ do parametrického prostoru $ \mathcal{R}^3(u,v,w) $.
+Po vydefinování sítě řídicích bodů jak ukazuje například obrázek \ref{fig:zrcatko}, je každý z bodů sítě namapován z kartézského prostoru $ \mathcal{R}^3(x,y,z) $ do parametrického prostoru $ \mathcal{R}^3(u,v,w) $.
 Objemové B-spline pak definují zobrazení z parametrického prostoru do kartézského. 
 Matematický popis tohoto postupu je detailněji popsán v \cite{papoutsis2015noise}. 
 
-V rámci optimalizace jsou jako návrhové parametry brány souřadnice řídících bodů objemových B-spline. Na základě získaných gradientů se nejprve pohne s řídícími body a následně se změna propaguje na každý parametrizovaný bod v kartézském prostoru sítě.
+V rámci optimalizace jsou jako návrhové parametry brány souřadnice řídicích bodů objemových B-spline. Na základě získaných gradientů se nejprve pohne s řídicími body a následně se změna propaguje na každý parametrizovaný bod v kartézském prostoru sítě.
 
 
-
+\newpage
 \section{Optimalizační cyklus}
 
 Na obrázku \ref{fig:flowchart_opt_cyklus} je vizualizován průběh optimalizace. Před zahájením optimalizace je potřeba krom geometrie vytvořit výpočetní síť, definovat způsob diskretizace členů v primárních i sdružených rovnicích, zvolit řešiče soustav lineárních rovnic, definovat okrajové podmínky pro všechny proměnné, nastavit parametry optimalizace včetně cílové funkce atd. 
@@ -748,10 +778,11 @@ V jedné iteraci optimalizačního algoritmu je pak potřeba nejprve vyřešit p
 Následně se zvoleným způsobem pohne se sítí (či se změní jiné návrhové parametry $ g $), znovu se vyřeší primární rovnice a vyhodnotí cílová funkce. Následně je možné aplikovat postup hledání nejlepšího kroku (anglicky \textit{line search}), který zmenšuje krok $ \eta $, tak aby došlo ke zlepšení cílové funkce. Hledání nejlepšího kroku je iterační proces, který vyžaduje vyřešit primární rovnice v každé iteraci, což může být v některých případech náročná operace a maximální počet hledacích iterací se tak často omezuje.
 
 Po přijetí nových návrhových parametrů lze optimalizaci ukončit, či přejít k další iteraci optimalizačního cyklu.
-
-\begin{figure}
-\includegraphics[width=1\textwidth]{./img/flowchart/optimalizacni_cyklus.pdf}
-\caption[Optimalizační cyklus]{Diagram průběhu optimalizačního algoritmu pro sdruženou metodu.}
-\label{fig:flowchart_opt_cyklus}
+\vfill
+\newpage
+\begin{figure}[H]
+	\includegraphics[width=\columnwidth]{./img/flowchart/optimalizacni_cyklus.pdf}
+	\caption[Optimalizační cyklus]{Diagram průběhu optimalizačního algoritmu pro sdruženou metodu.}
+	\label{fig:flowchart_opt_cyklus}
 \end{figure}
 

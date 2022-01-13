@@ -6,12 +6,12 @@ Tato kapitola prezentuje použitou metodiku pro optimalizaci tvaru lopatky v kom
 
 \section{Obecný popis problému}
 
-Simulace prováděné v rámci této práce zjednodušeně reprezentují měřící soustavu tzv. lopatkových mříží. Pro lopatkové mříže jsou určující zejména geometrie samotné lopatky, rozteč $ t $ jednotlivých lopatek a stav proudu před a za mříží.
+Simulace prováděné v rámci této práce zjednodušeně reprezentují kompresorovou lopatkovou mříž. Pro lopatkové mříže jsou určující zejména geometrie samotné lopatky, rozteč $ t $ jednotlivých lopatek a stav proudu před a za mříží.
 
 V rámci numerické simulace je topologie výpočetní oblasti naznačena na obrázku \ref{fig:vypocetni_oblast}. Vstupní a výstupní hranice jsou rovnoběžné s osou y a jejich výška je právě zmiňovaný parametr rozteče $ t $. Uprostřed oblasti se nachází uzavřená hranice reprezentující geometrii lopatky. Vrchní a spodní hranice jsou brány jako periodické, tedy to co vyteče spodem, vteče vrchem a naopak. Prostorová diskretizace (síť) je v této práci vždy dělána tak, aby si stěny buněk na obou stranách periodické hranice odpovídali $ 1:1 $, pouze s posunutím $ t $.
 
 \begin{figure}
-	\def\svgwidth{0.8\textwidth}
+	\def\svgwidth{0.85\textwidth}
 	\graphicspath{{img/inkscape/}}
 	\includesvg{img/inkscape/comp_domain}
 %	\includegraphics[width=0.7\textwidth]{img/inkscape/comp_domain.pdf}
@@ -19,7 +19,23 @@ V rámci numerické simulace je topologie výpočetní oblasti naznačena na obr
 	\label{fig:vypocetni_oblast}
 \end{figure}
 
-Krom periodicity jsou další okrajové podmínky následující. Na vstupu je předepsána Dirichletova okrajová podmínka pro vektor rychlosti a turbulentní proměnné. Tlak zde má nulovou Neumanovu podmínku. Na výstupu je naopak statický tlak fixován na nulu a rychlost je zde předepsána pomocí nulového gradientu.
+Krom periodicity jsou další okrajové podmínky následující. Na vstupu je předepsána Dirichletova okrajová podmínka pro vektor rychlosti a turbulentní proměnné. Tlak zde má nulovou Neumanovu podmínku. Na výstupu je naopak pro kinematický tlak předepsána nulová Dirichletova podmínka a rychlost je zde předepsána pomocí nulového gradientu. Hranice lopatky je brána jako nepropustná stěna s nulovou Dirichletovou podmínkou pro rychlost a nulovým gradientem pro tlak.
+
+Při modelování turbulence Spalartovým-Allmarasovým modelem turbulence je $ \tilde{\nu} $ na vstupu předepsána hodnotou, na výstupu nulovým gradientem a na lopatce nulovou Dirichletovou podmínkou. Prostorová diskretizace bude dělána tak aby $ y^+<1 $ a pro $ \nu_t $ je použita Spaldingova stěnová funkce $ \mathrm{SWF}_{\nu_t}(\mathbf{u}) $ podle \cite{spalding1961single}. Pro proměnné $ k $ a $ \omega $ příslušící modelu $ k\text{-}\omega $ SST je situace na $ \Gamma_{1,2} $ stejná jako pro Spalartovu-Allmarasovu proměnnou a na stěně je použito stěnových funkcí \cite{kalitzin2005near} vhodných pro $ y^+<1 $. 
+
+Symbolicky lze tedy okrajové podmínky zapsat tak, že
+\begin{align*}
+\text{na }\Gamma_1:\,& \mathbf{u}=\mathbf{u}_\infty, \\
+				   & \frac{\partial p}{\partial n}=0, \\
+				   & \widetilde{\nu}=\widetilde{\nu}_\infty,\\
+\text{na }\Gamma_P:\,& \mathbf{u}=\mathbf{0}, \\
+				   & \frac{\partial p}{\partial n}=0, \\
+				   & \widetilde{\nu}=0, \\
+				   & \nu_t=\mathrm{SWF}_{\nu_t}(\mathbf{u}), \\
+\text{na }\Gamma_2:\,& \nabla \mathbf{u} \cdot \mathbf{n}=0,\\
+				   & p=p_2, \\
+				   & \frac{\partial \widetilde{\nu}}{\partial n}=0.
+\end{align*}
 
 \section{Cílové funkce}
 
@@ -29,11 +45,11 @@ K dosažení cílového úhlu na výstupu z lopatkové mříže $ \alpha_{2tar} 
 \begin{equation}\label{eq:alpha_tan}
 \alpha_2 = \arctan\left(\dfrac{u_{y2}}{u_{x2}}\right).
 \end{equation}
-Ze zákona zachování hmotnosti pro proudění nestlačitelné tekutiny vyplývá, že to co do kontrolní oblasti vteče, musí i vytéct. Jinými slovy toky vstupní a výstupní hranicí se musejí rovnat
+Ze zákona zachování hmotnosti pro proudění tekutiny s konstantní hustotou vyplývá, že to co do kontrolní oblasti vteče, musí i vytéct. Jinými slovy toky vstupní a výstupní hranicí se musejí rovnat
 \begin{equation}
 \dot{m_1}=\dot{m_2},
 \end{equation}
-což pro proudění nestlačitelné tekutiny kontrolní oblastí s vstupní a výstupní hranicí rovnoběžnou s osou y znamená, že 
+což pro proudění tekutiny s konstantní hustotou $ \rho_1 = \rho_2 = \rho $ skrz kontrolní oblast se vstupní a výstupní hranicí rovnoběžnou s osou $ y $ znamená, že 
 \begin{equation}\label{eq:ux1_ux2}
 u_{x1}=u_{x2}.
 \end{equation}
@@ -43,7 +59,7 @@ u_{y2tar} = \tan(\alpha_{2tar}) \cdot u_{x2},
 \end{equation}
 tedy jistou cílovou rychlost na výstupu a cílovou funkci formulovat pomocí ní.
 
-Dále jsou srovnány dvě formulace cílové funkce. První formulace optimalizuje přímo výstupní složku rychlosti, kdežto druhá optimalizuje nepřímo přes sílu na lopatku.
+Dále jsou srovnány dvě formulace cílové funkce. První formulace optimalizuje přímo výstupní složku rychlosti. Druhá optimalizuje nepřímo přes cílovou sílu na lopatku, která odpovídá dané změně výstupní složky rychlosti ve směru $ y $.
 
 Zatímco přímá formulace ovlivňuje přes derivaci cílové funkce okrajovou podmínku sdružených rovnic pouze na výstupní hranici $ \Gamma_2 $, cílová funkce přes sílu ovlivňuje okrajovou podmínku na lopatce $ \Gamma_P $. Druhým rozdílem je pak, že v přímé formulaci se objevuje jediná primární proměnná, kdežto pro integraci síly na lopatce jsou potřeba všechny proměnné, včetně turbulentní proměnné $ \widetilde{\nu} $. Tyto rozdíly zavdávají dostatečný důvod pro zkoumání a porovnání těchto dvou formulací ve smyslu rychlosti konvergence a přesnosti.
 
@@ -113,10 +129,10 @@ Rozteč lopatek v mříži je $ t=0.0476\,\mathrm{m} $. Hustota tekutiny použí
 \begin{equation}\label{key}
 \mathbf{u_1}=M\cdot c \cdot (\cos(\alpha_1),\, \sin(\alpha_1),\, 0) \doteq (143.8,\, 154.2,\, 0)\, \mathrm{m\,s^{-1}}.
 \end{equation}
-Kinematický tlak na výstupu je fixován $ p_2=0\,\mathrm{m^2s^{-2}} $.
+Kinematický tlak na výstupu je $ p_2=0\,\mathrm{m^2s^{-2}} $.
 
 \subsection{Modelování turbulence}
-Modelování turbulence se realizuje pomocí přídavné turbulentní vazkosti. Pro zjištění turbulentní vazkosti $ \nu_t $ je v optimalizačním algoritmu použit model Spalart-Allmaras\cite{spalart1992one}. Jelikož ale tento model je původně navržen pro obtékání profilu křídla ve volném proudu, není ve své původní variantě vhodný pro modelování turbulence ve vnitřní aerodynamice, kam kompresorové mříže spadají. Knihovna OpenFOAM prozatím ale neobsahuje sdružené rovnice pro žádný jiný model turbulence než Spalart-Alamaras a odvození sdružených rovnic pro pokročilejší model turbulence je nad rámec této práce, byl použit následující postup. 
+Modelování turbulence se realizuje pomocí přídavné turbulentní vazkosti. Pro zjištění turbulentní vazkosti $ \nu_t $ je v optimalizačním algoritmu použit Spalartův-Allmarasův model \cite{spalart1992one}. Jelikož ale tento model je původně navržen pro obtékání profilu křídla ve volném proudu, není ve své původní variantě vhodný pro modelování turbulence ve vnitřní aerodynamice, kam kompresorové mříže spadají. Knihovna OpenFOAM prozatím ale neobsahuje sdružené rovnice pro žádný jiný model turbulence než Spalartův-Allmarasův a odvození sdružených rovnic pro pokročilejší model turbulence je nad rámec této práce, byl použit následující postup. 
 
 Ve výchozí konfiguraci byla provedena simulace s vhodnějším modelem $k\text{-}\omega$ SST implementovaným v knihovně OpenFOAM na základě \cite{menter1994two, menter2003ten, rumsey2013menter} s následujícími okrajovými podmínkami na vstupu. Intenzita turbulence na vstupu $ I=2\% $, tedy odkud plyne Dirichletova podmínka pro turbulentní kinetickou energii $ k $ ze vztahu  \begin{equation}\label{key}
 k=1.5(I|\mathbf{u}|)^2.
@@ -125,11 +141,11 @@ Turbulentní směšovací délka $ L_t=0.002\,\mathrm{m} $, odkud plyne Dirichle
 \begin{equation}\label{key}
 \omega=\dfrac{k^{0.5}}{C_\mu^{0.25}L_t};\,\, C_\mu=0.09\,.
 \end{equation} 
-Ve výchozí konfiguraci bylo následně provedeno několik simulací s modelem Spalart-Allmaras, kde se variovala vstupní hodnota turbulentní proměnné tohoto modelu $ \tilde{\nu}_1 $ z intervalu $ \langle 10^{-6},10 \rangle $. Pro každý výpočet byl vyhodnocen koeficient ztráty celkového tlaku podle vztahu z \cite{steinert1990design}
+Ve výchozí konfiguraci bylo následně provedeno několik simulací s Spalartovým-Allmarasovým modelem, kde se variovala vstupní hodnota turbulentní proměnné tohoto modelu $ \tilde{\nu}_1 $ z intervalu $ \langle 10^{-6},10 \rangle $. Pro každý výpočet byl vyhodnocen koeficient ztráty celkového tlaku podle vztahu z \cite{steinert1990design}
 \begin{equation}\label{key}
 \omega = \dfrac{p_{t1}-p_{t2}}{p_{t1}-p_1}
 \end{equation}
-a poměr celkových tlaků $ \frac{p_{t1}}{p_{t2}} $. Pro další simulace této lopatkové mříže pak byla na vstupu zvolena Dirichletova podmínka $ \tilde{\nu} = 3.4\cdot 10^{-4} $ neboť pro tuto hodnotu vyšel relativní rozdíl v předpovědi modelem Spalart-Allmaras oproti $k\text{-}\omega$ SST pro obě vyhodnocované veličiny pod $ 1\% $.
+a poměr celkových tlaků $ \frac{p_{t1}}{p_{t2}} $. Pro další simulace této lopatkové mříže pak byla na vstupu zvolena Dirichletova podmínka $ \tilde{\nu} = 3.4\cdot 10^{-4} $ neboť pro tuto hodnotu vyšel relativní rozdíl v předpovědi Spalartova-Allmarasova modelu oproti $k\text{-}\omega$ SST pro obě vyhodnocované veličiny pod $ 1\% $.
 
 \subsection{Prostorová diskretizace}
 
@@ -144,16 +160,18 @@ Výpočetní oblast byla diskretizována na množinu vzájemně disjunktních ob
 	\label{fig:ghs1_sit}
 \end{figure}
 
-Síť byla tvořena s důrazem na co nejlepší zachycení mezní vrstvy. Buňky v oblasti okolo lopatky jsou exponenciálně zmenšovány, aby se dosáhlo $ y^+ < 1 $ a nebylo tak nutné používat stěnové funkce ani pro jeden z turbulentních modelů.
-S touto sítí ve výchozí konfiguraci s modelem $k\text{-}\omega$ SST je dosaženo $ \max\limits_{\Gamma_P}(y^+) \doteq 0.39 $. Validita této sítě byla ověřena metodou \textit{Grid convergence index} (zkráceně GCI) v \cite{tater2021mesh}.
+Síť byla tvořena s důrazem na co nejlepší zachycení mezní vrstvy. Buňky v oblasti okolo lopatky jsou exponenciálně zmenšovány, aby se dosáhlo $ y^+ < 1 $.
+S touto sítí ve výchozí konfiguraci s modelem $k\text{-}\omega$ SST je dosaženo $ \max\limits_{\Gamma_P}(y^+) \doteq 0.39 $. Validita této konkrétní sítě byla ověřena metodou \textit{Grid convergence index} (zkráceně GCI) v \cite{tater2021mesh}.
 
 
-\subsubsection{Řídící body objemových B-spline}
-Pro transformaci tvaru lopatky a pohybu se sítí pomocí objemových B-spline je potřeba vydefinovat řídící body. Z experimentů s různým rozdělením řídících bodů a jejich fixací v průběhu optimalizačních cyklů vzešlo, že stabilita řešení sdružených rovnic i konečný výsledek optimalizace na rozdělení řídících bodů závisí víc než by se dalo označit za uživatelsky příjemné. Konečné rozdělení řídících bodu je ukázáno na \ref{fig:ghs1_cps}. Ve směru $ u $, který koresponduje se směrem osy $ x $, bylo zvoleno 14 vrstev bodů a ve směru $ v $ pak 6. Fixované v průběhu simulace byly všechny krajní body. Druhá a předposlední vrstva ve směru $ u $ (sloupec) má pak zakázán pohyb ve směru osy $ x $. Vrstvy ve směru $ u $ procházející náběžnou a odtokovou hranou profilu mají zakázán pohyb úplně. Cílem těchto omezení je fixovat pozici začátku a konce lopatky, aby nedošlo k natahování lopatky a deformaci odtokové hrany. Tento nechtěný efekt měl tendenci nastat pokud se fixovaly například pouze vnější body.
-
+\subsubsection{Řídicí body objemových B-spline}
+Pro transformaci tvaru lopatky a pohybu se sítí pomocí objemových B-spline je potřeba vydefinovat řídicí body. Z experimentů s různým rozdělením řídicích bodů a jejich fixací v průběhu optimalizačních cyklů vzešlo, že stabilita řešení sdružených rovnic i konečný výsledek optimalizace na rozdělení řídicích bodů závisí víc než by se dalo označit za uživatelsky příjemné. Konečné rozdělení řídicích bodu je ukázáno na \ref{fig:ghs1_cps}. Ve směru $ u $, který koresponduje se směrem osy $ x $, bylo zvoleno 14 vrstev bodů a ve směru $ v $ pak 6. Fixované v průběhu simulace byly všechny krajní body. Druhá a předposlední vrstva ve směru $ u $ (sloupec) má pak zakázán pohyb ve směru osy $ x $. Vrstvy ve směru $ u $ procházející náběžnou a odtokovou hranou profilu mají zakázán pohyb úplně. Cílem těchto omezení je fixovat pozici začátku a konce lopatky, aby nedošlo k natahování lopatky a deformaci odtokové hrany. Tento nechtěný efekt měl tendenci nastat pokud se fixovaly například pouze vnější body.
 \begin{figure}
-	\includegraphics[width=0.75\textwidth]{img/cps.png}
-	\caption[Pozice řídících bodů]{Pozice řídících bodů objemových B-spline ve výpočetní oblasti pro lopatkovou mříž GHH 1-S1. Růžové body se smí pohybovat pouze ve směru osy $ y $.}
+	\centering
+	\def\svgwidth{1\textwidth}
+	\graphicspath{{img/inkscape/}}
+	\includesvg{img/inkscape/cps}
+	\caption[Pozice řídicích bodů]{Pozice řídicích bodů objemových B-spline ve výpočetní oblasti pro lopatkovou mříž GHH 1-S1. Zelené body se mohou pohybovat libovolně, modré pouze ve směru osy $ y $ a červené vůbec.}
 	\label{fig:ghs1_cps}
 \end{figure}
 
@@ -166,12 +184,12 @@ V=-1/3\int_{\Gamma_P}x_kn_k\mathrm{d}S.
 
 Kvůli přidané podmínce konstantního průřezu byla jako metoda aktualizace zvolena metoda projekce omezení (anglicky \textit{constraint projection}). Výchozí krok ve směru gradientu $ \eta $ je v první iteraci spočítán podle maximálního povoleného pohybu sítě, který byl nastaven na $ 5\cdot10^{-4} $. Velikost kroku $ \eta $ se posléze v jednotlivých iteracích zmenšuje podle Armijo podmínky jak definuje \cite{nocedal1999numerical}. Tento cyklus zmenšuje krok $ \eta^{k+1}=0.75\cdot\eta^{k} $ a vyhodnocuje hodnotu cílové funkce $ J $ (tedy simuluje primární rovnice), než jsou splněny dané podmínky. Pro Armijo podmínky je důležitý koeficient $ c1 $, který byl zvolen $ 10^{-3} $.
 
-Výstupní úhel proudu byl ve výchozí konfiguraci s modelem Spalart-Allmaras $ \alpha_{2}^{0}=21.46^{\circ} $. Cílové výstupní úhly byly zvoleny z množiny $ \langle \alpha_{2}^{0}-4^{\circ}, \alpha_{2}^{0}+8^{\circ} \rangle $ s krokem $ 2^{\circ} $. Celkem tedy 6 různých cílových úhlů.
+Výstupní úhel proudu byl ve výchozí konfiguraci se Spalartovým-Allmarasovým modelem $ \alpha_{2}^{0}=21.46^{\circ} $. Cílové výstupní úhly byly zvoleny z množiny $ \langle \alpha_{2}^{0}-4^{\circ}, \alpha_{2}^{0}+8^{\circ} \rangle $ s krokem $ 2^{\circ} $. Celkem tedy 6 různých cílových úhlů.
 
 \subsection{Výsledky optimalizace} \label{sec:vysledky_opt}
 K dosažení cílového úhlu výstupního proudu byla použita nejdříve přímá formulace cílové funkce. Následně, když optimalizace bylo nalezeno optimální řešení, byla vyhodnocena síla $ F_{yP} $ působící na lopatku. Tato síla pak byla použita jako cílová síla $ F_{yPtar} $ pro nepřímou formulaci cílové funkce. Konkrétní cílové hodnoty s odpovídajícími cílovými úhly jsou uvedeny v tabulce \ref{tab:cilove_hodnoty}.
 
-\begin{table}
+\begin{table}[H]
 	\begin{ctucolortab}
 		\begin{tabular}{c|c||c|c}
 			
@@ -214,13 +232,13 @@ Graf residuí $ Res_{\alpha}^i $ na obrázku \ref{fig:ghs1_UyA} je samozřejmě 
 Dále lze z grafu residuí vypozorovat, že čím větší je rozdíl $ \Delta \alpha_{2} = \alpha_{2tar} - \alpha_{2}^{0}$, tím déle trvá optimalizaci zkonvergovat. To samozřejmě odpovídá očekávání. Při porovnání rychlosti konvergence optimalizace do záporných versus do kladných úhlu výstupního proudu lze říci, že optimalizovat do kladných úhlů je pro takto nastavený optimalizační algoritmus jednodušší. Optimalizace do kladných úhlů odpovídá napřimování tvaru lopatky, kdežto při optimalizaci do záporných úhlů je pro dosažení cílové hodnoty úhlu výstupního proudu potřeba lopatku ohnout více. Tento zmiňovaný rozdíl lze nejlépe vidět při porovnání případů $ \alpha_{2tar}=\pm 4^{\circ} $. Pro kladný úhel +4° je optimální řešení nalezeno už v 9. iteraci, kdežto při ohýbání lopatky k dosažení záporného $ \Delta\alpha $ je potřeba optimalizačních cyklů 12.
 
 \begin{figure}[H]
-	\includegraphics[width=0.95\textwidth]{img/Uy.pdf}
+	\includegraphics[width=1.0\columnwidth]{img/Uy.pdf}
 	\caption[Průběh residua $ Res_{u_y}^i $]{Průběh residua $ Res_{u_y}^i $ \ref{eq:res_uy} pro přímou formulaci cílové funkce $ J $ v průběhu iteračních cyklů. Hranice optimálního řešení $ 1\% $ je naznačena růžovou čarou.}
 	\label{fig:ghs1_Uy}
 \end{figure}
 
 \begin{figure}[H]
-	\includegraphics[width=0.95\textwidth]{img/Fy.pdf}
+	\includegraphics[width=1.0\columnwidth]{img/Fy.pdf}
 	\caption[Průběh residua $ Res_{F_y}^i $]{Průběh residua $ Res_{F_y}^i $ \ref{eq:res_fy} pro nepřímou formulaci cílové funkce $ J $ v průběhu iteračních cyklů. Hranice optimálního řešení $ 1\% $ je naznačena růžovou čarou.}
 	\label{fig:ghs1_Fy}
 \end{figure}
@@ -235,23 +253,21 @@ Stejně jako pro přímou formulaci bereme hranici optimálního řešení jedno
 
 V porovnání s grafem konvergence \ref{fig:ghs1_Uy} pro přímou formulaci cílové funkce průběh residua \ref{fig:ghs1_Fy} o poznání méně osciluje. To si lze vysvětlit tím, že pro vyhodnocení cílové funkce pro sílu (a jejích derivací) jsou použity všechny primární proměnné a tedy se využívá více informací z proudového pole pro předpověď gradientu. Na základě tohoto pozorování lze s opatrností usoudit, že optimalizace na cílovou sílu je značně stabilnější než optimalizace na cílovou výstupní rychlost. Zároveň optimalizační algoritmus zkonverguje v méně iteracích než tomu bylo pro přímou formulaci cílové funkce. Například pro případ $ \Delta \alpha = +8^\circ $ stačilo o pět iterací méně. V tomto smyslu by bylo zajímavé i porovnání průběhu residuí jako funkce výpočetního času. V současné konfiguraci optimalizačních algoritmů byl celkový čas výpočtu (pro 50 iterací) vždy nižší pro přímou formulaci. Ve zmiňovaném případě $ \Delta \alpha = +8^\circ $ byl celkový výpočetní čas pro přímou formulaci $ 2265 \,\mathrm{s} $ a pro nepřímou formulaci $ 2927 \,\mathrm{s} $.
 
+Optimalizaci na cílovou sílu používáme k nepřímému dosažení žádaného výstupního úhlu proudu. Proto je důležitější podívat se na graf konvergence ve smyslu vztahu \ref{eq:res_alpha}, který je na obrázku \ref{fig:ghs1_FyA}. Nejmarkantnějším rozdílem v porovnání s grafem \ref{fig:ghs1_UyA} je průběh residua pod hranicí konvergence, který je opět hladší. Nejdůležitější srovnání je ale v počtu iterací potřebných ke zkonvergování $ \alpha_2 $. Na rozdíl od porovnání cílových residuí $ Res_{u_y}^i $ a $ Res_{F_y}^i $ je počet potřebných iterací pro všechny případy $ \Delta\alpha_2 $ stejný. Jak bylo ale zmíněno v předchozím odstavci, optimalizace s přímou formulací cílové funkce je ve všech případech rychlejší. Na základě tohoto porovnání lze bezpečně říci, že pro případ optimalizace lopatky GHH 1-S1 na takto kvalitní síti nepřináší nepřímá formulace žádné benefity. Pro jiné případy tomu tak ovšem být nemusí, neb z průběhu cílových residuí \ref{eq:res_uy} a \ref{eq:res_fy} lze usoudit, že optimalizace na cílovou sílu je mnohem stabilnější, což může hrát ve složitějších aplikacích důležitou roli.
 \begin{figure}[H]
-	\includegraphics[width=0.9\textwidth]{img/UyA.pdf}
+	\includegraphics[width=1.0\columnwidth]{img/UyA.pdf}
 	\caption[Průběh residua $ Res_{\alpha}^i $, přímá formulace]{Průběh residua $ Res_{\alpha}^i $ \ref{eq:res_alpha} pro přímou formulaci cílové funkce $ J $ v průběhu iteračních cyklů. Hranice optimálního řešení $ 1\% $ je naznačena růžovou čarou.}
 	\label{fig:ghs1_UyA}
 \end{figure}
-
 \begin{figure}[H]
-	\includegraphics[width=0.9\textwidth]{img/FyA.pdf}
+	\includegraphics[width=1.0\columnwidth]{img/FyA.pdf}
 	\caption[Průběh residua $ Res_{\alpha}^i $, nepřímá formulace]{Průběh residua $ Res_{\alpha}^i $ \ref{eq:res_alpha} pro nepřímou formulaci cílové funkce $ J $ v průběhu iteračních cyklů. Hranice optimálního řešení $ 1\% $ je naznačena růžovou čarou.}
 	\label{fig:ghs1_FyA}
 \end{figure}
-
-Optimalizaci na cílovou sílu používáme k nepřímému dosažení žádaného výstupního úhlu proudu. Proto je důležitější podívat se na graf konvergence ve smyslu vztahu \ref{eq:res_alpha}, který je na obrázku \ref{fig:ghs1_FyA}. Nejmarkantnějším rozdílem v porovnání s grafem \ref{fig:ghs1_UyA} je průběh residua pod hranicí konvergence, který je opět hladší. Nejdůležitější srovnání je ale v počtu iterací potřebných ke zkonvergování $ \alpha_2 $. Na rozdíl od porovnání cílových residuí $ Res_{u_y}^i $ a $ Res_{F_y}^i $ je počet potřebných iterací pro všechny případy $ \Delta\alpha_2 $ stejný. Jak bylo ale zmíněno v předchozím odstavci, optimalizace s přímou formulací cílové funkce je ve všech případech rychlejší. Na základě tohoto porovnání lze bezpečně říci, že pro případ optimalizace lopatky GHH 1-S1 na takto kvalitní síti nepřináší nepřímá formulace žádné benefity. Pro jiné případy tomu tak ovšem být nemusí, neb z průběhu cílových residuí \ref{eq:res_uy} a \ref{eq:res_fy} lze usoudit, že optimalizace na cílovou sílu je mnohem stabilnější, což může hrát ve složitějších aplikacích důležitou roli.
 \newpage
 \subsubsection{Srovnání pro $ \Delta \alpha_2=-4^{\circ} $}
 
-Porovnání tvaru lopatky je provedeno mezi původním tvarem profilu a profilem z optimalizace zkorvergované ve smyslu $ Res_{\alpha}^i $. Pro $ \alpha_2=-4^\circ $ to je profil ze 12. iterace optimalizačního algoritmu.
+Porovnání tvaru lopatky je provedeno mezi původním tvarem profilu a profilem z optimalizace zkorvergované ve smyslu $ Res_{\alpha}^i $. Pro $ \alpha_2=-4^\circ $ to je profil ze 12. iterace optimalizačního algoritmu. Hodnoty veličin na obrázcích jsou v SI jednotkách.
 
 \begin{figure}[H]
 	\centering
@@ -293,7 +309,7 @@ Za koncem lopatky lze vidět pruh nižší velikosti rychlosti, což je úplav. 
 	\caption[Turbulentní vazkost pro optimalizovanou lopatku]{Pole přídavné turbulentní vazkosti $ \nu_t $ pro optimalizovaný profil lopatky.}
 	\label{fig:ghs1_nut12}
 \end{figure}
-Maximální velikost přídavné vazkosti v oblasti úplavu za optimalizovanou lopatkou je vyšší a úplav jako takový je širší. To ve výsledku vede na větší ztráty, což dokládá například i zvýšení velikosti síly působící na lopatku ve směru osy $ x $. Optimalizovaná lopatka tedy splňuje cílové ohnutí proudu, z hlediska účinnosti ale tento tvar optimální neníx.
+Maximální velikost přídavné vazkosti v oblasti úplavu za optimalizovanou lopatkou je vyšší a úplav jako takový je širší. To ve výsledku vede na větší ztráty, což dokládá například i zvýšení velikosti síly působící na lopatku ve směru osy $ x $. Optimalizovaná lopatka tedy splňuje cílové ohnutí proudu, z hlediska účinnosti ale tento tvar optimální není.
 %\begin{figure}
 %	\centering
 %	\begin{minipage}[t]{0.48\textwidth}
@@ -327,35 +343,35 @@ Maximální velikost přídavné vazkosti v oblasti úplavu za optimalizovanou l
 
 \subsection{Ověření vhodnějším modelem turbulence}
 
-Pro ověření výsledků optimalizace byl zvolen model $k\text{-}\omega$ SST, který je pro simulace v kompresorech i lopatkových mříží vhodnější než model Spalart-Allmaras. Nejdříve budou ukázány grafy residuí a následně bude podrobněji rozebrán případ $ \Delta \alpha = -4^\circ $.
+Pro ověření výsledků optimalizace byl zvolen model $k\text{-}\omega$ SST, který je pro simulace v kompresorech i lopatkových mříží vhodnější než Spalartův-Allmarasův model. Nejdříve budou ukázány grafy residuí a následně bude podrobněji rozebrán případ $ \Delta \alpha = -4^\circ $.
 
 Pro vyhodnocení residua $ Res_\alpha^{iSST} $ (horní index $ \null^{SST} $ značí vyhodnocení ze simulace s modelem $k\text{-}\omega$ SST) na obrázcích \ref{fig:ghs1_UyAKO} a \ref{fig:ghs1_FyAKO} je na rozdíl od $ Res_\alpha^i $ definovaném rovnicí \ref{eq:res_alpha} použito pro vyhodnocení $ \alpha_{2}^{0SST} $ namísto $ \alpha_{2}^{0} $, tedy
 \begin{equation}\label{eq:res_alphaSST}
 Res_\alpha^{iSST} = \dfrac{| \alpha_{2}^{iSST}-( \alpha_{2}^{0SST}+\Delta\alpha_2 ) |} {|\alpha_{2}^{0SST}|}.
 \end{equation}
-Na základě grafů průběhu residua \ref{fig:ghs1_UyAKO} a \ref{fig:ghs1_FyAKO} lze říci, že přestože se v rámci optimalizačního cyklu používá jednodušší model turbulence, tak nový tvar lopatky funguje pro změnu úhlu $ \Delta\alpha\in\langle -2^\circ,+4^\circ\rangle $ i v případě simulace s vhodnějším modelem. Pro větší změny úhlu, konkrétně $ -4^\circ $ a $ +8^\circ $, je ale natočení proudu nesprávné. Pro záporné změny úhlu je tedy předpověď modelu Spalart-Allmaras horší než pro kladné změny úhlu.
-Částečné vysvětlení tohoto rozdílu plyne z obrázku \ref{fig:ghs1_sakoUdiff}, který ukazuje relativní rozdíl velikosti rychlosti předpovídané modelem turbulence Spalart-Allmaras ($ \null^{S\text{-}A} $) a $k\text{-}\omega$ SST ($ \null^{SST} $), podle předpisu
-\begin{equation}\label{eq:ghs1_sakoUdiff}
-\dfrac{||\mathbf{u^{S\text{-}A}||-||u^{SST}}||}{||\mathbf{u_1}||}.
-\end{equation}
-Největší rozdíl je v blízkosti odtokové hrany na podtlakové straně, kde dochází k odtržení proudu. Simulace s modelem Spalart-Allmaras zde předpovídá mnohem větší velikost rychlosti a lze tedy usoudit, že nezachycuje odtržení správným způsobem. Z obrázku \ref{fig:ghs1_sakoUdiff} je mimo jiné vidět, že výpočet s modelem $k\text{-}\omega$ SST předpovídá, že změna úhlu proudu bude větší než žádané 4°. Z grafu průběhu residua předtím nešlo říct, jestli je podle $k\text{-}\omega$ SST ohnutí proudu větší či menší, protože rozdíl v čitateli je v absolutní hodnotě.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.95\textwidth]{img/UyAKO.pdf}
+	\includegraphics[width=1\textwidth]{img/UyAKO.pdf}
 	\caption[ Průběh residua $ Res_{\alpha}^{iSST} $, přímá formulace, $k\text{-}\omega$ SST ]{Průběh residua $ Res_{\alpha}^{iSST} $ \ref{eq:res_alpha} pro přímou formulaci cílové funkce $ J $ v průběhu iteračních cyklů. Hranice optimálního řešení $ 1\% $ je naznačena růžovou čarou. Výpočty používají model turbulence $k\text{-}\omega$ SST.}
 	\label{fig:ghs1_UyAKO}
 \end{figure}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.95\textwidth]{img/FyAKO.pdf}
+	\includegraphics[width=1\textwidth]{img/FyAKO.pdf}
 	\caption[ Průběh residua $ Res_{\alpha}^{iSST} $, nepřímá formulace, $k\text{-}\omega$ SST ]{Průběh residua $ Res_{\alpha}^{iSST} $ \ref{eq:res_alpha} pro nepřímou formulaci cílové funkce $ J $ v průběhu iteračních cyklů. Hranice optimálního řešení $ 1\% $ je naznačena růžovou čarou. Výpočty používají model turbulence $k\text{-}\omega$ SST.}
 	\label{fig:ghs1_FyAKO}
 \end{figure}
-\begin{figure}[H]
+Na základě grafů průběhu residua \ref{fig:ghs1_UyAKO} a \ref{fig:ghs1_FyAKO} lze říci, že přestože se v rámci optimalizačního cyklu používá jednodušší model turbulence, tak nový tvar lopatky funguje pro změnu úhlu $ \Delta\alpha\in\langle -2^\circ,+4^\circ\rangle $ i v případě simulace s vhodnějším modelem. Pro větší změny úhlu, konkrétně $ -4^\circ $ a $ +8^\circ $, je ale natočení proudu nesprávné. Pro záporné změny úhlu je tedy předpověď Spalartova-Allmarasova modelu horší než pro kladné změny úhlu.
+Částečné vysvětlení tohoto rozdílu plyne z obrázku \ref{fig:ghs1_sakoUdiff}, který ukazuje relativní rozdíl velikosti rychlosti předpovídané Spalartovým-Allmarasovým modelem turbulence ($ \null^{S\text{-}A} $) a modelem $k\text{-}\omega$ SST ($ \null^{SST} $), podle předpisu
+\begin{equation}\label{eq:ghs1_sakoUdiff}
+\dfrac{||\mathbf{u^{S\text{-}A}||-||u^{SST}}||}{||\mathbf{u_1}||}.
+\end{equation}
+Největší rozdíl je v blízkosti odtokové hrany na podtlakové straně, kde dochází k odtržení proudu. Simulace se Spalartovým-Allmarasovým modelem zde předpovídá mnohem větší velikost rychlosti a lze tedy usoudit, že nezachycuje odtržení správným způsobem. Z obrázku \ref{fig:ghs1_sakoUdiff} je mimo jiné vidět, že výpočet s modelem $k\text{-}\omega$ SST předpovídá, že změna úhlu proudu bude větší než žádané 4°. Z grafu průběhu residua \ref{fig:ghs1_UyAKO} nešlo říct, jestli je podle $k\text{-}\omega$ SST ohnutí proudu větší či menší, protože rozdíl v čitateli \ref{eq:res_alphaSST} je v absolutní hodnotě.
+\begin{figure}
 \centering
-\includegraphics[width=0.95\textwidth]{img/sako_magUdiff.png}
+\includegraphics[width=1\textwidth]{img/sako_magUdiff.png}
 \caption[Rozdíl rychlosti pro modely turbulence]{
-Rozdíl velikosti rychlosti pro simulaci s modelem Spalart-Allmaras a s modeleme $k\text{-}\omega$ SST. V červené oblasti předpovídá simulace $ \null^{S\text{-}A} $ vyšší velikost rychlosti, v modré oblasti pak menší, než simulace $ ^{SST} $.}
+Rozdíl velikosti rychlosti pro simulaci se Spalartovým-Allmarasovým modelem a s modelem $k\text{-}\omega$ SST. V červené oblasti předpovídá simulace $ \null^{S\text{-}A} $ vyšší velikost rychlosti, v modré oblasti pak menší, než simulace $ ^{SST} $.}
 \label{fig:ghs1_sakoUdiff}
 \end{figure}
 
