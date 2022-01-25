@@ -36,7 +36,8 @@
 	day = 16,
 	month = 1,
 	year = 2022,
-	specification-file = {others/zadani_BP.pdf},
+	specification-file = {others/zadani_podepsane.pdf},
+%	specification-file = {others/zadani_DP.pdf},
 	front-specification = true,
 %	front-list-of-figures = false,
 %	front-list-of-tables = false,
@@ -104,15 +105,15 @@
 	Cílem diplomové práce je tvarová optimalizace tvaru lopatky pomocí sdružené metody a numerické simulace proudění metodou konečných objemů. Za tímto účelem jsou zopakovány základy metody konečných objemů a jejího použití pro řešení soustavy Navierových-Stokesových rovnic ve formulaci pro tekutinu s konstantní hustotou. Následně je popsán obecný optimalizační problém a návrh na jeho řešení sdruženou metodou. Ta vyžaduje odvození sdružených rovnic, které je popsáno v části \ref{sec:adjoint_rce}.
 
 	V praktické části jsou odvozeny zdrojové členy pro sdružené rovnice na základě formulace nové cenové funkce pro změnu úhlu výstupního proudu.
-	Praktický příklad aplikace využívá knihovnu OpenFOAM a aplikuje optimalizační postup na lopatkovou mříž GHH 1-S1\cite{steinert1990design}. 
-	Nově získané tvary lopatek jsou pro ověření simulovány s modelem turbulence k-$ \omega $ SST\cite{menter1994two, menter2003ten}. Použitý postup je na základě ověření funkční pro změnu úhlu výstupního proudu $ \Delta\alpha_{2} \in \langle -2^\circ,+6^\circ\rangle $. 
+	Praktický příklad aplikace využívá knihovnu OpenFOAM a aplikuje optimalizační postup na lopatkovou mříž GHH 1-S1 \cite{steinert1990design}. 
+	Nově získané tvary lopatek jsou pro ověření simulovány s modelem turbulence k-$ \omega $ SST \cite{menter1994two, menter2003ten}. Použitý postup je na základě ověření funkční pro změnu úhlu výstupního proudu $ \Delta\alpha_{2} \in \langle -2^\circ,+6^\circ\rangle $. 
 \end{abstract-czech}
 
 % Abstract in English
 \begin{abstract-english}
 	The goal of this work is shape optimisation of airfoil using adjoint method and numerical simulation of fluid flow using finite volume method. Basics of finite volume method for solution of Navier-Stokes equation in their variant for incompressible fluid flow are revised. The general problematic of optimisation is presented and proposition of its solution using adjoint method is made. A derivation of adjoint equations follows in chapter \ref{sec:adjoint_rce}.
 	
-	In part of aplication, source terms for adjoint equations are derived for newly formulated target function with purpose of changing the angle of velocity at outlet of airfoil cascade. The example uses OpenFOAM library and airfoil cascase GHH 1-S1\cite{steinert1990design}. New airfoil shapes are then verified using a more suitable turbulence model for internal aerodynamic, namely the k-$ \omega $ SST\cite{menter1994two, menter2003ten}. The presented approach is found to be valid based on this verification for changes in outlet velocity angle in  $ \Delta\alpha_{2} \in \langle -2^\circ,+6^\circ\rangle $. 
+	In part of aplication, source terms for adjoint equations are derived for newly formulated target function with purpose of changing the angle of velocity at outlet of airfoil cascade. The example uses OpenFOAM library and airfoil cascase GHH 1-S1 \cite{steinert1990design}. New airfoil shapes are then verified using a more suitable turbulence model for internal aerodynamic, namely the k-$ \omega $ SST \cite{menter1994two, menter2003ten}. The presented approach is found to be valid based on this verification for changes in outlet velocity angle in  $ \Delta\alpha_{2} \in \langle -2^\circ,+6^\circ\rangle $. 
 \end{abstract-english}
 
 % Acknowledgements / Podekovani

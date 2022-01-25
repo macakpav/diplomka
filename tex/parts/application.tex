@@ -19,7 +19,7 @@ V rámci numerické simulace je topologie výpočetní oblasti naznačena na obr
 	\label{fig:vypocetni_oblast}
 \end{figure}
 
-Krom periodicity jsou další okrajové podmínky následující. Na vstupu je předepsána Dirichletova okrajová podmínka pro vektor rychlosti a turbulentní proměnné. Tlak zde má nulovou Neumanovu podmínku. Na výstupu je naopak pro kinematický tlak předepsána nulová Dirichletova podmínka a rychlost je zde předepsána pomocí nulového gradientu. Hranice lopatky je brána jako nepropustná stěna s nulovou Dirichletovou podmínkou pro rychlost a nulovým gradientem pro tlak.
+Krom periodicity jsou další okrajové podmínky následující. Na vstupu je předepsána Dirichletova okrajová podmínka pro vektor rychlosti a turbulentní proměnné. Tlak zde má nulovou Neumanovu podmínku. Na výstupu je naopak pro kinematický tlak předepsána Dirichletova podmínka a rychlost je zde předepsána pomocí nulového gradientu. Hranice lopatky je brána jako nepropustná stěna s nulovou Dirichletovou podmínkou pro rychlost a nulovým gradientem pro tlak.
 
 Při modelování turbulence Spalartovým-Allmarasovým modelem turbulence je $ \tilde{\nu} $ na vstupu předepsána hodnotou, na výstupu nulovým gradientem a na lopatce nulovou Dirichletovou podmínkou. Prostorová diskretizace bude dělána tak aby $ y^+<1 $ a pro $ \nu_t $ je použita Spaldingova stěnová funkce $ \mathrm{SWF}_{\nu_t}(\mathbf{u}) $ podle \cite{spalding1961single}. Pro proměnné $ k $ a $ \omega $ příslušící modelu $ k\text{-}\omega $ SST je situace na $ \Gamma_{1,2} $ stejná jako pro Spalartovu-Allmarasovu proměnnou a na stěně je použito stěnových funkcí \cite{kalitzin2005near} vhodných pro $ y^+<1 $. 
 
@@ -79,7 +79,7 @@ Ve smyslu vztahu \ref{eq:cenova_fce} má takto definovaná cílová funkce pouze
 Parciální derivace podle primárního tlaku $ \dfrac{\partial}{\partial p} $ je nulová, neboť tlak v cílové funkci nefiguruje.
 
 Pro parciální derivaci podle primární rychlosti $ \mathbf{u} $ je lepší se dívat na složku $ u_y $ jako na skalární součin $ \mathbf{u}\cdot \mathbf{j}=\mathbf{u}\cdot (0,1,0) = u_y$ a derivaci tedy provést jako
-\begin{equation}\label{key}
+\begin{equation}
 \dfrac{\partial J_\Gamma}{\partial \mathbf{u}}
 =
 \dfrac{\partial \left( \mathbf{u}\cdot \mathbf{j}-u_{y2tar} \right)^2}{\partial \mathbf{u}}
@@ -100,7 +100,7 @@ J_{OF}=\dfrac{\int_\Gamma \rho (-\tau_{ij}n_j+pn_i)r_i\,\mathrm{d}S}{\frac{1}{2}
 kde $ \tau_{ij} $ jsou složky tenzoru napětí, $ p $ tlak dělený konstantní hustotou $ \rho $ a $ \mathbf{n} $ jednotkový normálový vektor. Vektor $ \mathbf{r} $ pak definuje směr projekce vektoru síly (směr ve kterém se minimalizuje). $ A $ je referenční plocha a $ U_{\infty} $ je rychlost volného proudu. Takto definovaná cílová funkce tedy svou velikostí odpovídá koeficientu síly $ C_f $.
 
 Pro potřeby optimalizace na cílovou sílu $ F_{yPtar} $ bylo vhodnější použít přímo samotnou sílu, tedy pouze čitatel v rovnici \ref{eq:J_FyOForig}, a za vektor projekce brát jednotkový vektor ve směru osy y. Pro celkovou sílu působící na lopatku ve směru y tak lze psát
-\begin{equation}\label{key}
+\begin{equation}
 F_{yP}=\int_{\Gamma_P} \rho (-\tau_{ij}n_j+pn_i)\delta_{i2}\,\mathrm{d}S.
 \end{equation}
 Absolutní velikost takto vyhodnocené síly samozřejmě závisí i na rozměru lopatky v ose z. Číselné výsledky uváděné později jsou uváděny vždy relativní, takže nezávisí na libovolné konstantní výšce lopatky. Cílovou funkci pro cílovou sílu tak definujeme podobně jako pro rychlost přes kvadrát rozdílu, tedy
@@ -108,12 +108,12 @@ Absolutní velikost takto vyhodnocené síly samozřejmě závisí i na rozměru
 J= (F_{yP} - F_{yPtar})^2.
 \end{equation}
 Pro derivaci této cílové funkce podle libovolné proměnné $ w $ pak platí
-\begin{equation}\label{key}
+\begin{equation}
 \dfrac{\partial J}{\partial w} = 
 2(F_{yP}-F_{yPtar}) \cdot \dfrac{\partial F_{yP}}{\partial w}.
 \end{equation}
 Výraz $ \frac{\partial F_{yP}}{\partial w} $ odpovídá derivaci čitatele (anglicky \textit{nominator}, $ \mathrm{nom()} $) cílové funkce definované rovnicí \ref{eq:J_FyOForig}, tedy
-\begin{equation}\label{key}
+\begin{equation}
 \dfrac{\partial F_{yP}}{\partial w} = \dfrac{\partial (\mathrm{nom}(J_{OF}))}{\partial w}.
 \end{equation}
 Pro tuto cílovou funkci tedy nebylo potřeba odvozovat potřebné derivace a stačilo pouze vynásobit příslušné výrazy definované v kódu knihovny OpenFOAM výrazem $ 2(F_{yP}-F_{yPtar}) $.
@@ -126,7 +126,7 @@ Výpočetní oblast topologicky odpovídá náčrtu na obrázku \ref{fig:vypocet
 Rozteč lopatek v mříži je $ t=0.0476\,\mathrm{m} $. Hustota tekutiny používaná při vyhodnocení síly je $ \rho=1.225\,\mathrm{kg\,m^{-3}} $ a kinematická viskozita $ \nu = 1.5\cdot10^{-5} \, \mathrm{m^2s^{-1}} $.
 
 \subsection{Okrajové podmínky}  Na vstupu je Machovo číslo $ M=0.62 $ a úhel proudu $ \alpha_1 = 47^\circ $, což při klidové rychlosti vzduchu $ c=340 \,\mathrm{m\,s^{-1}} $ vede na okrajovou podmínku pro vstupní rychlost  
-\begin{equation}\label{key}
+\begin{equation}
 \mathbf{u_1}=M\cdot c \cdot (\cos(\alpha_1),\, \sin(\alpha_1),\, 0) \doteq (143.8,\, 154.2,\, 0)\, \mathrm{m\,s^{-1}}.
 \end{equation}
 Kinematický tlak na výstupu je $ p_2=0\,\mathrm{m^2s^{-2}} $.
@@ -134,15 +134,15 @@ Kinematický tlak na výstupu je $ p_2=0\,\mathrm{m^2s^{-2}} $.
 \subsection{Modelování turbulence}
 Modelování turbulence se realizuje pomocí přídavné turbulentní vazkosti. Pro zjištění turbulentní vazkosti $ \nu_t $ je v optimalizačním algoritmu použit Spalartův-Allmarasův model \cite{spalart1992one}. Jelikož ale tento model je původně navržen pro obtékání profilu křídla ve volném proudu, není ve své původní variantě vhodný pro modelování turbulence ve vnitřní aerodynamice, kam kompresorové mříže spadají. Knihovna OpenFOAM prozatím ale neobsahuje sdružené rovnice pro žádný jiný model turbulence než Spalartův-Allmarasův a odvození sdružených rovnic pro pokročilejší model turbulence je nad rámec této práce, byl použit následující postup. 
 
-Ve výchozí konfiguraci byla provedena simulace s vhodnějším modelem $k\text{-}\omega$ SST implementovaným v knihovně OpenFOAM na základě \cite{menter1994two, menter2003ten, rumsey2013menter} s následujícími okrajovými podmínkami na vstupu. Intenzita turbulence na vstupu $ I=2\% $, tedy odkud plyne Dirichletova podmínka pro turbulentní kinetickou energii $ k $ ze vztahu  \begin{equation}\label{key}
+Ve výchozí konfiguraci byla provedena simulace s vhodnějším modelem $k\text{-}\omega$ SST implementovaným v knihovně OpenFOAM na základě \cite{menter1994two, menter2003ten, rumsey2013menter} s následujícími okrajovými podmínkami na vstupu. Intenzita turbulence na vstupu $ I=2\% $, odkud plyne Dirichletova podmínka pro turbulentní kinetickou energii $ k $ ze vztahu  \begin{equation}
 k=1.5(I|\mathbf{u}|)^2.
 \end{equation} 
 Turbulentní směšovací délka $ L_t=0.002\,\mathrm{m} $, odkud plyne Dirichletova okrajová podmínka pro $ \omega $ ze vztahu
-\begin{equation}\label{key}
-\omega=\dfrac{k^{0.5}}{C_\mu^{0.25}L_t};\,\, C_\mu=0.09\,.
+\begin{equation}
+\omega=\dfrac{k^{0.5}}{C_\mu^{0.25}L_t},\,\, C_\mu=0.09\,.
 \end{equation} 
 Ve výchozí konfiguraci bylo následně provedeno několik simulací s Spalartovým-Allmarasovým modelem, kde se variovala vstupní hodnota turbulentní proměnné tohoto modelu $ \tilde{\nu}_1 $ z intervalu $ \langle 10^{-6},10 \rangle $. Pro každý výpočet byl vyhodnocen koeficient ztráty celkového tlaku podle vztahu z \cite{steinert1990design}
-\begin{equation}\label{key}
+\begin{equation}
 \omega = \dfrac{p_{t1}-p_{t2}}{p_{t1}-p_1}
 \end{equation}
 a poměr celkových tlaků $ \frac{p_{t1}}{p_{t2}} $. Pro další simulace této lopatkové mříže pak byla na vstupu zvolena Dirichletova podmínka $ \tilde{\nu} = 3.4\cdot 10^{-4} $ neboť pro tuto hodnotu vyšel relativní rozdíl v předpovědi Spalartova-Allmarasova modelu oproti $k\text{-}\omega$ SST pro obě vyhodnocované veličiny pod $ 1\% $.
@@ -177,12 +177,12 @@ Pro transformaci tvaru lopatky a pohybu se sítí pomocí objemových B-spline j
 
 
 \subsection{Parametry optimalizace}
-Cílové funkce používané pro optimalizaci jsou definovány rovnicemi \ref{eq:J_UyTarget} a \ref{eq:J_FyTarget}, tedy optimalizace přímá na $ u_{y2tar} $ a nepřímá na $ F_{yPtar} $. Optimalizace tvaru lopatky byla dodatečně omezena, tak aby průřez lopatky zůstal konstantní, což lze pro trojrozměrný prostor matematicky formulovat jako
+Cílové funkce používané pro optimalizaci jsou definovány rovnicemi \ref{eq:J_UyTarget} a \ref{eq:J_FyTarget}, tedy optimalizace přímá na $ u_{y2tar} $ a nepřímá na $ F_{yPtar} $. Optimalizace tvaru lopatky byla dodatečně omezena, tak aby průřez lopatky zůstal konstantní, což lze pro trojrozměrný prostor matematicky formulovat jako \cite{adjoint2020foam}
 \begin{equation} 
 V=-1/3\int_{\Gamma_P}x_kn_k\mathrm{d}S.
 \end{equation}
 
-Kvůli přidané podmínce konstantního průřezu byla jako metoda aktualizace zvolena metoda projekce omezení (anglicky \textit{constraint projection}). Výchozí krok ve směru gradientu $ \eta $ je v první iteraci spočítán podle maximálního povoleného pohybu sítě, který byl nastaven na $ 5\cdot10^{-4} $. Velikost kroku $ \eta $ se posléze v jednotlivých iteracích zmenšuje podle Armijo podmínky jak definuje \cite{nocedal1999numerical}. Tento cyklus zmenšuje krok $ \eta^{k+1}=0.75\cdot\eta^{k} $ a vyhodnocuje hodnotu cílové funkce $ J $ (tedy simuluje primární rovnice), než jsou splněny dané podmínky. Pro Armijo podmínky je důležitý koeficient $ c1 $, který byl zvolen $ 10^{-3} $.
+Kvůli přidané podmínce konstantního průřezu byla jako metoda aktualizace zvolena metoda projekce omezení (anglicky \textit{constraint projection}). Výchozí krok ve směru gradientu $ \eta $ je v první iteraci spočítán podle maximálního povoleného pohybu sítě, který byl nastaven na $ 5\cdot10^{-4} \mathrm{m}$. Velikost kroku $ \eta $ se posléze v jednotlivých iteracích zmenšuje podle Armijo podmínky jak definuje \cite{nocedal1999numerical}. Tento cyklus zmenšuje krok $ \eta^{k+1}=0.75\cdot\eta^{k} $ a vyhodnocuje hodnotu cílové funkce $ J $ (tedy simuluje primární rovnice), než jsou splněny dané podmínky. Pro Armijo podmínky je důležitý koeficient $ c1 $, který byl zvolen $ 10^{-3} $.
 
 Výstupní úhel proudu byl ve výchozí konfiguraci se Spalartovým-Allmarasovým modelem $ \alpha_{2}^{0}=21.46^{\circ} $. Cílové výstupní úhly byly zvoleny z množiny $ \langle \alpha_{2}^{0}-4^{\circ}, \alpha_{2}^{0}+8^{\circ} \rangle $ s krokem $ 2^{\circ} $. Celkem tedy 6 různých cílových úhlů.
 

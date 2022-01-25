@@ -415,9 +415,9 @@ f_{v1} &= \frac{\chi^3}{\chi^3 + c^3_{v1}},\\
 \chi &= \frac{\widetilde{\nu}}{\nu}
 \end{align}
 a pro $\widetilde{\nu}$ je definována transportní rovnice
-\begin{equation}
-\frac{\partial \widetilde{\nu}}{\partial t} + \overline{u}_j\frac{\partial \widetilde{\nu}}{\partial x_j} = c_{b1}(1-f_{t2})\widetilde{S}\widetilde{\nu} + \frac{1}{\sigma}\frac{\partial}{\partial x_j}\left((\nu + \widetilde{\nu})\frac{\partial \widetilde{\nu}}{\partial x_j} \right) + \frac{c_{b2}}{\sigma}\frac{\partial \widetilde{\nu}}{\partial x_j}\frac{\partial \widetilde{\nu}}{\partial x_j} - \bigg[c_{w1}f_{w}-\frac{c_{b1}}{\kappa^2}f_{t2}\bigg]\left( \frac{\widetilde{\nu}}{d} \right)^2.
-\end{equation}
+\begin{multline}
+\frac{\partial \widetilde{\nu}}{\partial t} + \overline{u}_j\frac{\partial \widetilde{\nu}}{\partial x_j} = c_{b1}(1-f_{t2})\widetilde{S}\widetilde{\nu} + \frac{1}{\sigma}\frac{\partial}{\partial x_j}\left((\nu + \widetilde{\nu})\frac{\partial \widetilde{\nu}}{\partial x_j} \right) + \frac{c_{b2}}{\sigma}\frac{\partial \widetilde{\nu}}{\partial x_j}\frac{\partial \widetilde{\nu}}{\partial x_j} - \\ \left[c_{w1}f_{w}-\frac{c_{b1}}{\kappa^2}f_{t2}\right]\left( \frac{\widetilde{\nu}}{d} \right)^2.
+\end{multline}
 kde $ d $ je vzdálenost k nejbližší stěně. Další použité pomocné funkce jsou
 \begin{align*}
 f_{v2} &= 1 - \frac{\chi}{1+\chi f_{v1}},   &f_{w} &= g \left( \frac{1+c_{w3}^6}{g^6 + c_{w3}^6} \right)^{\frac{1}{6}}, \\
@@ -444,9 +444,9 @@ Pro $ k $ a $\omega$ jsou definované transportní rovnice
 \frac{\partial k}{\partial t} + \overline{u}_j\frac{\partial k}{\partial x_j} = \tau_{ij}\frac{\partial \overline{u}_i}{x_j} - \beta^\ast \omega k + \frac{\partial}{\partial x_j} \left[ (\nu + \sigma_k \nu_T)\frac{\partial k}{\partial x_j} \right]
 \end{equation}
 a
-\begin{equation}
-\frac{\partial \omega}{\partial t} + \overline{u}_j\frac{\partial \omega}{\partial x_j} = \frac{\gamma}{\mu_T}\tau_{ij}\frac{\partial \overline{u}_i}{x_j} - \beta^{k\text{-}\omega} \omega^2 + \frac{\partial}{\partial x_j} \left[ (\nu + \sigma_\omega \nu_T)\frac{\partial \omega}{\partial x_j} \right] + 2(1-F_1)\frac{\sigma_{\omega 2}}{\omega}\frac{\partial k}{\partial x_j}\frac{\partial \omega}{\partial x_j}.
-\end{equation}
+\begin{multline}
+\frac{\partial \omega}{\partial t} + \overline{u}_j\frac{\partial \omega}{\partial x_j} = \frac{\gamma}{\mu_T}\tau_{ij}\frac{\partial \overline{u}_i}{x_j} - \beta^{k\text{-}\omega} \omega^2 + \frac{\partial}{\partial x_j} \left[ (\nu + \sigma_\omega \nu_T)\frac{\partial \omega}{\partial x_j} \right] + \\ 2(1-F_1)\frac{\sigma_{\omega 2}}{\omega}\frac{\partial k}{\partial x_j}\frac{\partial \omega}{\partial x_j}.
+\end{multline}
 Konstanty v předešlých rovnicích se získávají podle následujícího pravidla
 \begin{equation}
 w = F_1 w_1 + (1-F_1)w_2,
@@ -454,9 +454,9 @@ w = F_1 w_1 + (1-F_1)w_2,
 kde $ w $ je některá z konstant a $ w_{1,2} $ jsou její dolní, respektive horní mez. Další vztahy použité v rovnicích jsou
 \begin{align*}
 \tau_{ij} &= \nu_T \left( 2\overline{S}_{ij} - \frac{2}{3} \frac{\partial \overline{u}_k}{\partial x_k} \delta_{ij} \right) - \frac{2}{3}k\delta_{ij}, \\
-F_1 &= \tanh(arg_1^4),\\   &\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,arg_1 = \min\left[ \max \left( \frac{\sqrt{k}}{\beta^\ast \omega d}, \frac{500\nu}{d^2 \omega} \right), \frac{4 \sigma_{\omega2} k}{CD_{k\omega}d^2} \right],\\
+F_1 &= \tanh(arg_1^4), \,\,\,\, arg_1 = \min\left[ \max \left( \frac{\sqrt{k}}{\beta^\ast \omega d}, \frac{500\nu}{d^2 \omega} \right), \frac{4 \sigma_{\omega2} k}{CD_{k\omega}d^2} \right],\\
 CD_{k\omega} &= \max\left( 2 \sigma_{\omega2} \frac{1}{\omega} \frac{\partial k}{\partial x_j} \frac{\partial \omega}{\partial x_j}, 10^{-20} \right),\\
-F_2 &= \tanh(arg_2^2), \\  &\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,arg_2 = \max \left( 2\frac{\sqrt{k}}{\beta^\ast \omega d}, \frac{500\nu}{d^2 \omega} \right).
+F_2 &= \tanh(arg_2^2),  \,\,\,\, arg_2 = \max \left( 2\frac{\sqrt{k}}{\beta^\ast \omega d}, \frac{500\nu}{d^2 \omega} \right).
 \end{align*}
 Konstanty tohoto modelu nabývají hodnot
 \begin{align*}
