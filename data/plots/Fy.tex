@@ -1,0 +1,52 @@
+\documentclass[border=5pt]{standalone}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.15}
+
+
+\newcommand{\case}{angle17_Uy}
+
+
+
+\newcommand{\inpath}{../}
+\newcommand{\outpath}{./}
+
+\begin{document}
+
+
+% Replace this with the name of the file containing the data you want plotted.
+%\pgfplotstableread[skip first n=2]{\inpath UyConvergence.dat}{\Uy} 
+%\pgfplotstableread[skip first n=2]{\inpath UyConvergenceAlpha.dat}{\UyA} 
+\pgfplotstableread[skip first n=2]{\inpath FyConvergence.dat}{\Fy} 
+\pgfplotstableread[skip first n=2]{\inpath FyConvergenceAlpha.dat}{\FyA} 
+
+
+
+
+\begin{tikzpicture}[scale=1]
+\begin{semilogyaxis}[max space between ticks=30pt,grid=major,xmin=0,width=14cm,height=10cm,minor tick num=1,
+legend pos=outer north east,
+ymin=1e-5, ymax=1,
+xmin=0, xmax=50,
+xlabel={Iterace [1]}, 
+ylabel={Residuum $ Res_{F_y} $}, 
+title={Konvergence optimalizace $ F_y $}]
+\addplot [thick,red, mark=x] table [x index=0, y index=1] {\Fy};
+\addplot [thick,orange, mark=x] table [x index=0, y index=2] {\Fy};
+\addplot [thick,green, mark=+] table [x index=0, y index=3] {\Fy};
+\addplot [thick,cyan, mark=+] table [x index=0, y index=4] {\Fy};
+\addplot [thick,blue, mark=+] table [x index=0, y index=5] {\Fy};
+\addplot [thick,black, mark=+] table [x index=0, y index=6] {\Fy};
+\addplot [thick,magenta] coordinates {(0,1e-2)(50,1e-2)};
+
+\legend{$\alpha_2^0-4^{\circ}$,
+	$\alpha_2^0-2^{\circ}$, 
+	$\alpha_2^0+2^{\circ}$, 
+	$\alpha_2^0+4^{\circ}$, 
+	$\alpha_2^0+6^{\circ}$, 
+	$\alpha_2^0+8^{\circ}$}
+
+\end{semilogyaxis}
+\end{tikzpicture}
+
+\end{document}
